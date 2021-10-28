@@ -11,6 +11,7 @@ from helper_functions.operators import *
 from helper_functions.other import * 
 from hamiltonean_builder.hamiltonean_builder import *
 from correlation.second_order_correlation import *
+from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file
 
 import sys
 
@@ -23,7 +24,7 @@ Omega = 2
 Delta = 20*Gamma
 kd = 10
 
-
+description = str(sys.argv[4])
 N = int(sys.argv[3]) 
 psi0 = tensor([ket("1") for i in range(N) ])
 wave_mixing = True
@@ -38,8 +39,21 @@ g2_lig = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
 
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4} $".format(Gamma,Omega, Delta, kd, N)
 
+variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4} $".format(Gamma,Omega, Delta, kd, N)
+
+
+
 end = timer()
-np.savetxt("angulo{0}e{1}_N{3}_tempo{2}.txt".format(ang1,ang2,np.round(end-start,3),N), [taulist, np.real(g2_lig)])
+
+#Saving files!
+
+path_to_save_file = get_path_to_save_files(N, description)
+filename ="{4}/angulo{0}e{1}_N{3}run".format(ang1,ang2,0,N,path_to_save_file) 
+run_number = get_new_run_number_txt(filename)
+name_of_file =  "{4}/angulo{0}e{1}_N{3}run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file)
+save_params_to_file(variables_string, filename)
+
+np.savetxt(name_of_file, [taulist, np.real(g2_lig)])
 
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )

@@ -1,0 +1,67 @@
+Bootstrap: docker
+From: ufscar/ubuntu_ompi:latest
+
+%help
+This singularity container provides the necessary dependencies for running all the subradiance project.
+%files
+   ./Funcional/. /Funcional
+%post
+# ------------------------------------------------------#
+# Let's install everything we need here for our project.#
+# ------------------------------------------------------#
+# Install full texlive to generate plots properly, independetly of the machine.
+apt-get update && apt-get -y upgrade
+        apt-get update --fix-missing
+#apt-get install -y dvipng
+#DEBIAN_FRONTEND=noninteractive apt-get install -yq texlive-full texmaker --no-install-recommends
+
+# Basic utilities
+DEBIAN_FRONTEND=noninteractive apt-get install -y \
+curl \
+ca-certificates \
+sudo \
+git \
+#h5utils \
+#ffmpeg \
+#libsm6 \
+#libxext6  -y \
+#&& rm -rf /var/lib/apt/lists/*
+
+# Create a working directory
+mkdir /app
+cd /app
+
+# Create a non-root user and switch to it
+adduser --disabled-password --gecos '' --shell /bin/bash user \
+&& chown -R user:user /app
+echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-user
+su - user # USER user
+
+# All users can use /home/user as their home directory
+HOME=/home/user
+chmod 777 /home/user
+
+
+# Install Miniconda and Python 2.7
+  CONDA_AUTO_UPDATE_CONDA=false
+  PATH=/home/user/miniconda/bin:$PATH
+  curl -sLo ~/Miniconda3.sh https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-Linux-x86_64.sh \
+  && chmod +x ~/Miniconda3.sh \
+  && ~/Miniconda3.sh -b -p ~/miniconda \
+  && rm ~/Miniconda3.sh \
+  && conda install -y python \
+  && conda clean -ya
+
+# Install all python2 packages we need.
+conda install numpy
+conda install cython
+conda install matplotlib
+conda install scipy
+conda install h5py
+conda install -c conda-forge qutip
+
+
+#conda install sympy
+#conda install vtk
+#conda install pyqt
+#conda install mayavi

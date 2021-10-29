@@ -6,11 +6,13 @@ from qutip import *
 from helper_functions.operators import *
 
 
-def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1):
+def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None):
     k = 1
     
-    rho_ss = steadystate(H, c_ops)
+    if rho_ss == None:
+        rho_ss = steadystate(H, c_ops)
     
+
     EmgR1  = Emg(N, r, R1, k, faseglobal)
     EmgR2  = Emg(N, r, R2, k, faseglobal)
     EpgR1  = Epg(N, r, R1, k, faseglobal)
@@ -27,7 +29,7 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1):
     
     g2_light = G2/normalization
 
-    return g2_light
+    return g2_light, rho_ss
 
 
 # In[87]:

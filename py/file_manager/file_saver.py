@@ -1,6 +1,8 @@
 import sys
 import pathlib
 import os
+from qutip import file_data_store
+import numpy as np
 
 def get_path_to_save_files(N,description):
     """creates a folder, if it does not exit,  in  "../results/{0}/"..
@@ -35,4 +37,13 @@ def save_params_to_file(variables_string, filename):
     file = open(f"{filename}_params.py", "w")
     file.write(variables_string)
     file.close()
+
+
+def save_rhoss_to_file(variable, filename):
+    output_data = np.vstack((variable))   
+
+    #file = open(f"{filename}_{file_description}.py", "w")
+    file_data_store(f'{filename}_rho_ss.dat', output_data.T) 
+
+    
 

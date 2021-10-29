@@ -11,7 +11,7 @@ from helper_functions.operators import *
 from helper_functions.other import * 
 from hamiltonean_builder.hamiltonean_builder import *
 from correlation.second_order_correlation import *
-from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file
+from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file, save_rhoss_to_file
 
 import sys
 
@@ -35,7 +35,8 @@ R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
 R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, Delta = Delta, Omega = Omega, wave_mixing = wave_mixing)
-g2_lig = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
+
+g2_lig, rho_ss  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
 
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4} $".format(Gamma,Omega, Delta, kd, N)
 
@@ -55,6 +56,7 @@ save_params_to_file(variables_string, filename)
 
 np.savetxt(name_of_file, [taulist, np.real(g2_lig)])
 
+save_rhoss_to_file(rho_ss, filename)
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )
 #fig.savefig("testinho.png")

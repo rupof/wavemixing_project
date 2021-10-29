@@ -25,11 +25,10 @@ PYTHON_EXEC=/home/user/miniconda/bin/python
 angle1=$1
 angle2=$2 
 N=$3
-
+Description=$4
 
 echo "Running script in /bin ..."
 echo " N=$N angle1=$angle1 angle2=$angle2 "
 echo "Running simulations..."
 
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/testesyste.py $angle1 $angle2 $N 
-
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/testesyste.py $angle1 $angle2 $N $Description

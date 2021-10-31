@@ -45,13 +45,16 @@ def GreensTensor_and_SRstate(Gamma, N, kd = 0.10):
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
-def system_spec_N(Gamma, N , kd = 10, Delta = None, Omega = None, wave_mixing = True ):
+def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True ):
     k = 1
     kvec = k*yhat # incident laser propagating direction
     
-    radius =  kd/k
-    
-    r = random_cloud(radius, N)
+
+    if kd != None: #if cloud radius is given!
+        radius =  kd/k
+        r = random_cloud(radius, N, exc_radius)
+    elif b0 != None: #if b0 is given!
+        r = random_cloud(None,N,b0)  
     
     GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , kd)
 

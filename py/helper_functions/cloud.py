@@ -37,10 +37,15 @@ def random_atom_inside_sphere(radius):
        
     return r_i
 
-def random_cloud(exc_radius, radius, N):
+def random_cloud(radius, N, exc_radius = None, b0 = None):
+    "exc_radius = None"
     
-    r = np.array([nullvector*(float(i)) for i in range(N)])
-     
+    if  b0 != None:    #get from  sizes from b0
+        radius = get_radius_from_optical_thickness(N,b0) 
+        exc_radius = get_exclusion_radius_from_optical_thickness(N, radius)
+
+    
+    r = np.array([nullvector*(float(i)) for i in range(N)]) 
     for i in range(N):
         r_i = random_atom_inside_sphere(radius)  
         counter = 1 
@@ -57,9 +62,19 @@ def random_cloud(exc_radius, radius, N):
  
    
    
-   
-   
-   
+def get_exclusion_radius_from_optical_thickness(N,kradius):
+    k = 1
+    radius = kradius/k
+    rho = 4/3*np.pi*radius**3
+    exc_radius = 0.3/(rho)**(1/3)
+    return exc_radius
+
+
+def get_radius_from_optical_thickness(N, b0):
+    k = 1 
+    radius = np.sqrt(2*N/(b0))/k
+    return radius
+
    
    
    

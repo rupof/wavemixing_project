@@ -22,9 +22,9 @@ taulist = np.linspace(0,1, 100)
 Gamma = 1
 Omega = 2
 Delta = 20*Gamma
-kd = 10
 
-description = str(sys.argv[4])
+useb0 = bool(sys.argv[4])
+
 N = int(sys.argv[3]) 
 psi0 = tensor([ket("1") for i in range(N) ])
 wave_mixing = True
@@ -34,13 +34,30 @@ ang2 = float(sys.argv[2])
 R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
 R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
 
-H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, Delta = Delta, Omega = Omega, wave_mixing = wave_mixing)
+useb0 = bool(sys.argv[4])
+
+if useb0 == True:
+    b0 = float(sys.arg[5])
+    kd = None
+    exc_radius = None
+    description = str(sys.argv[6])
+    # ang1 ang2 N useb0 b0 description    
+else:
+    b0 = None
+    kd = float(sys.argv[5])
+    exc_radius = float(sys.argv[6])
+    description = str(sys.argv[7])
+    # ang1 ang2 N useb0 kd exc_radius description    
+
+
+
+H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing)
 
 g2_lig, rho_ss  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
 
-variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4} $".format(Gamma,Omega, Delta, kd, N)
+variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
 
-variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4} $".format(Gamma,Omega, Delta, kd, N)
+variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4}  \nb0 = {5} ".format(Gamma,Omega, Delta, kd, N, b0)
 
 
 

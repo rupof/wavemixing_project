@@ -23,7 +23,7 @@ Gamma = 1
 Omega = 2
 Delta = 20*Gamma
 
-useb0 = bool(sys.argv[4])
+
 
 N = int(sys.argv[3]) 
 psi0 = tensor([ket("1") for i in range(N) ])
@@ -34,21 +34,22 @@ ang2 = float(sys.argv[2])
 R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
 R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
 
-useb0 = bool(sys.argv[4])
-
+useb0 = bool(int(sys.argv[4]))
+print(useb0)
 if useb0 == True:
-    b0 = float(sys.arg[5])
+    b0 = float(sys.argv[5])
     kd = None
     exc_radius = None
     description = str(sys.argv[6])
-    # ang1 ang2 N useb0 b0 description    
+    print("b0 main", b0)
+    # ang1 ang2 N useb0 b0 descriptioion
 else:
     b0 = None
     kd = float(sys.argv[5])
     exc_radius = float(sys.argv[6])
     description = str(sys.argv[7])
     # ang1 ang2 N useb0 kd exc_radius description    
-
+    print("kd main", kd) 
 
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing)

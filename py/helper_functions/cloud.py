@@ -39,8 +39,9 @@ def random_atom_inside_sphere(radius):
 
 def random_cloud(radius, N, exc_radius = None, b0 = None):
     "exc_radius = None"
-    
+    print ("b0", b0) 
     if  b0 != None:    #get from  sizes from b0
+        print("b0",b0 )
         radius = get_radius_from_optical_thickness(N,b0) 
         exc_radius = get_exclusion_radius_from_optical_thickness(N, radius)
 

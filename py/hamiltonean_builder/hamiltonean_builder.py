@@ -12,14 +12,12 @@ from helper_functions.cloud import *
 
 
 
-def GreensTensor_and_SRstate(Gamma, N, kd = 0.10):
-    """ For a given Gamma, N and kd, 
+def GreensTensor_and_SRstate(Gamma, N, r):
+    """ For a given Gamma, N and r 
     returns: Green's tensor, M matrix, Δ matrix,  Γ matrix, ΓSR, ΔSR and SR state
     
     """
     k = 1
-    d =  kd/k 
-    r = np.array([generate_atom_r(i*d) for i in range(N)])
 
     GTensor = np.zeros([N,N], dtype = "object")
     GammaMatrix = np.zeros([N,N])
@@ -49,14 +47,16 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
     k = 1
     kvec = k*yhat # incident laser propagating direction
     
-
+    print("b0 system", b0)
+    print("kd system", kd)
     if kd != None: #if cloud radius is given!
         radius =  kd/k
-        r = random_cloud(radius, N, exc_radius)
+        r = random_cloud(radius, N, exc_radius, b0 )
     elif b0 != None: #if b0 is given!
-        r = random_cloud(None,N,b0)  
+        print(b0)
+        r = random_cloud(None,N,exc_radius, b0)  
     
-    GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , kd)
+    GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , r)
 
     if Delta == None: #For Delta = DeltaSR  
         Delta = DeltaSR

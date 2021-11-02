@@ -10,17 +10,8 @@ N7far25_25_avg =  average_of_runs_files("../results/N7_far/")
 N7far25_205_avg = average_of_runs_files("../results/N7_far25_205/")
 N7far25m25_avg = average_of_runs_files("../results/N7_far25m25/")
 N7far25_m90_avg = average_of_runs_files("../results/N7_far25_m90/")
-
 N7far25_155_avg = average_of_runs_files("../results/N7_far25_155/")
-
 N7far25_90_avg = average_of_runs_files("../results/N7_far25_90/")
-
-
-
-
-
-
-
 
 
 

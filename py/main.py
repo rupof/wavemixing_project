@@ -33,7 +33,7 @@ ang1 = float(sys.argv[1])
 ang2 = float(sys.argv[2])
 R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
 R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
-
+scalar = True
 useb0 = bool(int(sys.argv[4]))
 print(useb0)
 if useb0 == True:
@@ -52,13 +52,13 @@ else:
     print("kd main", kd) 
 
 
-H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing)
+H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
 
 g2_lig, rho_ss  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
 
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
 
-variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4}  \nb0 = {5} ".format(Gamma,Omega, Delta, kd, N, b0)
+variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4}  \nb0 = {5}\nscalar = {6} ".format(Gamma,Omega, Delta, kd, N, b0, scalar)
 
 
 

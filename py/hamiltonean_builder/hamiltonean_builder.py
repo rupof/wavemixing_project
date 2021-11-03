@@ -12,7 +12,7 @@ from helper_functions.cloud import *
 
 
 
-def GreensTensor_and_SRstate(Gamma, N, r):
+def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
     """ For a given Gamma, N and r 
     returns: Green's tensor, M matrix, Δ matrix,  Γ matrix, ΓSR, ΔSR and SR state
     
@@ -26,10 +26,10 @@ def GreensTensor_and_SRstate(Gamma, N, r):
     
     for i, r_i in enumerate(r):
         for j, r_j in enumerate(r):
-            Gij = Gij_calc(Gamma, k, r, i, j)     
+            Gij = Gij_calc(Gamma, k, r, i, j, scalar)     
             
-            Deltaij = Deltaij_calc(Gij)
-            Gammaij = Gammaij_calc(Gij)
+            Deltaij = Deltaij_calc(Gij, scalar)
+            Gammaij = Gammaij_calc(Gij, scalar)
             
             GTensor[i][j] = Gij
             
@@ -43,7 +43,7 @@ def GreensTensor_and_SRstate(Gamma, N, r):
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
-def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True ):
+def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False ):
     k = 1
     kvec = k*yhat # incident laser propagating direction
     
@@ -56,7 +56,7 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
         print(b0)
         r = random_cloud(None,N,exc_radius, b0)  
     
-    GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , r)
+    GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , r, scalar)
 
     if Delta == None: #For Delta = DeltaSR  
         Delta = DeltaSR

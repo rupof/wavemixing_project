@@ -17,14 +17,14 @@ def Gij_calc(Gamma, k, positions, i, j, scalar = False):
             Gij = (3*Gamma/4)* (np.exp(1j*k*r_ij_norm)/(k*r_ij_norm)**3) * ( (k**2*r_ij_norm**2 + 1j*k*r_ij_norm - 1 )*I3 - (k**2*r_ij_norm**2 + 3j*k*r_ij_norm - 3) * ((r_ij @ r_ij.T)/r_ij_norm**2) )
 
     elif scalar == True: 
-        Gij = r_ij @ r_ij.T
+        Gij = np.linalg.norm(r_ij)*k #norm(k) 
     return Gij
 
 def Gammaij_calc(Gij, scalar = False):
     if scalar == False:
         Gammaij = ( zhat.T @ (2 * np.imag(Gij) ) @ zhat ).item()
     elif scalar == True:
-        Gij = (zhat.T @ Gij @ zhat ).item()
+        
         if Gij == 0:
             Gammaij = 2
         else:
@@ -35,7 +35,7 @@ def Deltaij_calc(Gij, scalar = False):
     if scalar == False:
         Deltaij = ( zhat.T @( -1*np.real(Gij) )  @ zhat ).item()
     elif scalar == True:
-        Gij = (zhat.T @ Gij @ zhat ).item() 
+         
         if Gij == 0:
             Deltaij = 0
         else:

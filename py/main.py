@@ -20,8 +20,8 @@ import sys
 
 taulist = np.linspace(0,1, 100) 
 Gamma = 1
-Omega = 2
-Delta = 20*Gamma
+Omega = float(sys.argv[8])*Gamma
+Delta = float(sys.argv[9])*Gamma
 
 
 
@@ -36,13 +36,16 @@ R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
 scalar = True
 useb0 = bool(int(sys.argv[4]))
 print(useb0)
+interaction = bool(int(sys.argv[7]))
+
 if useb0 == True:
     b0 = float(sys.argv[5])
     kd = None
     exc_radius = None
     description = str(sys.argv[6])
     print("b0 main", b0)
-    # ang1 ang2 N useb0 b0 descriptioion
+    # ang1 ang2 N useb0 b0 description interaction Omega Delta
+
 else:
     b0 = None
     kd = float(sys.argv[5])
@@ -66,11 +69,13 @@ end = timer()
 
 #Saving files!
 
-path_to_save_file = get_path_to_save_files(N, description)
-filename ="{4}/angulo{0}e{1}_N{3}run".format(ang1,ang2,0,N,path_to_save_file) 
+        
+path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
+filename ="{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 run_number = get_new_run_number_txt(filename)
-name_of_file =  "{4}/angulo{0}e{1}_N{3}run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file)
+name_of_file =  "{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 save_params_to_file(variables_string, filename)
+
 
 np.savetxt(name_of_file, [taulist, np.real(g2_lig)])
 

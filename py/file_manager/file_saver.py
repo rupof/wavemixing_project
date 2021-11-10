@@ -4,13 +4,13 @@ import os
 from qutip import file_data_store
 import numpy as np
 
-def get_path_to_save_files(N,description):
+def get_path_to_save_files(N,Omega,Delta, description):
     """creates a folder, if it does not exit,  in  "../results/{0}/"..
-        with name format as N#_description
+        with name format as N#_Omega#_Delta#_description
      returns path to folder
 
     """
-    folder_name = "N{0}_{1}".format(str(N), description)
+    folder_name = "N{0}_Omega{2}_Delta{3}_{1}".format(str(N), description, Omega, Delta)
     path_to_folder = "../results/{0}/".format(folder_name)
     pathlib.Path(path_to_folder).mkdir(parents=True, exist_ok=True) 
     return path_to_folder

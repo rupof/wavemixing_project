@@ -43,7 +43,7 @@ def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
-def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False ):
+def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True ):
     k = 1
     kvec = k*yhat # incident laser propagating direction
     
@@ -90,10 +90,17 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
                 Deltaij = DeltaMatrix[i][j]
                 Gammaij = GammaMatrix[i][j]
 
+                if interaction == False: #Sem interação        
+                    if i != j:
+                        Lij  = 0
+                        Hint = 0
+                else:
 
-                Hint +=  Deltaij * sigmap_i(N,i) * sigmam_i(N,j)
-                Lij = 0.5*Gammaij*( (2*spre(sigmam_i(N,i))*spost(sigmap_i(N,j))) -1.0*spre(sigmap_i(N,j)*sigmam_i(N,i)) - 1.0*spost(sigmap_i(N,j)*sigmam_i(N,i)))
-
+                    Hint +=  Deltaij * sigmap_i(N,i) * sigmam_i(N,j)
+                    Lij = 0.5*Gammaij*( (2*spre(sigmam_i(N,i))*spost(sigmap_i(N,j))) -1.0*spre(sigmap_i(N,j)*sigmam_i(N,i)) - 1.0*spost(sigmap_i(N,j)*sigmam_i(N,i)))
+ 
+                   
+                            
                 c_ops.append(Lij)
     else:    
         for i, r_i in enumerate(r):

@@ -1,16 +1,16 @@
 #!/bin/bash
 
 
-angle1=$1
-N=$3
-useb0=$4
-b0=$5
-Description=$6
+N=$1
+useb0=$2
+b0=$3
+Description=$4
 DefaultAngle=25
-num_runs=$7
-interaction=$8
-Omega=$9
-Delta=$10
+angle1=$DefaultAngle
+num_runs=$5
+interaction=$6
+Omega=$7
+Delta=$8
 
 ## declare an array of angles
 declare -a arr=("25" "90" "155" "-25" "-90" "205")
@@ -18,8 +18,8 @@ declare -a arr=("25" "90" "155" "-25" "-90" "205")
 ## now loop through the above array
 for i in "${arr[@]}"
 do
-   echo "$i"
-   angle2=${arr[i]}
+   echo "Angulo2: $i"
+   angle2=$i
    # or do whatever with individual element of the array
 	for (( set_number=1; set_number<=$num_runs; set_number++ ))
 		 do

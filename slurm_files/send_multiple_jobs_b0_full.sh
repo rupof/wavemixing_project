@@ -23,7 +23,7 @@ do
    # or do whatever with individual element of the array
 	for (( set_number=1; set_number<=$num_runs; set_number++ ))
 		 do
-			$Descriptionwithangles="${Description}${DefaulAngle}_${angle} " 
+			Descriptionwithangles="${Description}${DefaulAngle}_${angle2} " 
 			echo "Sending job angle1=$angle1 angle2=$angle2 N=$N  Description=$Description num_runs=$num_runs "  
 			sbatch job_wave_b0.sh $angle1 $angle2 $N $useb0 $b0 $Descriptionwithangles $num_runs $interaction $Omega $Delta     
  done

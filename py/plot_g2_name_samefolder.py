@@ -9,10 +9,8 @@ fig, axs = plt.subplots(2, 3, figsize = (10,6) ,sharex = True, sharey = True)
 angles = [str(25), str(90), str(155), "-"+str(25), "-"+str(90), str(205)]
 
 N = str(sys.argv[1])
-Omega = str(float(sys.argv[2]))
-Delta = str(float(sys.argv[3]))
-DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-description = str(sys.argv[4])
+Nstring = f"N{N}"
+description = str(sys.argv[2])
 results_path = "../results/"
 defaultangle = "25_"
 
@@ -22,7 +20,7 @@ averages = []
 for i, angle in enumerate(angles):
   #  try:
 
-        label = results_path+DefaultInfo+description+defaultangle +angle+"/"
+        label = results_path+Nstring+description+defaultangle +angle+"/"
         labels.append(label)
         averages.append(average_of_runs_files(label))   
    # except:
@@ -66,7 +64,7 @@ for i in range(len(axs)):
         axs[i,j].legend()
 
 
-general_name = results_path+DefaultInfo+description
+general_name = results_path+Nstring+description
     
 plt.savefig(general_name + "avg.png")
     

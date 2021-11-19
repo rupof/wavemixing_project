@@ -23,7 +23,8 @@ Gamma = 1
 Omega = float(sys.argv[8])*Gamma
 Delta = float(sys.argv[9])*Gamma
 
-
+print("!!!!!!!!!!11  Delta:", Delta)
+print("!!!!!!!!!!!!! Omega:", Omega)
 
 N = int(sys.argv[3]) 
 psi0 = tensor([ket("1") for i in range(N) ])
@@ -33,7 +34,7 @@ ang1 = float(sys.argv[1])
 ang2 = float(sys.argv[2])
 R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
 R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
-scalar = True
+scalar = False
 useb0 = bool(int(sys.argv[4]))
 print(useb0)
 interaction = bool(int(sys.argv[7]))

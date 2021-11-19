@@ -31,7 +31,8 @@ Description=$6
 num_runs=$7
 interaction=$8
 Omega=$9
-Delta=$10
+Delta=${10}
+
 
 
 echo "Running script in /bin ..."

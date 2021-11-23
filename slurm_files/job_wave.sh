@@ -3,6 +3,8 @@
 #SBATCH -o %j.out                 # Nome do arquivo de saída padrão (%j = ID do JOB)
 #SBATCH -n 1
 #SBATCH -t 4-00:00:00                # Tempo de execução (hh:mm:ss) - 1h30
+#SBATCH --mail-user=robertoflorezablan@estudante.ufscar.br
+#SBATCH --mail-type=ALL
 
 
 
@@ -21,20 +23,12 @@ local_out="${local_job}/output/"            # Pasta local para arquivos de saíd
 PYTHON_EXEC=/home/user/miniconda/bin/python
 
 angle1=$1
-angle2=$2
+angle2=$2 
 N=$3
-useb0=$4
-b0=$5
-Description=$6
-num_runs=$7
-interaction=$8
-Omega=$9
-Delta=${10}
-
-
+Description=$4
 
 echo "Running script in /bin ..."
 echo " N=$N angle1=$angle1 angle2=$angle2 "
 echo "Running simulations..."
 
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/main.py $angle1 $angle2 $N $useb0 $b0 $Description $interaction $Omega $Delta
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/testesyste.py $angle1 $angle2 $N $Description

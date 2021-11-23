@@ -18,14 +18,26 @@ defaultangle = "25_"
 
 labels = []
 averages = []
+array_of_many_runs = []
+
+
 
 for i, angle in enumerate(angles):
   #  try:
-
+        
         label = results_path+DefaultInfo+description+defaultangle +angle+"/"
         labels.append(label)
-        averages.append(average_of_runs_files(label))   
-   # except:
+        paths_array = get_array_of_runs_files(label)
+
+        averages.append(average_of_runs_files(label))
+        
+        array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
+
+        
+
+
+
+# except:
    #     print(f"{angle} is missing")
  
 #N7far25_25_avg =  average_of_runs_files("../results/N7_far/")

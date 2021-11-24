@@ -13,6 +13,11 @@ def get_path_to_save_files(N,Omega,Delta, description):
     folder_name = "N{0}_Omega{2}_Delta{3}_{1}".format(str(N), description, Omega, Delta)
     path_to_folder = "../results/{0}/".format(folder_name)
     pathlib.Path(path_to_folder).mkdir(parents=True, exist_ok=True) 
+    
+    path_to_time_folder = "../results/{0}/time/".format(folder_name)
+    pathlib.Path(path_to_time_folder).mkdir(parents=True, exist_ok=True) 
+    
+
     return path_to_folder
 
 

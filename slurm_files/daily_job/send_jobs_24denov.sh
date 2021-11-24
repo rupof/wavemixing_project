@@ -23,7 +23,10 @@ declare -a Interaction_list=("Off" "On")
 
 
 
-declare -a N_list=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12")
+#declare -a N_list=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12")
+
+
+declare -a N_list=("1" "2" )
 
 use_b0=1
 num_runs=10
@@ -47,9 +50,9 @@ do
 						Delta=${Delta_list[1]}
 										
 						echo "Sending configuration 1, b0 = $b0_i, Int = $Interaction"
-						echo "$N $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta "  
+						echo "N $N_i use_b0 $use_b0 b0 $b0_i Description $Description runs $num_runs int $Interaction_value omega $Omega delta $Delta "  
 
-						sbatch send_multiple_jobs_b0_full1.sh $N $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
+						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
 					
 						#configuration 2
 						Omega=${Omega_list[1]}
@@ -58,20 +61,20 @@ do
 						echo "Sending configuration 2, b0 = $b0_i, Int = $Interaction"
 				
 				
-						sbatch send_multiple_jobs_b0_full1.sh $N $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
+						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
 
 
 						#configuration 3
 						Omega=${Omega_list[0]}
-						Delta=${Delta_list[0]}
+					Delta=${Delta_list[0]}
 			
 						
 						
 						echo "Sending configuration 3, b0 = $b0_i, Int = $Interaction"
-						sbatch send_multiple_jobs_b0_full1.sh $N $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
+						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
 				done
 		done
-
+done 
 
 
 echo "Terminei!"

@@ -4,7 +4,7 @@
 
 from qutip import *
 from helper_functions.operators import *
-
+from timeit import default_timer as timer
 
 def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None):
     k = 1

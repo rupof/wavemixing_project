@@ -1,0 +1,6 @@
+Running script in /bin ...
+ N=8 angle1=25 angle2=25 
+Running simulations...
+slurmstepd: error: Job 70108 exceeded memory limit (16887975936 > 16777216000), being killed
+slurmstepd: error: Exceeded job memory limit
+slurmstepd: error: *** JOB 70108 ON c14 CANCELLED AT 2021-11-26T09:19:42 ***

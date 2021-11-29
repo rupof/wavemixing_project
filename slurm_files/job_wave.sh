@@ -26,9 +26,11 @@ angle1=$1
 angle2=$2 
 N=$3
 Description=$4
+useb0=$5
+exc
 
 echo "Running script in /bin ..."
 echo " N=$N angle1=$angle1 angle2=$angle2 "
 echo "Running simulations..."
 
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/testesyste.py $angle1 $angle2 $N $Description
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/main.py $angle1 $angle2 $N $Description

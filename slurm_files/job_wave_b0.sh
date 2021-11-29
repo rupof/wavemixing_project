@@ -1,10 +1,7 @@
 #!/bin/bash
 #SBATCH -J wavemixing            # Identificação do job
 #SBATCH -o %j.out                 # Nome do arquivo de saída padrão (%j = ID do JOB)
-#SBATCH -n 1
-#SBATCH -t 4-00:00:00                # Tempo de execução (hh:mm:ss) - 1h30
-
-
+#SBATCH --mem-per-cpu=100G
 
 
 service=cloud                               # Nome do perfil remoto no rclone
@@ -38,3 +35,7 @@ echo " N=$N angle1=$angle1 angle2=$angle2 "
 echo "Running simulations..."
 
 singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/main.py $angle1 $angle2 $N $useb0 $b0 $Description $interaction $Omega $Delta
+
+
+
+echo "Simulation complete!!"

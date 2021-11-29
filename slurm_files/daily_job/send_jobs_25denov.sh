@@ -4,7 +4,7 @@
 
 #SBATCH --mail-user=robertoflorezablan@estudante.ufscar.br
 #SBATCH --mail-type=ALL
-
+#SBATCH --mem-per-cpu=256G
 
 
 #N=$1 useb0=$2 b0=$3 Description=$4 num_runs=$5 interaction=$6 Omega=$7 Delta=$8
@@ -23,13 +23,13 @@ declare -a Interaction_list=("Off" "On")
 
 
 
-declare -a N_list=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12")
+declare -a N_list=("8" "9" "10" )
 
 
 #declare -a N_list=("1" "2" )
 
 use_b0=1
-num_runs=10
+num_runs=5
 
 
 echo " $useb0 $num_runs"
@@ -54,7 +54,7 @@ do
 
 						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
 						
-						sleep 500s
+						sleep 100s
 
 						#configuration 2
 						Omega=${Omega_list[1]}
@@ -65,7 +65,7 @@ do
 				
 						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
 
-						sleep 500s
+						sleep 100s
 						#configuration 3
 						Omega=${Omega_list[0]}
 					Delta=${Delta_list[0]}
@@ -74,7 +74,7 @@ do
 						
 						echo "Sending configuration 3, b0 = $b0_i, Int = $Interaction"
 						sbatch send_multiple_jobs_b0_full1.sh $N_i $use_b0 $b0_i $Description $num_runs $Interaction_value $Omega $Delta
-						sleep 500s
+						sleep 100s
 				done
 		done
 done 

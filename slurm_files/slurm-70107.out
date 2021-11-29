@@ -1,0 +1,104 @@
+N= 8 use_b0=  b0= 0.1 Description= b0_0.1_V_Int_Off num_runs= 5 int= 0 Omega= 2 Delta= 20
+Angulo 1: 25
+Angulo 2 25
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_25
+Sending job angle1=25 angle2=25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70108
+Descrição: b0_0.1_V_Int_Off_25_25
+Sending job angle1=25 angle2=25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70109
+Descrição: b0_0.1_V_Int_Off_25_25
+Sending job angle1=25 angle2=25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70110
+Descrição: b0_0.1_V_Int_Off_25_25
+Sending job angle1=25 angle2=25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70111
+Descrição: b0_0.1_V_Int_Off_25_25
+Sending job angle1=25 angle2=25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70112
+Angulo 2 90
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_90
+Sending job angle1=25 angle2=90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70113
+Descrição: b0_0.1_V_Int_Off_25_90
+Sending job angle1=25 angle2=90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70114
+Descrição: b0_0.1_V_Int_Off_25_90
+Sending job angle1=25 angle2=90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70115
+Descrição: b0_0.1_V_Int_Off_25_90
+Sending job angle1=25 angle2=90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70116
+Descrição: b0_0.1_V_Int_Off_25_90
+Sending job angle1=25 angle2=90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70117
+Angulo 2 155
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_155
+Sending job angle1=25 angle2=155 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70118
+Descrição: b0_0.1_V_Int_Off_25_155
+Sending job angle1=25 angle2=155 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70119
+Descrição: b0_0.1_V_Int_Off_25_155
+Sending job angle1=25 angle2=155 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70120
+Descrição: b0_0.1_V_Int_Off_25_155
+Sending job angle1=25 angle2=155 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70121
+Descrição: b0_0.1_V_Int_Off_25_155
+Sending job angle1=25 angle2=155 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70122
+Angulo 2 -25
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_-25
+Sending job angle1=25 angle2=-25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70123
+Descrição: b0_0.1_V_Int_Off_25_-25
+Sending job angle1=25 angle2=-25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70124
+Descrição: b0_0.1_V_Int_Off_25_-25
+Sending job angle1=25 angle2=-25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70125
+Descrição: b0_0.1_V_Int_Off_25_-25
+Sending job angle1=25 angle2=-25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70126
+Descrição: b0_0.1_V_Int_Off_25_-25
+Sending job angle1=25 angle2=-25 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70127
+Angulo 2 -90
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_-90
+Sending job angle1=25 angle2=-90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70128
+Descrição: b0_0.1_V_Int_Off_25_-90
+Sending job angle1=25 angle2=-90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70129
+Descrição: b0_0.1_V_Int_Off_25_-90
+Sending job angle1=25 angle2=-90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70130
+Descrição: b0_0.1_V_Int_Off_25_-90
+Sending job angle1=25 angle2=-90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70131
+Descrição: b0_0.1_V_Int_Off_25_-90
+Sending job angle1=25 angle2=-90 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70132
+Angulo 2 205
+runs 5
+Descrição: b0_0.1_V_Int_Off_25_205
+Sending job angle1=25 angle2=205 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70133
+Descrição: b0_0.1_V_Int_Off_25_205
+Sending job angle1=25 angle2=205 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70134
+Descrição: b0_0.1_V_Int_Off_25_205
+Sending job angle1=25 angle2=205 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70135
+Descrição: b0_0.1_V_Int_Off_25_205
+Sending job angle1=25 angle2=205 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70136
+Descrição: b0_0.1_V_Int_Off_25_205
+Sending job angle1=25 angle2=205 N=8  Description=b0_0.1_V_Int_Off num_runs=5 
+Submitted batch job 70137

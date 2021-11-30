@@ -38,6 +38,9 @@ scalar = False
 useb0 = bool(int(sys.argv[4]))
 print(useb0)
 interaction = bool(int(sys.argv[7]))
+rho_ss_parameter = str(sys.argv[10]) 
+
+
 
 if useb0 == True:
     b0 = float(sys.argv[5])
@@ -55,10 +58,9 @@ else:
     # ang1 ang2 N useb0 kd exc_radius description    
     print("kd main", kd) 
 
-rho_ss_parameter = [ "manual"]
 
 
-
+description += f'_{rho_ss_parameter}'
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
 

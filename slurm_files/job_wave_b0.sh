@@ -27,14 +27,14 @@ num_runs=$7
 interaction=$8
 Omega=$9
 Delta=${10}
-
+rho_ss_parameter=${11}
 
 
 echo "Running script in /bin ..."
 echo " N=$N angle1=$angle1 angle2=$angle2 "
 echo "Running simulations..."
 
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/main.py $angle1 $angle2 $N $useb0 $b0 $Description $interaction $Omega $Delta
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC ../py/main.py $angle1 $angle2 $N $useb0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter
 
 
 

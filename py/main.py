@@ -55,10 +55,14 @@ else:
     # ang1 ang2 N useb0 kd exc_radius description    
     print("kd main", kd) 
 
+rho_ss_parameter = [ "manual"]
+
+
+
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
 
-g2_lig, rho_ss, total_time_ss, total_time_correlation  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False);
+g2_lig, rho_ss, total_time_ss, total_time_correlation  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False, rho_ss=None, rho_ss_parameter=rho_ss_parameter );
 
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
 

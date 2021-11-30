@@ -6,12 +6,27 @@ from qutip import *
 from helper_functions.operators import *
 from timeit import default_timer as timer
 
-def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None):
+
+def manual_steadystate(H, c_ops, N):
+    times = np.arange(0,100,0.1)
+    psi0 = tensor([ket("1") for i in range(N) ])
+    result = mesolve(H, psi0, times, c_ops) 
+    return result.states[-1]
+
+def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct"):
     k = 1
     
     if rho_ss == None:
-        start_time_ss = timer() 
-        rho_ss = steadystate(H, c_ops)
+        start_time_ss = timer()
+
+        if rho_ss_parameter == "manual":
+             rho_ss = manual_steadystate(H, c_ops, N)
+        elif rho_ss_parameter[0:9] ==  "iterative": 
+             rho_ss = steadystate(H, c_ops, method = rho_ss_parameter, use_precond=True  )
+        else:
+             rho_ss = steadystate(H, c_ops, method = rho_ss_parameter )
+
+        
         end_time_ss = timer()
         total_time_ss = end_time_ss - start_time_ss
 

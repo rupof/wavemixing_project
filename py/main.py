@@ -23,7 +23,7 @@ Gamma = 1
 Omega = float(sys.argv[8])*Gamma
 Delta = float(sys.argv[9])*Gamma
 
-print("!!!!!!!!!!11  Delta:", Delta)
+print("!!!!!!!!!!!!!  Delta:", Delta)
 print("!!!!!!!!!!!!! Omega:", Omega)
 
 N = int(sys.argv[3]) 
@@ -32,14 +32,14 @@ wave_mixing = True
 nhat = 0
 ang1 = float(sys.argv[1]) 
 ang2 = float(sys.argv[2])
-R1 = get_nhat_from_angle(ang1)#1*xhat+ 10*yhat
-R2 = get_nhat_from_angle(ang2)#1*xhat + 7*yhat #0.2*xhat+ 0.8*yhat
+R1 = get_nhat_from_angle(ang1)
+R2 = get_nhat_from_angle(ang2)
 scalar = False
 useb0 = bool(int(sys.argv[4]))
-print(useb0)
+print("using b0: ", useb0)
 interaction = bool(int(sys.argv[7]))
 rho_ss_parameter = str(sys.argv[10]) 
-
+tmax = float(sys.argv[11])
 
 
 if useb0 == True:
@@ -62,9 +62,13 @@ else:
 
 description += f'_{rho_ss_parameter}'
 
+if tmax != 0:
+    description += f'_{tmax}'
+
+
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
 
-g2_lig, rho_ss, total_time_ss, total_time_correlation  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False, rho_ss=None, rho_ss_parameter=rho_ss_parameter );
+g2_lig, rho_ss, total_time_ss, total_time_correlation  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False, rho_ss=None, rho_ss_parameter=rho_ss_parameter , tmax = tmax);
 
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
 

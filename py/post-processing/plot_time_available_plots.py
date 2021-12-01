@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from plots.multi_plots import *
 import sys
 import traceback
-
+import itertools
 
 
 
@@ -24,7 +24,8 @@ get_time = True
 #############################
 
 
-N_list = [1,2,3,4,5,6,7,8]
+#N_list = [1,2,3,4,5,6,7,8]
+N_list = [1,2,3,4,5,6]
 
 C1 = [Omega1, Delta1]
 C2 = [Omega2, Delta2]
@@ -89,11 +90,14 @@ each array has 2 times
 
 
 
-def plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i ):
+def plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i, rho_ss_parameter = None ):
     time_for_angle_and_N  = get_Nxtime_for_a_configuration(*C,description )
     i = angle
-    try:     
-        
+    marker = itertools.cycle(('o', 'v', '^', '<', '>', 's', '8', 'p')) 
+    try:    
+
+       # color = next(ax_i._get_lines.prop_cycler)['color']
+
         total_time_ss = (np.array(time_for_angle_and_N[i]).T)[0]
         total_time_correlation =  (np.array(time_for_angle_and_N[i]).T)[1]
 
@@ -103,9 +107,9 @@ def plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i ):
         ax_i.set_title(f"Omega, Delta = {C}")
         ax_i.set_ylabel( "t [minutes]")
         
-        ax_i.scatter(N_list, total_time_ss/60, label = r"$\rho_ss $")
-        ax_i.scatter(N_list, total_time_correlation/60, label = r"$g^{(2)}(\tau)$")
-        ax_i.scatter(N_list, (total_time_correlation+total_time_ss)/60, label = "total")
+        ax_i.scatter(N_list, total_time_ss/60,marker= next(marker), label = r"$\rho_{ss} $"+ f"{rho_ss_parameter}")
+        ax_i.scatter(N_list, total_time_correlation/60,marker= next(marker), label = r"$g^{(2)}(\tau)$" + f"{rho_ss_parameter}")
+        ax_i.scatter(N_list, (total_time_correlation+total_time_ss)/60, marker=next(marker),  label = "total" + f"{rho_ss_parameter}")
 
         
         
@@ -142,7 +146,50 @@ axs.set_ylabel("t [minutos]")
 plt.suptitle(description + "25:" + angles[th])
 plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i )
 
+
+
+rho_ss_parameter_list = ["iterative-gmres", "manual", "svd", "eigen", "power" ]
+for rho_ss_parameter in rho_ss_parameter_list:
+    description = "b0_0.1_V_Int_On_"
+    description += f"{rho_ss_parameter}"
+    plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i, rho_ss_parameter )
+
+
+
+
+
+
+###############################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 plt.savefig(f"../results/g2_time_theta_{th}_{description}.png" ,dpi = 300)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

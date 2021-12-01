@@ -57,9 +57,9 @@ def get_array_of_many_runs_usual_conditions(N, Omega, Delta, DefaultInfo, descri
     
 
 
-
+    
     for i, angle in enumerate(angles):
-  #  try:
+    #  try:
         try:        
             label = results_path+DefaultInfo+description+defaultangle +angle+"/"
             labels.append(label)
@@ -77,6 +77,23 @@ def get_array_of_many_runs_usual_conditions(N, Omega, Delta, DefaultInfo, descri
             print (label, "does not exist")
 
             
+    try:        
+        label = results_path+DefaultInfo+description+"/"
+        labels.append(label)
+        paths_array = get_array_of_runs_files(label)
+                
+        array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
+        
+
+        time_label = results_path+DefaultInfo+description+ "/time/"
+        time_labels.append(time_label)
+            
+        paths_array_time = get_array_of_runs_files(time_label)
+        array_of_many_runs_time.append(get_array_of_numpy_runs(paths_array_time))
+    except:
+        print (label, "does not exist")
+
+        
 
     if get_time == True:
         return array_of_many_runs, array_of_many_runs_time

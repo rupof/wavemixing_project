@@ -2,6 +2,8 @@ import numpy  as np
 import matplotlib.pyplot as plt
 from plots.multi_plots import *
 import sys
+from correlation import *
+
 
 fig, axs = plt.subplots(2, 3, figsize = (10,6) ,sharex = True, sharey = True)
 
@@ -15,6 +17,9 @@ DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
 description = str(sys.argv[4])
 results_path = "../results/"
 defaultangle = "25_"
+
+taulist = np.arange(-1,1,0.1)
+
 
 labels = []
 averages = []
@@ -72,10 +77,14 @@ axs[0, 2].plot(at25_155[0], at25_155[1], label = r"$ \theta_1 = {0}  $ $ \theta_
 
 
 
+g12 = second_order_correlation_opposite_directions_interaction_off_araujo(taulist, float(Delta))
+
+axs[1,2].plot(taulist, g12, label = "Theory")
+
 
 for i in range(len(axs)):
     for j in range(len(axs[i])):
-        axs[i,j].legend()
+        axs[i,j].legend(loc = "upper left")
 
 
 general_name = results_path+DefaultInfo+description

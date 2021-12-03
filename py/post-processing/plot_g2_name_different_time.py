@@ -4,7 +4,14 @@ from plots.multi_plots import *
 import sys
 import traceback
 
+import matplotlib as mpl
+mpl.rcParams['lines.markersize']= 5
+#mpl.rcParams["lines.markevery"]=5
+
 fig, axs = plt.subplots(2, 3, figsize = (10,6) ,sharex = True, sharey = True)
+
+
+markers=[".",",","o","v","^","<",">","1","2","3","4","8","s","p","P","*","h","H","+","x","X","D","d","|","_",0,1,2,3,4,5,6,7,8,9,10,11]
 
 
 angles = [str(25), str(90), str(155), "-"+str(25), "-"+str(90), str(205)]
@@ -13,7 +20,7 @@ N = 7
 Omega = 1.0
 Delta = 0.0 
 DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-description = "b0_0.1_V_Int_On_"
+description = "b0_5_V_Int_On_"
 results_path = "../results/"
 defaultangle = "25_"
 rho_ss_parameter = "_manual_"
@@ -71,10 +78,10 @@ for t_i, t in enumerate(t_list_T[:]):
 
     axs[0, 0].plot(at25_25[0], at25_25[1], label = f"t = {t}")
     axs[1, 0].plot(at25_m25[0], at25_m25[1], label = f"t = {t}" )
-    axs[0, 1].plot(at25_90[0], at25_90[1], label = f"t = {t}" )
+    axs[0, 1].plot(at25_90[0], at25_90[1],  label = f"t = {t}" )
     axs[1, 1].plot(at25_m90[0], at25_m90[1], label = f"t = {t}" )
 
-    axs[1, 2].plot(at25_205[0], at25_205[1], label = f"t = {t}" )
+    axs[1, 2].plot(at25_205[0], at25_205[1],  label = f"t = {t}" )
     axs[0, 2].plot(at25_155[0], at25_155[1], label = f"t = {t}")
 
 

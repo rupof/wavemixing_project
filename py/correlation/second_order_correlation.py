@@ -157,6 +157,22 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
     return g2_light, rho_ss, total_time_ss, total_time_correlation
 
 
-# In[87]:
+def second_order_correlation_opposite_directions_interaction_off_araujo(taulist, Delta):
+    Gamma = 1
+
+    g12 = 1+(4/np.pi**2)*(1+np.exp(-Gamma*np.abs(taulist))-2*np.cos(Delta*np.abs(taulist))*np.exp(-Gamma*np.abs(taulist)/2))
+
+    return g12
+
+def second_order_correlation_opposite_directions_interaction_on_empirical_araujo(taulist, DeltaExp, f, chi):
+    Gamma = 1
+
+    g12 = 1+(f*4/np.pi**2)*(1+np.exp(-chi*Gamma*np.abs(taulist))-2*np.cos(DeltaExp*np.abs(taulist))*np.exp(-chi*Gamma*np.abs(taulist)/2))
+
+    return g12
+
+
+
+
 
 

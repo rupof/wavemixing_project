@@ -1,9 +1,18 @@
 import numpy  as np
 import matplotlib.pyplot as plt
 from plots.multi_plots import *
+from correlation.second_order_correlation import *
 import sys
 
 fig, axs = plt.subplots(2, 3, figsize = (10,6) ,sharex = True, sharey = True)
+
+axs[0, 0].set_title( r"$ \theta_1 = {0} $ $  \theta_2 = {1} $".format(25,25))
+axs[1, 0].set_title( r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $".format(25,-25))
+axs[0, 1].set_title( r"$ \theta_1 = {0} $ $ \theta_2 = {1} $".format(25,90))
+axs[1, 1].set_title( r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,-90))
+axs[1, 2].set_title( r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,205))
+axs[0, 2].set_title( r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,155))
+
 
 
 angles = [str(25), str(90), str(155), "-"+str(25), "-"+str(90), str(205)]
@@ -15,6 +24,9 @@ DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
 description = str(sys.argv[4])
 results_path = "../results/"
 defaultangle = "25_"
+taulist = np.arange(-1,1,0.01)
+
+
 
 labels = []
 array_of_many_runs = []
@@ -59,14 +71,17 @@ at25_205 = get_list_organized_by_pairs(array_of_many_runs[5])
 
 
 
-axs[0, 0].plot(*at25_25, label = r"$ \theta_1 = {0} $ $  \theta_2 = {1} $".format(25,25))
-axs[1, 0].plot(*at25_m25, label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $".format(25,-25))
-axs[0, 1].plot(*at25_90, label = r"$ \theta_1 = {0} $ $ \theta_2 = {1} $".format(25,90))
-axs[1, 1].plot(*at25_m90, label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,-90))
-axs[1, 2].plot(*at25_205, label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,205))
-axs[0, 2].plot(*at25_155, label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,155))
+axs[0, 0].plot(*at25_25 )
+axs[1, 0].plot(*at25_m25)
+axs[0, 1].plot(*at25_90)
+axs[1, 1].plot(*at25_m90)
+axs[1, 2].plot(*at25_205)
+axs[0, 2].plot(*at25_155)
 
 
+g12 = second_order_correlation_opposite_directions_interaction_off_araujo(taulist, float(Delta))
+
+axs[1,2].plot(taulist, g12, label = "Theory")
 
 
 #axs[0, 3].plot(at25_m90[0], at25_m90[1], label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".format(25,-90))
@@ -74,16 +89,16 @@ axs[0, 2].plot(*at25_155, label = r"$ \theta_1 = {0}  $ $ \theta_2 = {1} $ ".for
 
 
 
-#for i in range(len(axs)):
-#    for j in range(len(axs[i])):
-#        axs[i,j].legend()
+for i in range(len(axs)):
+    for j in range(len(axs[i])):
+        axs[i,j].legend()
     
 
 general_name = results_path+DefaultInfo+description
     
 plt.savefig(general_name + "all.png")
     
-plt.ylim(0,20)
+plt.ylim(0,10)
 plt.savefig(general_name + "all_lim.png")
 
 

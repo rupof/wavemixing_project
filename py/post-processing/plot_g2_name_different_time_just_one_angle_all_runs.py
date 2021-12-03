@@ -19,6 +19,9 @@ rho_ss_parameter = "_manual_"
 #t_list = [0.1, 0.5, 1, 3, 10]
 t_list_T = [50]
 
+n = 30
+markers=[".",",","o","v","^","<",">","1","2","3","4","8","s","p","P","*","h","H","+","x","X","D","d","|","_",0,1,2,3,4,5,6,7,8,9,10,11
+]
 
 
 labels = []
@@ -26,12 +29,29 @@ averages = []
 array_of_many_runs = []
 
 
-angle_input =str(-90)
+angle_input =str(-25)
 angle = angle_input 
- 
+
+
+def get_list_organized_by_pairs(array_of_many_runs):
+    pairs = []
+    for i in range(len(array_of_many_runs)):
+        #print(i,i+1)
+        try:
+            x0 = array_of_many_runs[i][0]
+            y0 = array_of_many_runs[i][1]
+            pairs.append(x0)
+            pairs.append(y0)
+        except:
+            print(f"element {i}+1 does not exit")
+    return pairs
+
 
 for  i, t in enumerate(t_list_T[:]):
       #  try:
+    #labels = []
+   # averages = []
+
     try: 
         label_folder = results_path+DefaultInfo+description+defaultangle +angle+ rho_ss_parameter+str(float(t)) + "/"
         #label = results_path+DefaultInfo+description+defaultangle +angle 
@@ -40,6 +60,7 @@ for  i, t in enumerate(t_list_T[:]):
         paths_array = get_array_of_runs_files(label_folder)
 
         averages.append(average_of_runs_files(label_folder))
+        array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
         
     except Exception as e:
         print(t, angle)
@@ -47,10 +68,16 @@ for  i, t in enumerate(t_list_T[:]):
         print(traceback.format_exc())
         continue
        # print(sys.exc_info()[2])
-    print(averages)
     at25_25 = averages[i]
     axs.set_title(DefaultInfo+description+defaultangle +angle)
-    axs.plot(at25_25[0], at25_25[1], label = f"avg: t = {t}")   
+    axs.plot(at25_25[0], at25_25[1], label = f"avg: t = {t}")  
+
+    at25 = get_list_organized_by_pairs(array_of_many_runs[0])
+    print(len(at25))
+    for i in range(0,int(len(at25)), 2):
+        axs.plot(at25[i], at25[i+1], marker = markers[i], label = f"run {i/2}")
+    
+
     axs.legend()
 
 

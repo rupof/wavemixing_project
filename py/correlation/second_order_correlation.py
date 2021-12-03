@@ -8,12 +8,109 @@ from timeit import default_timer as timer
 
 
 def manual_steadystate(H, c_ops, N, tmax):
+    """Evolution until tmax of a density matrix for a given Hamiltonian with N atoms and
+    set of collapse operators.
+    
+    This function was thought-out for induced dipole-dipole interactions.
+
+
+    Parameters
+    ----------
+
+
+    H : class:`qutip.Qobj`
+        System Hamiltonian,
+    c_ops : list of :class:`qutip.Qobj`
+        list of collapse operators
+    N: int
+        number of atomsy
+    tmax: float
+        time to evolve system
+    
+    Returns
+    -------
+
+    result.states[-1]: rho0 at tmax 
+    
+
+    """
+
     times = np.arange(0,tmax,0.1)
     psi0 = tensor([ket("1") for i in range(N) ])
     result = mesolve(H, psi0, times, c_ops) 
     return result.states[-1]
 
 def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
+    """ 
+    Second order correlation function as defined in R. Loudon P112 Eq (3.7.22): 
+    g^{(2)} =  <E*(R1,t1)E*(R2, t2)E(R2, t2)E(R1, t1))>/  (<|E(R1, t1)|^2>><|E(R2, t2)|^2>)  
+    => 
+    g^{(2)} =  <E^-(R1, t)E^-(R2, t + tau)E^+(R2, t+tau)E^+(R1, t))>/
+    (<E^-(R1, t)E^+(R1, t)>)(<E^-(R2, t))E^+(R2, t)>)
+
+    For a given Hamiltonean using far field approximation.
+
+    This function was thought-out for induced dipole-dipole interactions.
+
+    Algorithm:
+
+    1-Calculate steady-state (if not given ) and time it
+    2-Create (far-field, pointing at R1 and R2) positive and negative electric fields operators
+    using helper.functions.
+    3-Calculate G2, using QuTip's correlation_3op_1t, 
+    4-Calculate normalization, expecting out of steady state
+    5-Get running time and return values
+
+
+    Parameters
+    ----------
+
+
+    H : class:`qutip.Qobj`
+        System Hamiltonian,
+    n_hat : useless (REMOVE)
+    r: useless (REMOVE)
+    R1: class: np.array 
+        1x3 array pointing to desired location (no need to be normalized)
+    R2: class: np.array 
+        1x3 array pointing to desired location (no need to be normalized)
+    taulist: class: np.array
+        list of times to run g2
+    c_ops: list of :class:`qutip.Qobj`
+        list of collapse operators
+    N: int
+        number of atoms
+    faseglobal:  float
+        simulation check to see if results are phase independent
+    rho_ss: class:`qutip.Qobj`
+        steady-state matrix. Normally it is not given and it is calculated
+    rho_ss_parameter: string
+        method to calculate ss: 
+        - "direct" default method
+        - "manual" evolving rho_ss 
+        - other methos available at QuTip
+    tmax: float
+        time to evolve system in case "manual" is used
+
+    Returns
+    -------
+    g2_light: second correlation function for given taulist, H and R1, R2
+    
+    rho_ss: used steady-state
+    
+    total_time_ss: time it took to calculate steady-state
+
+    total_time_correlation: time it took to calculate expectation values of g2
+    
+
+
+
+    """
+
+
+
+
+
     k = 1
     
     if rho_ss == None:

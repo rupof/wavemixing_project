@@ -154,6 +154,10 @@ for rho_ss_parameter in rho_ss_parameter_list:
     description += f"{rho_ss_parameter}"
     plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i, rho_ss_parameter )
 
+description = "b0_0.1_V_Int_On_25_25_manual_10.0"
+plot_time_in_axis_for_givenCandDescription(angle, C, description,ax_i, rho_ss_parameter )
+
+
 
 
 

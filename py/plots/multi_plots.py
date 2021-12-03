@@ -13,9 +13,12 @@ def get_array_of_runs_files(datafolder_path):
 def get_array_of_numpy_runs(paths_array):
     runs_txt = []
     for i, run in enumerate(paths_array):
-        numpy_run = np.loadtxt(run)
-        runs_txt.append(numpy_run)
-
+        try:
+            numpy_run = np.loadtxt(run)
+            runs_txt.append(numpy_run)
+        except Exception as e:
+            print(run)
+            print(e)
     return runs_txt
 
 

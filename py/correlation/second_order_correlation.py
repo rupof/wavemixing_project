@@ -5,7 +5,7 @@
 from qutip import *
 from helper_functions.operators import *
 from timeit import default_timer as timer
-
+from helper_functions.other import * 
 
 def manual_steadystate(H, c_ops, N, tmax):
     """Evolution until tmax of a density matrix for a given Hamiltonian with N atoms and
@@ -125,7 +125,8 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
         
         end_time_ss = timer()
         total_time_ss = end_time_ss - start_time_ss
-
+    else:
+        total_time_ss = 0
 
     ##Set error tolerance and more options
     options = Options( atol=1e-20)
@@ -157,6 +158,36 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
     return g2_light, rho_ss, total_time_ss, total_time_correlation
 
 
+###########################
+
+def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
+    ang2 = 180+ang1
+    R1 = get_nhat_from_angle(ang1)
+    R2 = get_nhat_from_angle(ang2)
+
+    g2_1a_2b, rho_ss, total_time_ss, total_time_correlation = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
+    
+    extra_1a_2b = [rho_ss, total_time_ss, total_time_correlation]
+
+
+    g2_1b_2a, *extra_1b_2a = g2_l(H, nhat, r, R2, R1, taulist, c_ops, N, faseglobal = 1, rho_ss =rho_ss , rho_ss_parameter = rho_ss_parameter, tmax=tmax)
+
+
+    g2_1a_1b, *extra_1a_1a =  g2_l(H, nhat, r, R1, R1, taulist, c_ops, N, faseglobal = 1, rho_ss =rho_ss , rho_ss_parameter = rho_ss_parameter,tmax=tmax)
+
+
+
+    g2_2a_2b, *extra_2b_2b = g2_l(H, nhat, r, R2, R2, taulist, c_ops, N, faseglobal = 1, rho_ss =rho_ss , rho_ss_parameter = rho_ss_parameter, tmax=tmax) 
+
+    g2_1a_1b_zero = g2_1a_1b[0]
+    g2_2a_2b_zero = g2_2a_2b[0]
+
+    R = (g2_1a_2b*g2_1b_2a)/(g2_1a_1b_zero*g2_2a_2b_zero)
+
+    return np.real(R), rho_ss
+
+#################################################
+#### Benchmarking analytical functions
 def second_order_correlation_opposite_directions_interaction_off_araujo(taulist, Delta):
     Gamma = 1
 

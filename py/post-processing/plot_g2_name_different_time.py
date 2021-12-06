@@ -16,16 +16,17 @@ markers=[".",",","o","v","^","<",">","1","2","3","4","8","s","p","P","*","h","H"
 
 angles = [str(25), str(90), str(155), "-"+str(25), "-"+str(90), str(205)]
 
+b0 = sys.argv[1]
 N = 7
 Omega = 1.0
 Delta = 0.0 
 DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-description = "b0_5_V_Int_On_"
+description = f"b0_{b0}_V_Int_On_"
 results_path = "../results/"
 defaultangle = "25_"
 rho_ss_parameter = "_manual_"
 t_list = [0.1, 0.5, 1, 3, 10]
-t_list_T = [0.1, 0.5, 1, 3, 10, 50  ]
+t_list_T = [0.1, 0.25, 0.5, 1, 3, 10, 50, 100, 500]
 
 
 
@@ -95,6 +96,11 @@ fig.legend(handles, labels, loc='upper left')
 general_name = results_path+DefaultInfo+description
 
 plt.savefig(general_name + "manual_convergence.png")
+
+
+plt.ylim(0,10)
+plt.savefig(general_name + "lim_manual_convergence.png")
+
 
 plt.show()
 

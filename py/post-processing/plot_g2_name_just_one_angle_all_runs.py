@@ -12,8 +12,8 @@ fig, axs = plt.subplots(1, 1, figsize = (10,6) ,sharex = True, sharey = True)
 
 b0_input = str(sys.argv[1])
 N = 7
-Omega = 2.0
-Delta = 20.0 
+Omega = 1.0
+Delta = 0.0 
 DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
 description = f"b0_{b0_input}_V_Int_Off_"
 results_path = "../results/"

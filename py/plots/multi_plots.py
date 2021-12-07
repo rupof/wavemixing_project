@@ -1,7 +1,7 @@
 import fnmatch
 import os
 import numpy as np
-
+from qutip import file_data_read, Qobj
 
 def get_array_of_runs_files(datafolder_path):
     paths_array = []
@@ -9,6 +9,14 @@ def get_array_of_runs_files(datafolder_path):
         if fnmatch.fnmatch(file, '*.txt'):
             paths_array.append(datafolder_path+file)
     return paths_array
+
+def get_array_of_runs_dat_files(datafolder_path):
+    paths_array = []
+    for file in os.listdir(datafolder_path):
+        if fnmatch.fnmatch(file, '*.dat'):
+            paths_array.append(datafolder_path+file)
+    return paths_array
+
 
 def get_array_of_numpy_runs(paths_array):
     runs_txt = []
@@ -21,6 +29,16 @@ def get_array_of_numpy_runs(paths_array):
             print(e)
     return runs_txt
 
+def get_array_of_dat_runs(paths_array):
+    runs_dat = []
+    for i, run in enumerate(paths_array):
+        try:
+            dat_run = file_data_read(run)
+            runs_dat.append(dat_run)
+        except Exception as e:
+            print(run)
+            print(e)
+    return runs_dat
 
 
 
@@ -33,11 +51,42 @@ def average_of_array_arrays(array):
         return 0
         
 
+def extract_dat_files(datafolder_path):
+    "given a datafolder path containing .dat files, returns an array of loaded qutip objects"
+
+    paths_array = get_array_of_runs_files(datafolder_path)
+    runs_dat = get_array_of_dat_runs(paths_array)
+    return paths_array
+
+
 def average_of_runs_files(datafolder_path):
     paths_array = get_array_of_runs_files(datafolder_path)
     runs_txt = get_array_of_numpy_runs(paths_array)
     avg = average_of_array_arrays(runs_txt)
     return avg
+
+
+
+
+################################################################
+
+
+##Program specific functions
+
+
+
+
+def get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(25) ,results_path = "../results/"):
+    DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
+    label = results_path+DefaultInfo+description+"_" +angle+"_"+  rho_ss_parameter + "/"
+    #print("1!!!!!!!!!!!!!!!!", label)
+    paths_array =get_array_of_runs_dat_files(label)
+    #print("!!!!!!!!!!!!!!!!!!!", paths_array)
+    array_of_many_rho_ss_files = get_array_of_dat_runs(paths_array)
+    return array_of_many_rho_ss_files 
+    
+
+
 
 
 

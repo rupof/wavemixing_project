@@ -94,7 +94,7 @@ np.savetxt(name_of_file, [taulist, np.real(g2_lig)])
 np.savetxt(name_of_file_time, [total_time_ss, total_time_correlation] ) 
 
 print(total_time_ss)
-save_rhoss_to_file(rho_ss, filename)
+save_rhoss_to_file(rho_ss,name_of_file)
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )
 #fig.savefig("testinho.png")

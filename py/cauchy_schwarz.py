@@ -11,7 +11,9 @@ from helper_functions.operators import *
 from helper_functions.other import * 
 from hamiltonean_builder.hamiltonean_builder import *
 from correlation.second_order_correlation import *
-from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file, save_rhoss_to_file
+from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file, save_rhoss_to_file, get_new_run_number_dat
+
+
 
 import sys
 
@@ -65,7 +67,7 @@ scalar = False
 
 
 
-description += f'_{int(ang1)}_{rho_ss_parameter}_cauchy_schwarz'
+description += f'_{int(ang1)}_{rho_ss_parameter}'
 
 if tmax != 0:
     description += f'_{tmax}'
@@ -90,17 +92,17 @@ end = timer()
         
 path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
 filename ="{4}/angulo{0}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
-run_number = get_new_run_number_txt(filename)
-name_of_file =  "{4}/angulo{0}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+run_number = get_new_run_number_dat(filename)
+name_of_file =  "{4}/angulo{0}_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 name_of_file_time =  "{4}/time/time_angulo{0}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 save_params_to_file(variables_string, filename)
 
 
-np.savetxt(name_of_file, [taulist, R])
+#np.savetxt(name_of_file, [taulist, R])
 #np.savetxt(name_of_file_time, [total_time_ss, total_time_correlation] ) 
 
-save_rhoss_to_file(rho_ss, filename)
+save_rhoss_to_file(rho_ss, name_of_file)
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )
 #fig.savefig("testinho.png")

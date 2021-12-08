@@ -1,29 +1,65 @@
 import numpy as np
-
 from  helper_functions.constants import * 
 
+################################################
+#This module is used to calculate everything related to atomic cloud generation
+###############################################
+
+
+
+
+
 def norm_square(r_i):
+    """ Calculates squared norm of a vector """
     return  (r_i.T @ (r_i)).item() 
 
 def check_outside_sphere(r_i, radius):
-     r_inorm_square = norm_square(r_i)
-     if r_inorm_square > radius**2:
-         return True
-     else: 
-         return False
+    """
+    Parameters
+    -------
+    r_i: class: np.array. 
+         1x3 vector to check if outside sphere
+    radius: float.
+        size of atomic cloud
+    
+    Returns
+    ----
+    True if r_i is outside of a given radius, False otherwise
+    """
+    r_inorm_square = norm_square(r_i)
+    if r_inorm_square > radius**2:
+        return True
+    else: 
+        return False
 
 def check_outside_exclusion_radius(r_o,r, exc_radius):
-    """checks if r_i is outside of exclusion radius for all atoms in r
-    r_o: position to be checked
-    r: array of positions
-    exc_radius: exclusion radius
-        """
+    """
+    Checks if an atom's position (r_o) is outside of exclusion radius for all atoms in r.
+
+    Parameters
+    -------
+
+    r_o: class: np.array. 
+        position to be checked
+    r: class: np.array.
+        array of all atom positions
+    exc_radius: float
+        minimum distance to other atoms
+
+    Returns
+    ----
+    True if r_o is outside of a given radius, False otherwise
+
+
+    """
     for i in range(len(r)):
         distance_square = norm_square(r[i]-r_o) 
         if distance_square > exc_radius**2:
-            return True
+            pass
         else:
+            print( "ops, tava dentro!!")
             return False
+    return True
 
 def random_r_i(radius):
     x, y, z = radius*np.random.random(), radius*np.random.random(), radius*np.random.random()

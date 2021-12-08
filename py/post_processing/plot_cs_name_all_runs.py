@@ -5,20 +5,21 @@ import sys
 import traceback
 from correlation import *
 from scipy.optimize import curve_fit
+from matplotlib.pyplot import cm
+
 
 import warnings
 warnings.filterwarnings("error")
 
 fig, axs = plt.subplots(1, 1, figsize = (10,6) ,sharex = True, sharey = True)
 
-
 ######
 
 ### Interaction On
 b0_input = str(sys.argv[1])
-N = 5
-Omega = 2.0
-Delta = 20.0 
+N = 7
+Omega = 0.02
+Delta = 0.0 
 DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
 description = f"b0_{b0_input}_V_Int_On_"
 #descriptionOff = f"b0_{b0_input}_V_Int_Off_"
@@ -40,6 +41,18 @@ array_of_many_runs = []
 angle_input =str(25)
 angle = angle_input 
  
+def get_list_organized_by_pairs(array_of_many_runs):
+    pairs = []
+    for i in range(len(array_of_many_runs)):
+        #print(i,i+1)
+        try:
+            x0 = array_of_many_runs[i][0]
+            y0 = array_of_many_runs[i][1]
+            pairs.append(x0)
+            pairs.append(y0)
+        except:
+            print(f"element {i}+1 does not exit")
+    return pairs
 
   #  try:
 try: 
@@ -47,7 +60,7 @@ try:
     labels.append(label_folder) 
     paths_array = get_array_of_runs_files(label_folder)
     averages.append(average_of_runs_files(label_folder))
-    
+    array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
     
 
 
@@ -63,7 +76,19 @@ except Exception as e:
 
 at25_25 = averages[0]
 axs.set_title(DefaultInfo+description+defaultangle )
-axs.plot(at25_25[0], at25_25[1], "r--", -at25_25[0], at25_25[1], "r--" , label = f"Simulation, Int: On")   
+axs.plot(at25_25[0], at25_25[1], "r--", -at25_25[0], at25_25[1], "r--" , label = f"Simulation, Int: On-avg")   
+
+at25 = get_list_organized_by_pairs(array_of_many_runs[0])
+print(len(at25))
+color = iter(cm.rainbow(np.linspace(0, 1, len(at25))))
+for i in range(0,int(len(at25)), 2):
+    c = next(color)
+    print(c)
+    axs.plot(at25[i], at25[i+1], c = c, label = f"run {i/2}")
+    axs.plot(-at25[i], at25[i+1], c = c )
+
+axs.legend()
+
 
 
 #try:
@@ -88,10 +113,10 @@ axs.plot(at25_25[0], at25_25[1], "r--", -at25_25[0], at25_25[1], "r--" , label =
 
 general_name = results_path+DefaultInfo+description
     
-plt.savefig(general_name + f"{angle}_cs.png")
+plt.savefig(general_name + f"{angle}_cs_all.png")
     
-#plt.ylim(0,10)
-#plt.savefig(general_name + "s/N7_farimavg.png")
+plt.ylim(0,10)
+plt.savefig(general_name + f"{angle}_lim_cs_all.png")
 
 
 

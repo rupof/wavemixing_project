@@ -1,5 +1,6 @@
 import numpy as np
 
+#### Vector constants!
 I3 = np.identity(3)
 xhat = np.matrix([[1],[0],[0]])
 yhat = np.matrix([[0],[1],[0]])

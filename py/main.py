@@ -67,7 +67,7 @@ scalar = False
 
 
 
-description += f'_{int(ang1)}_{rho_ss_parameter}'
+description += f'_{rho_ss_parameter}'
 
 if tmax != 0:
     description += f'_{tmax}'
@@ -111,5 +111,5 @@ save_rhoss_to_file(rho_ss, name_of_file)
 #plt.show()
 
 
-print("PROGRAM FINISHED.\n Total time: "end - start) # Time
+print("PROGRAM FINISHED.\n Total time: ", end - start) # Time
 

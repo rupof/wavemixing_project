@@ -136,12 +136,7 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
 
 
 
-    """
-
-
-
-
-    
+    """ 
     k = 1
 
     if rho_ss is None:

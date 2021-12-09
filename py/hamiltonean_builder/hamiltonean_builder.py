@@ -13,37 +13,85 @@ from helper_functions.cloud import *
 
 
 def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
-    """ For a given Gamma, N and r 
-    returns: Green's tensor, M matrix, Δ matrix,  Γ matrix, ΓSR, ΔSR and SR state
+    """ 
+    Obtains full Green's tensor matrix containing 3x3 matrices for each matrix element 
+    for a given set of positions r for N atoms and Gamma decaying rate. Furthermore,
+    it obtains superradiant state: M matrix, Δ matrix,  Γ matrix, ΓSR, ΔSR and SR state.
+
+    Returns: 
+
+    Green's tensor, M matrix, Δ matrix,  Γ matrix, ΓSR, ΔSR and SR state
     
     """
     k = 1
 
-    GTensor = np.zeros([N,N], dtype = "object")
+    GTensor = np.zeros([N,N], dtype = "object") # dtype = "object" is necessary to insert 3x3 matrices in array.
+
     GammaMatrix = np.zeros([N,N])
-    DeltaMatrix = np.zeros([N,N])  
-    
+    DeltaMatrix = np.zeros([N,N])      
     
     for i, r_i in enumerate(r):
         for j, r_j in enumerate(r):
-            Gij = Gij_calc(Gamma, k, r, i, j, scalar)     
-            
+            Gij = Gij_calc(Gamma, k, r, i, j, scalari) #Calculates Gij 3x3 matrix     
+            GTensor[i][j] = Gij #Inserts Gij matrix in Gtensor
+
             Deltaij = Deltaij_calc(Gij, scalar)
             Gammaij = Gammaij_calc(Gij, scalar)
-            
-            GTensor[i][j] = Gij
             
             DeltaMatrix[i][j] = Deltaij 
             GammaMatrix[i][j] = Gammaij
             
             
     M = GammaMatrix   + 1j*DeltaMatrix
+   
     eigenvalues, eigenvectors, GammaSR, DeltaSR, SR_state = Get_SR(M)
     
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
 def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True ):
+    """
+    This function creates the hamiltonean and collapsible operators of our system
+    "ground-state neutral atoms that interact solely through induced dipole-
+    dipole interactions and have a simple two-level internal structure."
+    as described by A. Cidrim, et all (2020) (Eq. 2 and 3). 
+
+
+    Parameters
+    ----------
+    Gamma: integer
+        decaying rate
+    N: integer
+        number of atoms
+    kd: float
+        cloud radius
+    b0: float
+        optical depth, if given a predefined formula is used 
+        to calculate exc_radius. See cloud.py
+    exc_radius: float
+        if b0 is not given (kd is given) user has
+        to give size of exclusion radius
+    Omega: float
+        laser Rabi frequency
+    wave_mixing: boolean
+        True by defaults. It means that we are going to use 
+        four-wave-mixing configuration. That is, two counter propagating waves.
+    scalar: boolean
+        If true we use scalar model and not vector model for interactions
+    interaction: boolean
+        If False we turn off interactions in hamiltonean and lindbladian collapsible operators.
+        Default is True (interactions on)
+
+
+    Algorithm
+    --------
+    
+
+   
+
+
+    """
+
     k = 1
     kvec = k*yhat # incident laser propagating direction
     

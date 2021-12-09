@@ -2,8 +2,30 @@ import numpy as np
 from helper_functions.constants import *
 
 
-
 def Gij_calc(Gamma, k, positions, i, j, scalar = False):
+    """
+    Get Gij matrix of Green's tensors G for a dipole-dipole interaction as
+    given in A. Cidrim, et all (2020) (Eq. 3). 
+
+    If scalar is True, it returns an scalar model interaction Gij
+
+    Parameters:
+    ----------
+
+    Gamma: float
+        decaying rate, normally equal to 1
+    k: float
+        wavenumber, normally equal to 1
+    positions:
+        array of atoms positions, some methods for different positions generation
+        are implemented, i.e linear chain and random cloud.
+
+    i, j: integers
+        index of atoms 
+    scalar: boolean
+        if True uses scalar model
+    """
+
     r_i = positions[i]
     r_j = positions[j]
     r_ij = r_i-r_j
@@ -21,6 +43,14 @@ def Gij_calc(Gamma, k, positions, i, j, scalar = False):
     return Gij
 
 def Gammaij_calc(Gij, scalar = False):
+    """
+    Calculates inelastic term Γij matrix of dipolar interaction as given in
+    A. Cidrim, et all (2020):
+
+    Γij =  ϵˆi 2Img(G ij)ϵˆj , where ϵˆi is the polarization of the
+ith dipole, which we choose to be ϵˆi = ϵ̂ = ẑ.
+
+    """
     if scalar == False:
         Gammaij = ( zhat.T @ (2 * np.imag(Gij) ) @ zhat ).item()
     elif scalar == True:
@@ -32,15 +62,26 @@ def Gammaij_calc(Gij, scalar = False):
     return Gammaij
 
 def Deltaij_calc(Gij, scalar = False):
+    """
+    Calculates elastic term Δij matrix of dipolar interaction as given in
+    A. Cidrim, et all (2020):
+
+    Δij =  ϵˆi real(-G ij)ϵˆj , where ϵˆi is the polarization of the
+ith dipole, which we choose to be ϵˆi = ϵ̂ = ẑ.
+    
+    NOTE:
+    -------
+    There is an error in A. Cidrim, et all (2020) paper definition, we need to
+    add a minus inside Δij, as done above. 
+
+    """
     if scalar == False:
         Deltaij = ( zhat.T @( -1*np.real(Gij) )  @ zhat ).item()
-    elif scalar == True:
-         
+    elif scalar == True:  
         if Gij == 0:
             Deltaij = 0
         else:
             Deltaij = -1*np.cos(Gij)/Gij
-        print(Deltaij)
     return Deltaij
 
 

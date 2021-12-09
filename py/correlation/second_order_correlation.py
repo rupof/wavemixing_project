@@ -44,6 +44,33 @@ def manual_steadystate(H, c_ops, N, tmax, mc = False):
         result = mesolve(H, psi0, times, c_ops)
     return result.states[-1]
 
+def get_steadystate(H, nhat, r,  taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
+    """
+    
+
+    """
+
+    start_time_ss = timer()
+    if rho_ss_parameter == "manual":
+        rho_ss = manual_steadystate(H, c_ops, N, tmax, mc = False)
+    elif rho_ss_parameter == "manual_mc":
+        print("dimH", dims(H))
+        print("c_ops",c_ops)
+
+        rho_ss = manual_steadystate(H, c_ops, N, tmax, mc = True)
+    elif rho_ss_parameter[0:9] ==  "iterative":
+        rho_ss = steadystate(H, c_ops, method = rho_ss_parameter, use_precond=True  )
+    else:
+        rho_ss = steadystate(H, c_ops, method = rho_ss_parameter )
+
+
+    end_time_ss = timer()
+    total_time_ss = end_time_ss - start_time_ss
+    return rho_ss, total_time_ss
+
+
+
+
 def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
     """
     Second order correlation function as defined in R. Loudon P112 Eq (3.7.22):
@@ -114,26 +141,11 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
 
 
 
-
+    
     k = 1
 
     if rho_ss is None:
-        start_time_ss = timer()
-        if rho_ss_parameter == "manual":
-            rho_ss = manual_steadystate(H, c_ops, N, tmax, mc = False)
-        elif rho_ss_parameter == "manual_mc":
-            print("dimH", dims(H))
-            print("c_ops",c_ops)
-
-            rho_ss = manual_steadystate(H, c_ops, N, tmax, mc = True)
-        elif rho_ss_parameter[0:9] ==  "iterative":
-            rho_ss = steadystate(H, c_ops, method = rho_ss_parameter, use_precond=True  )
-        else:
-            rho_ss = steadystate(H, c_ops, method = rho_ss_parameter )
-
-
-        end_time_ss = timer()
-        total_time_ss = end_time_ss - start_time_ss
+        rho_ss, total_time_ss = get_steadystate(H, nhat, r, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None)
     else:
         total_time_ss = 0
 

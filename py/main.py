@@ -24,7 +24,7 @@ taulist = np.linspace(0,1, 100)
 Gamma = 1
 nhat = 0
 
-ang1 = float(sys.argv[1])
+ang1 = float(sys.argv[1]) ##this is a useless parameter
 print(f"ang1 = {ang1}")
 ang2 = float(sys.argv[2]) ##This is a useless parameter
 print(f"ang2 = {ang2}")
@@ -75,7 +75,9 @@ if tmax != 0:
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
 
-R, rho_ss= cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = False, rho_ss = None, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
+rho_ss, total_time_ss = get_steadystate(H, nhat, r,  taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None)
+
+
 
 
 
@@ -91,17 +93,17 @@ end = timer()
 
         
 path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
-filename ="{4}/angulo{0}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
+filename ="{4}/N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 run_number = get_new_run_number_dat(filename)
-name_of_file =  "{4}/angulo{0}_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-name_of_file_time =  "{4}/time/time_angulo{0}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+name_of_file =  "{4}/N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 save_params_to_file(variables_string, filename)
 
 
 #np.savetxt(name_of_file, [taulist, R])
-#np.savetxt(name_of_file_time, [total_time_ss, total_time_correlation] ) 
 
+np.savetxt(name_of_file_time, [total_time_ss] ) 
 save_rhoss_to_file(rho_ss, name_of_file)
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )
@@ -109,5 +111,5 @@ save_rhoss_to_file(rho_ss, name_of_file)
 #plt.show()
 
 
-print(end - start) # Time
+print("PROGRAM FINISHED.\n Total time: "end - start) # Time
 

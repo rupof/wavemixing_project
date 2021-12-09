@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from qutip import *
 from timeit import default_timer as timer
+from plots.multi_plots import get_rho_ss_list
 
 
 from helper_functions.interaction_preparation import *
@@ -11,6 +12,7 @@ from hamiltonean_builder.hamiltonean_builder import *
 from correlation.second_order_correlation import *
 from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file, save_rhoss_to_file
 
+import traceback
 import sys
 
 
@@ -23,7 +25,7 @@ def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     nhat = 0
 
     print(f"ang1 = {ang1}")
-    print(f"ang2 = {ang2}")
+    print(f"ang2 = {ang2}")#useless
     print(f"N = {N}")
     print(f"useb0 = {useb0}")
     kd = None
@@ -50,7 +52,6 @@ def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 
     H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
-    print(H.dims)
     rho_ss_results = Qobj(rho_ss, dims=H.dims)
 
 
@@ -90,4 +91,20 @@ def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 
    # print(end - start) # Time
+
+def get_cs_from_all_available_rho_ss(ang1, N, useb0, b0,kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax):
+
+    rho_ss_list = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
+
+
+    for index, rho_ss  in enumerate(rho_ss_list):
+        try:
+            get_cs_for_a_rho_ss(ang1, 0, N, useb0, b0, None, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss) 
+            print (index)
+        except Exception:
+            print(traceback.format_exc())
+
+            print("Error in run:", index)
+
+
 

@@ -32,7 +32,7 @@ def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
     
     for i, r_i in enumerate(r):
         for j, r_j in enumerate(r):
-            Gij = Gij_calc(Gamma, k, r, i, j, scalari) #Calculates Gij 3x3 matrix     
+            Gij = Gij_calc(Gamma, k, r, i, j, scalar) #Calculates Gij 3x3 matrix     
             GTensor[i][j] = Gij #Inserts Gij matrix in Gtensor
 
             Deltaij = Deltaij_calc(Gij, scalar)
@@ -49,7 +49,7 @@ def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
-def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True ):
+def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True, r = None ):
     """
     This function creates the hamiltonean and collapsible operators of our system
     "ground-state neutral atoms that interact solely through induced dipole-
@@ -97,13 +97,15 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
     
     print("b0 system", b0)
     print("kd system", kd)
-    if kd != None: #if cloud radius is given!
-        radius =  kd/k
-        r = random_cloud(radius, N, exc_radius, b0 )
-    elif b0 != None: #if b0 is given!
-        print(b0)
-        r = random_cloud(None,N,exc_radius, b0)  
+    if r == None:
+        if kd != None: #if cloud radius is given!
+            radius =  kd/k
+            r = random_cloud(radius, N, exc_radius, b0 )
+        elif b0 != None: #if b0 is given!
+            print(b0)
+            r = random_cloud(None,N,exc_radius, b0)  
     
+        
     GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , r, scalar)
 
     if Delta == None: #For Delta = DeltaSR  

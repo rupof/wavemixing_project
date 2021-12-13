@@ -80,7 +80,6 @@ rho_ss, total_time_ss = get_steadystate(H, nhat, r,  taulist, c_ops, N, faseglob
 
 
 
-
 variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
 
 variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4}  \nb0 = {5}\nscalar = {6}, interaction = {7} ".format(Gamma,Omega, Delta, kd, N, b0, scalar , interaction)
@@ -95,16 +94,33 @@ end = timer()
 path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
 filename ="{4}/N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 run_number = get_new_run_number_dat(filename)
+
 name_of_file =  "{4}/N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+#name_of_file_hamiltonean ="{4}/hamiltonean/hamiltonean_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+#name_of_file_c_ops ="{4}/c_ops/c_ops_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+
+name_of_file_r ="{4}/positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+
 
 save_params_to_file(variables_string, filename)
 
 
-#np.savetxt(name_of_file, [taulist, R])
 
 np.savetxt(name_of_file_time, [total_time_ss] ) 
+
+
 save_rhoss_to_file(rho_ss, name_of_file)
+save_rhoss_to_file(r, name_of_file_r)
+#save_rhoss_to_file(c_ops, name_of_file_c_ops)
+
+
+
+
 #fig, ax = plt.subplots()  
 #ax.plot(taulist, np.real(g2_lig)   )
 #fig.savefig("testinho.png")

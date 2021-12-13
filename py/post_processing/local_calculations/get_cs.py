@@ -18,7 +18,7 @@ import sys
 
 """Given some initial parameters this scripts obtains cs, from local results (rho_ss) """
 
-def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss ):
+def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss, r ):
 
     taulist = np.linspace(0,1, 100) 
     Gamma = 1
@@ -43,21 +43,21 @@ def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     psi0 = tensor([ket("1") for i in range(N) ])
     wave_mixing = True
     scalar = False
-    description += f'_{int(ang1)}_{rho_ss_parameter}'
+    description += f'_{ang1}_{rho_ss_parameter}'
 
     if tmax != 0:
         description += f'_{tmax}'
 
 
 
+    H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar, interaction=interaction, r = r)
+   
 
-    H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)
     rho_ss_results = Qobj(rho_ss, dims=H.dims)
-
 
     R, rho_ss= cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = False, rho_ss = rho_ss_results, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
 
-    print(rho_ss == rho_ss_results, "rho_ss equal to input (we expect True)" )
+  #  print(rho_ss == rho_ss_results, "rho_ss equal to input (we expect True)" )
 
 
     variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
@@ -94,12 +94,13 @@ def get_cs_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 def get_cs_from_all_available_rho_ss(ang1, N, useb0, b0,kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax):
 
-    rho_ss_list = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
+    rho_ss_list, r_list = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
 
 
     for index, rho_ss  in enumerate(rho_ss_list):
         try:
-            get_cs_for_a_rho_ss(ang1, 0, N, useb0, b0, None, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss) 
+            r = r_list[index]
+            get_cs_for_a_rho_ss(ang1, 0, N, useb0, b0, None, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss, r) 
             print (index)
         except Exception:
             print(traceback.format_exc())

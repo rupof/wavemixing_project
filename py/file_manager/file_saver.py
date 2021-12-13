@@ -19,6 +19,11 @@ def get_path_to_save_files(N,Omega,Delta, description, extra_path = "", extra_fo
     pathlib.Path(path_to_time_folder).mkdir(parents=True, exist_ok=True) 
     
 
+
+    path_to_r_folder = "../results/{0}/positions/".format(folder_name)
+    pathlib.Path(path_to_r_folder).mkdir(parents=True, exist_ok=True)
+
+
     return path_to_folder
 
 

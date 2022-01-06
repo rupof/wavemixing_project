@@ -20,10 +20,11 @@ angles = [str(25), str(90), str(155), "-"+str(25), "-"+str(90), str(205)]
 N = str(sys.argv[1])
 Omega = str(float(sys.argv[2]))
 Delta = str(float(sys.argv[3]))
-DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
+DefaultInfo = f"g2_N{N}_Omega{Omega}_Delta{Delta}_"
 description = str(sys.argv[4])
 results_path = "../results/"
 defaultangle = "25_"
+rho_ss_parameter = "_" + str(sys.argv[5])
 taulist = np.arange(-1,1,0.01)
 
 
@@ -50,7 +51,7 @@ def get_list_organized_by_pairs(array_of_many_runs):
 for i, angle in enumerate(angles):
   #  try:
         
-        label = results_path+DefaultInfo+description+defaultangle +angle+"/"
+        label = results_path+DefaultInfo+description+defaultangle +angle+rho_ss_parameter+"/"
         labels.append(label)
         paths_array = get_array_of_runs_files(label)
 

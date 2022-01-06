@@ -48,6 +48,8 @@ def get_array_of_numpy_runs(paths_array):
         except Exception as e:
             print(run)
             print(e)
+            runs_dat.append("error")
+            corrupted_runs.append(i)
 
     return runs_txt, corrupted_runs
 
@@ -148,22 +150,20 @@ def get_positions_and_rhoss_from_array_of_paths(rhoss_paths):
     list_of_r = []
     list_of_rhoss = [] 
     corrupted_runs = []
-
-
+    
     for i in range(len(rhoss_paths)):
         #print(rhoss_paths[i])
         r_i_path = get_r_i_path_from_rhoss_i_path(rhoss_paths[i]) 
         try:
             list_of_r.append(get_positions_from_a_file(r_i_path))
             list_of_rhoss.append(file_data_read(rhoss_paths[i]))
+            print("okay")
 
         except Exception as e:
-            #print("err")
-            #print(e)
+            print("err")
+            print(e)
             corrupted_runs.append(i)
-    runs_used =len(rhoss_paths)-len(corrupted_runs) 
-
-    print(f"{len(corrupted_runs)} out of {len(rhoss_paths)} runs where corrupted ({int(len(corrupted_runs)/len(rhoss_paths)*100)}%), we used {runs_used} runs")
+            
     return list_of_rhoss, list_of_r, corrupted_runs 
 
 

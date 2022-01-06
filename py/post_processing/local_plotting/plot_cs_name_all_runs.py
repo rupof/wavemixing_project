@@ -16,14 +16,14 @@ fig, axs = plt.subplots(1, 1, figsize = (10,6) ,sharex = True, sharey = True)
 ######
 
 ### Interaction On
-b0_input = str(sys.argv[1])
-N = 7
-Omega = 0.02
-Delta = 0.0 
+#b0_input = str(sys.argv[1])
+N = str(sys.argv[1])
+Omega = str(float(sys.argv[2]))
+Delta = str(float(sys.argv[3])) 
 DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-description = f"b0_{b0_input}_V_Int_On_"
+description = str(sys.argv[4]) #f"b0_{b0_input}_V_Int_On_"
 #descriptionOff = f"b0_{b0_input}_V_Int_Off_"
-rho_ss_parameter = "direct"
+rho_ss_parameter = str(sys.argv[5])
 results_path = "../results/"
 defaultangle = "25_"
 

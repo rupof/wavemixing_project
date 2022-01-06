@@ -24,12 +24,12 @@ rho_ss_parameter = "direct"
 
 
 ang1 = 25
-interaction = True
+interaction = False 
 tmax=0
 print("c_list:", c_list)
 for N in N_list:
     for b0 in b0_list:
-        description = f"b0_{b0}_V_Int_On_fixed"
+        description = f"b0_{b0}_V_Int_Off_fixed"
         for c_i in c_list:
             Omega, Delta = float(c_i[0]), float(c_i[1])
             print("------------- \n", c_i)

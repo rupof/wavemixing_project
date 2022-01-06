@@ -140,18 +140,18 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
                 Deltaij = DeltaMatrix[i][j]
                 Gammaij = GammaMatrix[i][j]
 
-                if interaction == False: #Sem interação        
-                    if i != j:
-                        Lij  = 0
-                        Hint = 0
-                else:
-
-                    Hint +=  Deltaij * sigmap_i(N,i) * sigmam_i(N,j)
-                    Lij = 0.5*Gammaij*( (2*spre(sigmam_i(N,i))*spost(sigmap_i(N,j))) -1.0*spre(sigmap_i(N,j)*sigmam_i(N,i)) - 1.0*spost(sigmap_i(N,j)*sigmam_i(N,i)))
+                Hint_ij =  Deltaij * sigmap_i(N,i) * sigmam_i(N,j)
+                Lij = 0.5*Gammaij*( (2*spre(sigmam_i(N,i))*spost(sigmap_i(N,j))) -1.0*spre(sigmap_i(N,j)*sigmam_i(N,i)) - 1.0*spost(sigmap_i(N,j)*sigmam_i(N,i)))
  
-                   
-                            
+
+                if interaction == False: #Without interaction mixed terms are nulled       
+                    if i != j:
+                        Lij  *= 0
+                        Hint_ij *= 0
+                
+                Hint += Hint_ij 
                 c_ops.append(Lij)
+    
     else:    
         for i, r_i in enumerate(r):
 

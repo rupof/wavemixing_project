@@ -171,7 +171,7 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
     total_time_correlation = end_time_correlation - start_time_correlation
 
 
-    return g2_light, rho_ss, total_time_ss, total_time_correlation
+    return np.real(g2_light), rho_ss, total_time_ss, total_time_correlation
 
 
 ###########################

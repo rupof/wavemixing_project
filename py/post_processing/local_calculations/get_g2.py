@@ -17,10 +17,12 @@ import sys
 
 """Given some initial parameters this scripts obtains cs, from local results (rho_ss) """
 
-def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss_input ):
+def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss, r ):
     
     R1 = get_nhat_from_angle(ang1)
     R2 = get_nhat_from_angle(ang2)
+    
+
 
     taulist = np.linspace(0,1, 100) 
     Gamma = 1
@@ -38,6 +40,7 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     print(f"Delta = {Delta}")
     print(f"rho_ss_parameter = {rho_ss_parameter}")
     print(f"tmax = {tmax}")
+    print(f"r size: {len(r)}")
 
 
 
@@ -53,14 +56,16 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 
 
-    H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar, interaction=interaction)
+    H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar, interaction=interaction, r = r)
     
-    rho_ss = Qobj(rho_ss_input, dims=H.dims)
 
-    g2_lig, rho_ss_out, total_time_ss, total_time_correlation  = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal=False, rho_ss=rho_ss, rho_ss_parameter=rho_ss_parameter , tmax = tmax);
+    rho_ss_results = Qobj(rho_ss, dims=H.dims)
+
+    g2_lig, rho_ss_out, total_time_ss, total_time_correlation  = g2_l(H, nhat, r,R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss_results, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
 
 
-    print(rho_ss_out == rho_ss, "rho_ss equal to input (we expect True)" )
+
+    print(rho_ss_out == rho_ss_results, "rho_ss equal to input (we expect True)" )
 
 
     variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
@@ -76,11 +81,16 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     name_of_file =  "{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
     name_of_file_time =  "{4}/time/time_angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
+    name_of_file_r ="{4}/positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+
     
 
     save_params_to_file(variables_string, filename)
     np.savetxt(name_of_file, [taulist, g2_lig])
-
+    save_rhoss_to_file(r, name_of_file_r)
+    
+    
 #np.savetxt(name_of_file_time, [total_time_ss, total_time_correlation] ) 
 
     #save_rhoss_to_file(rho_ss, name_of_file)
@@ -94,15 +104,16 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 def get_g2_from_all_available_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax  ):
 
-    rho_ss_list = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
+    rho_ss_list, r_list,  = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
 
 
     for index, rho_ss  in enumerate(rho_ss_list):
         try:
-            get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss )
-            print (index)
+            r = r_list[index]
+            get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss,r  )
+            print ("rho_ss index =", index)
         except Exception:
             print(traceback.format_exc())
 
-            print("Error in run:", index)
+            print("get_g2; error in run:", index)
 

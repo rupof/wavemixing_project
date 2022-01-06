@@ -1,10 +1,10 @@
 
-cd ../
+cd ../post_processing/local_plotting
 echo "r1"
 #Resultado1
-python plot_g2_name.py 7 2 20 b0_0.1_V_Int_On_
-python plot_g2_name.py 7 2 20 b0_3_V_Int_On_
-python plot_g2_name.py 7 2 20 b0_5_V_Int_On_
+python plot_g2_name.py 5 2 20 b0_0.1_V_Int_On_
+python plot_g2_name.py 5 2 20 b0_3_V_Int_On_
+python plot_g2_name.py 5 2 20 b0_5_V_Int_On_
 
 python plot_g2_name.py 7 2 20 b0_0.1_V_Int_Off_
 python plot_g2_name.py 7 2 20 b0_3_V_Int_Off_

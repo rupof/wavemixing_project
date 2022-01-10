@@ -203,7 +203,7 @@ def pop_corrupted_run_from_rho_and_positions(corrupted_indexes, array_of_r_files
 
 def get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(25) ,results_path = "../results/"):
     DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-    label = results_path+DefaultInfo+description+"_"+  rho_ss_parameter + "/"
+    label = results_path+DefaultInfo+description+  rho_ss_parameter + "/"
     
     paths_array =get_array_of_runs_dat_files(label) 
     paths_array.sort(key=natural_keys) 

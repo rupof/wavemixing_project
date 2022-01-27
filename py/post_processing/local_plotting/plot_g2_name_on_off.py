@@ -51,12 +51,12 @@ for i, angle in enumerate(angles):
 
 
 print("antes") 
-at25_25 = averages[0][0]
-at25_90 = averages[1][0]
-at25_155 = averages[2][0]
-at25_m25 = averages[3][0]
-at25_m90 = averages[4][0]
-at25_205 = averages[5][0]
+at25_25 = averages[0]
+at25_90 = averages[1]
+at25_155 = averages[2]
+at25_m25 = averages[3]
+at25_m90 = averages[4]
+at25_205 = averages[5]
 print("depois")
 
 ats = [at25_25, at25_90, at25_155, at25_m25, at25_m90, at25_205]
@@ -81,7 +81,7 @@ array_of_many_runs = []
 
 for i, angle in enumerate(angles):
     try:
-        label = results_path+DefaultInfo +description.replace("On","Off",1)+defaultangle +angle+ rho_ss_parameter + "/"
+        label = results_path+DefaultInfo + description.replace("On","Off",1)+defaultangle +angle+ rho_ss_parameter + "/"
         print(label)
         labels.append(label)
         paths_array = get_array_of_runs_files(label)
@@ -93,12 +93,12 @@ for i, angle in enumerate(angles):
         print(f"Not found: {label}")
 
 
-at25_25 = averages[0][0]
-at25_90 = averages[1][0]
-at25_155 = averages[2][0]
-at25_m25 = averages[3][0]
-at25_m90 = averages[4][0]
-at25_205 = averages[5][0]
+at25_25 = averages[0]
+at25_90 = averages[1]
+at25_155 = averages[2]
+at25_m25 = averages[3]
+at25_m90 = averages[4]
+at25_205 = averages[5]
 
 ats = [at25_25, at25_90, at25_155, at25_m25, at25_m90, at25_205]
 

@@ -19,14 +19,14 @@ b0_input = str(sys.argv[1])
 N = 7
 Omega = 2.0
 Delta = 20.0 
-DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-description = f"b0_{b0_input}_V_Int_On_"
-descriptionOff = f"b0_{b0_input}_V_Int_Off_"
+DefaultInfo = f"g2_N{N}_Omega{Omega}_Delta{Delta}_"
+description = f"b0_{b0_input}_V_Int_On_fixed__"
+descriptionOff = f"b0_{b0_input}_V_Int_Off_fixed__"
 results_path = "../results/"
-defaultangle = "3_"
-rho_ss_parameter = "_manual_"
+defaultangle = "25_"
+rho_ss_parameter = "_direct"
 #t_list = [0.1, 0.5, 1, 3, 10]
-t_list_T = [1]
+ 
 taulist = np.arange(-1,1, 0.01)
 
 
@@ -41,12 +41,12 @@ angle = angle_input
 
   #  try:
 try: 
-    label_folder = results_path+DefaultInfo+description+defaultangle +angle+ "/"
+    label_folder = results_path+DefaultInfo+description+defaultangle +angle+ rho_ss_parameter + "/"
     labels.append(label_folder) 
     paths_array = get_array_of_runs_files(label_folder)
     averages.append(average_of_runs_files(label_folder))
     
-    label_folder = results_path+DefaultInfo+descriptionOff+defaultangle +angle+ "/"
+    label_folder = results_path+DefaultInfo+descriptionOff+defaultangle +angle+ rho_ss_parameter + "/"
     labels.append(label_folder) 
     paths_array = get_array_of_runs_files(label_folder)
     averages.append(average_of_runs_files(label_folder))
@@ -55,7 +55,6 @@ try:
 
 
 except Exception as e:
-    print(t, angle)
 #            print(e)
     print(traceback.format_exc())
     
@@ -79,7 +78,7 @@ except:
 
 
 at25_25 = averages[1]
-axs.set_title(DefaultInfo+description[:-3]+defaultangle +angle)
+axs.set_title(DefaultInfo+description[:-1]+defaultangle +angle)
 axs.plot(at25_25[0], at25_25[1], "b--" ,-at25_25[0], at25_25[1],"b--" , label = f"Simulation, Int: Off")   
 
 
@@ -94,7 +93,7 @@ axs.legend()
 
 general_name = results_path+DefaultInfo+description
     
-plt.savefig(general_name + f"25_{angle}_manual_with_fit_comparison.png")
+plt.savefig(general_name + f"25_{angle}_manual_with_fit_comparison_mean.png")
     
 #plt.ylim(0,10)
 #plt.savefig(general_name + "s/N7_far_limavg.png")

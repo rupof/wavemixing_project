@@ -51,6 +51,10 @@ try:
     label_folder =  results_path+"cauchy_schwarz_" + DefaultInfo+description+defaultangle + rho_ss_parameter + "/"
     labels.append(label_folder) 
     paths_array = get_array_of_runs_files(label_folder)
+    runs_txt = get_array_of_numpy_runs(paths_array)
+    print(runs_txt[0])
+    avg = average_of_array_arrays(runs_txt)
+    print(avg)
     averages.append(average_of_runs_files(label_folder))
     
     

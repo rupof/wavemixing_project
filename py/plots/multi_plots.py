@@ -4,6 +4,8 @@ import numpy as np
 from qutip import file_data_read, Qobj
 from glob import glob
 import re
+from scipy.stats import gmean
+from scipy.stats import hmean
 
 def get_array_of_runs_files(datafolder_path):
     paths_array = []
@@ -49,7 +51,7 @@ def get_array_of_numpy_runs(paths_array):
             print(run)
             print(e)
 
-    return runs_txt, corrupted_runs
+    return runs_txt
 
 def get_array_of_dat_runs(paths_array):
     runs_dat = []
@@ -67,8 +69,16 @@ def get_array_of_dat_runs(paths_array):
 
 
 
+def average_of_array_arrays(array, geometric = False):
+    if geometric == True:
+        try:
+            for pair in array:
+                pair[0][0] = 0.00000000000000000000000000001
+            return gmean(array, 0)
+        except Exception as e:
+            print(run)
+            print(e)
 
-def average_of_array_arrays(array):
     try:
         return np.mean(array,0)
     except:
@@ -87,7 +97,7 @@ def extract_dat_files(datafolder_path):
 def average_of_runs_files(datafolder_path):
     paths_array = get_array_of_runs_files(datafolder_path)
     runs_txt = get_array_of_numpy_runs(paths_array)
-    avg = average_of_array_arrays(runs_txt)
+    avg = average_of_array_arrays(runs_txt[0:], True)
     return avg
 
 

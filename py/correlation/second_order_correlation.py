@@ -61,7 +61,7 @@ def get_steadystate(H, nhat, r,  taulist, c_ops, N, faseglobal = 1, rho_ss = Non
     elif rho_ss_parameter[0:9] ==  "iterative":
         rho_ss = steadystate(H, c_ops, method = rho_ss_parameter, use_precond=True  )
     else:
-        rho_ss = steadystate(H, c_ops, method = rho_ss_parameter )
+        rho_ss = steadystate(H, c_ops, method = rho_ss_parameter, tol = 10**-20, maxiter = 10000*2)
 
 
     end_time_ss = timer()
@@ -145,7 +145,7 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
         total_time_ss = 0
 
     ##Set error tolerance and more options
-    options = Options( atol=1e-20)
+    options = Options( atol=1e-25)
 
     EmgR1  = Emg(N, r, R1, k, faseglobal)
     EmgR2  = Emg(N, r, R2, k, faseglobal)

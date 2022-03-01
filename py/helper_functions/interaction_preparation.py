@@ -38,8 +38,10 @@ def Gij_calc(Gamma, k, positions, i, j, scalar = False):
         else:   
             Gij = (3*Gamma/4)* (np.exp(1j*k*r_ij_norm)/(k*r_ij_norm)**3) * ( (k**2*r_ij_norm**2 + 1j*k*r_ij_norm - 1 )*I3 - (k**2*r_ij_norm**2 + 3j*k*r_ij_norm - 3) * ((r_ij @ r_ij.T)/r_ij_norm**2) )
 
-    elif scalar == True: 
+    elif scalar == True:
         Gij = np.linalg.norm(r_ij)*k #norm(k) 
+
+
     return Gij
 
 def Gammaij_calc(Gij, scalar = False):
@@ -77,7 +79,8 @@ ith dipole, which we choose to be ϵˆi = ϵ̂ = ẑ.
     """
     if scalar == False:
         Deltaij = ( zhat.T @( -1*np.real(Gij) )  @ zhat ).item()
-    elif scalar == True:  
+    elif scalar == True:
+        #N = len(Gij)
         if Gij == 0:
             Deltaij = 0
         else:

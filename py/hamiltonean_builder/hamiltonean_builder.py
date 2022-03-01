@@ -97,14 +97,17 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
     
     print("b0 system", b0)
     print("kd system", kd)
-    if r == None:
-        if kd != None: #if cloud radius is given!
-            radius =  kd/k
-            r = random_cloud(radius, N, exc_radius, b0 )
-        elif b0 != None: #if b0 is given!
-            print(b0)
-            r = random_cloud(None,N,exc_radius, b0)  
     
+    try:
+            if r == None:
+                if kd != None: #if cloud radius is given!
+                    radius =  kd/k
+                    r = random_cloud(radius, N, exc_radius, b0 )
+                elif b0 != None: #if b0 is given!
+                    print(b0)
+                    r = random_cloud(None,N,exc_radius, b0)  
+    except:
+        print( "r is an array")
         
     GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state = GreensTensor_and_SRstate(Gamma, N , r, scalar)
 

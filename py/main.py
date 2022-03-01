@@ -62,8 +62,7 @@ print(f"tmax = {tmax}")
 
 psi0 = tensor([ket("1") for i in range(N) ])
 wave_mixing = True
-scalar = False
-
+scalar = True
 
 
 
@@ -71,6 +70,7 @@ description += f'_{rho_ss_parameter}'
 
 if tmax != 0:
     description += f'_{tmax}'
+
 
 
 H, c_ops, GTensor,M, GammaSR, DeltaSR, Omega, SR_state, r = system_spec_N(Gamma, N, kd = kd, b0 = b0, exc_radius = exc_radius , Delta = Delta, Omega = Omega, wave_mixing = wave_mixing, scalar = scalar)

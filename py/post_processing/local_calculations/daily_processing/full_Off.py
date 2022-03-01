@@ -6,15 +6,17 @@ import traceback
 import sys
 
 
-
 c1 = [2.0,20.0]
 c2 = [0.02, 0.0]
 c3 = [1.0, 0.0]
+c4 = [4.0, 40.0]
 
-c_list = [c1,c2,c3]
-N_list = [i for i in range(1,8)]
-b0_list = [0.1, 3, 5]
-ang2_list = [25, 90, 155, -25, -90, 205]
+#c_list = [c1,c2,c3]
+c_list = [c4]
+#N_list = [i for i in range(1,8)]
+N_list = [6,7]
+#b0_list = [0.1, 3, 5]
+b0_list = [0.1]
 
 useb0 = 1
 kd = None

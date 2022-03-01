@@ -20,6 +20,9 @@ def get_array_of_runs_dat_files(datafolder_path, get_hamiltonean = False, get_c_
         for file in os.listdir(datafolder_path):
             if fnmatch.fnmatch(file, '*.dat'):
                 paths_array.append(datafolder_path+file)
+            if fnmatch.fnmatch(file, '*.npy'):
+                paths_array.append(datafolder_path+file)
+
         return paths_array
     elif get_c_ops == True:
         for file in os.listdir(datafolder_path+"/c_ops/"):
@@ -94,10 +97,10 @@ def extract_dat_files(datafolder_path):
     return paths_array
 
 
-def average_of_runs_files(datafolder_path):
+def average_of_runs_files(datafolder_path, geometric = False):
     paths_array = get_array_of_runs_files(datafolder_path)
     runs_txt = get_array_of_numpy_runs(paths_array)
-    avg = average_of_array_arrays(runs_txt[0:], True)
+    avg = average_of_array_arrays(runs_txt[0:], geometric)
     return avg
 
 
@@ -148,13 +151,14 @@ def get_r_i_path_from_rhoss_i_path(rho_ss_path):
     r_i_path[4] = "positions_" + r_i_path[4]
     #['..', 'results', 'N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct', 'positions', 'positions_N6_Omega0.02_Delta0.0_run13.dat']  
     r_i_path_final = "/".join(r_i_path)
-    #'../results/N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct/positions/positions_N6_Omega0.02_Delta0.0_run13'
+    #'../results/N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct/positions/positions_N6_Omega0.02_Delta0.0_run13.dat'
+    r_i_path_final =  r_i_path_final.replace("npy", "dat")
     return r_i_path_final
 
 
 
 
-def get_positions_and_rhoss_from_array_of_paths(rhoss_paths):
+def get_positions_and_rhoss_from_array_of_paths(rhoss_paths, get_beta = False):
     list_of_r = []
     list_of_rhoss = [] 
     corrupted_runs = []
@@ -165,11 +169,15 @@ def get_positions_and_rhoss_from_array_of_paths(rhoss_paths):
         r_i_path = get_r_i_path_from_rhoss_i_path(rhoss_paths[i]) 
         try:
             list_of_r.append(get_positions_from_a_file(r_i_path))
-            list_of_rhoss.append(file_data_read(rhoss_paths[i]))
+            if get_beta == True:
+                list_of_rhoss.append(np.load(rhoss_paths[i],allow_pickle = True))
+                pass
+            else:
+                list_of_rhoss.append(file_data_read(rhoss_paths[i]))
 
         except Exception as e:
             #print("err")
-            #print(e)
+            print(e)
             corrupted_runs.append(i)
     runs_used =len(rhoss_paths)-len(corrupted_runs) 
 
@@ -211,13 +219,31 @@ def pop_corrupted_run_from_rho_and_positions(corrupted_indexes, array_of_r_files
     #pop_from_rho
 
 
-def get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(25) ,results_path = "../results/"):
+def get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(25) ,results_path = "../results/", get_beta = False):
     DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
     label = results_path+DefaultInfo+description+  rho_ss_parameter + "/"
     
     paths_array =get_array_of_runs_dat_files(label) 
     paths_array.sort(key=natural_keys) 
-    array_of_many_rho_ss_files, array_of_r_files, corrupted_runs = get_positions_and_rhoss_from_array_of_paths(paths_array)
+    array_of_many_rho_ss_files, array_of_r_files, corrupted_runs = get_positions_and_rhoss_from_array_of_paths(paths_array,get_beta)
+ 
+     
+    #hamiltonean_paths_array=get_array_of_runs_dat_files(label, get_hamiltonean=True)
+    #c_ops_paths_array=get_array_of_runs_dat_files(label, get_c_ops=True)
+
+    #array_of_hamiltonean_files = get_array_of_dat_runs(hamiltonean_paths_array)
+    #array_of_c_ops_files = get_array_of_dat_runs(c_ops_paths_array)
+    
+
+    return array_of_many_rho_ss_files, array_of_r_files 
+    
+def get_beta_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(25) ,results_path = "../results/"):
+    DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
+    label = results_path+DefaultInfo+description+  rho_ss_parameter + "/"
+    
+    paths_array =get_array_of_runs_dat_files(label) 
+    paths_array.sort(key=natural_keys) 
+    array_of_r_files = get_positions_and_rhoss_from_array_of_paths(paths_array, get_beta = True)
  
         
 
@@ -228,13 +254,9 @@ def get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter, angle = str(
     #array_of_hamiltonean_files = get_array_of_dat_runs(hamiltonean_paths_array)
     #array_of_c_ops_files = get_array_of_dat_runs(c_ops_paths_array)
     
-     
-
-
 
     return array_of_many_rho_ss_files, array_of_r_files 
-    
-
+ 
 
 
 

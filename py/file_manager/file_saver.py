@@ -38,7 +38,7 @@ def get_new_run_number_txt(filename):
     """
 
     i = 0
-    while os.path.exists(f"{filename}{i}.txt"):
+    while os.path.exists(f"{filename}{i}.txt") or  os.path.exists(f"{filename}{i}.npy"):
         i += 1
     return i
 
@@ -49,7 +49,7 @@ def get_new_run_number_dat(filename):
     """
 
     i = 0
-    while os.path.exists(f"{filename}{i}.dat"):
+    while os.path.exists(f"{filename}{i}.dat") or  os.path.exists(f"{filename}{i}.npy"):
         i += 1
     return i
 
@@ -68,4 +68,11 @@ def save_rhoss_to_file(variable, filename):
     file_data_store(f'{filename}.dat', output_data.T) 
 
     
+def save_Beta1D_to_file(variable, filename):
+    np.savez(variable, f"{filename}_Beta1D")
+def save_Beta2D_to_file(variable, filename):
+    np.savez(variable, f"{filename}_Beta2D")
+def save_t_span_to_file(variable, filename):
+    np.savez(variable, f"{filename}_tspan")
+
 

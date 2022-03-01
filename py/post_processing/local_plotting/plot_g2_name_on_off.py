@@ -25,7 +25,7 @@ description = str(sys.argv[4])
 rho_ss_parameter = "_" + str(sys.argv[5])
 results_path = "../results/"
 defaultangle = "25_"
-
+geometric_avg = False 
 taulist = np.arange(-1,1,0.1)
 
 #interaction_list = ["On", "Off"]
@@ -42,7 +42,7 @@ for i, angle in enumerate(angles):
         print(label)
         paths_array = get_array_of_runs_files(label)
         
-        averages.append(average_of_runs_files(label))
+        averages.append(average_of_runs_files(label, geometric_avg))
         #print(averages[0][0])
         array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
         print("blable")
@@ -86,7 +86,7 @@ for i, angle in enumerate(angles):
         labels.append(label)
         paths_array = get_array_of_runs_files(label)
 
-        averages.append(average_of_runs_files(label))
+        averages.append(average_of_runs_files(label, True))
         
         array_of_many_runs.append(get_array_of_numpy_runs(paths_array))
     except:
@@ -110,7 +110,7 @@ for i in range(2):
     for j in range(3):
         print(i,j)
         #print(counter)
-        axs[i, j].plot(ats[counter][0], ats[counter][1], label = "Int = Off", c = "gray" )
+        #axs[i, j].plot(ats[counter][0], ats[counter][1], label = "Int = Off", c = "gray" )
         #axs[i, j].plot(-ats[counter][0], ats[counter][1], c = "gray" )
         counter += 1
 

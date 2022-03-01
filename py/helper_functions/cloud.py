@@ -6,7 +6,8 @@ from  helper_functions.constants import *
 ###############################################
 
 
-
+def random_number_in_interval(upper_limit, lower_limit):
+    return np.random.random()*(upper_limit - lower_limit) + lower_limit
 
 
 def norm_square(r_i):
@@ -72,7 +73,7 @@ def random_r_i(radius):
     ----------
     random 3d vector (np.array)
     """
-    x, y, z = radius*np.random.random(), radius*np.random.random(), radius*np.random.random()
+    x, y, z = radius*random_number_in_interval(1,-1), radius*random_number_in_interval(1,-1), radius*random_number_in_interval(1,-1)
     return np.array([[x],[y],[z]])
     
     

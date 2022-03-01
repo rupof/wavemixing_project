@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#/usr/bin/env python
 # coding: utf-8
 
 
@@ -6,6 +6,8 @@ from qutip import *
 from helper_functions.operators import *
 from timeit import default_timer as timer
 from helper_functions.other import *
+import sys
+
 
 def manual_steadystate(H, c_ops, N, tmax, mc = False):
     """Evolution until tmax of a density matrix for a given Hamiltonian with N atoms and
@@ -172,8 +174,62 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
 
 
     return np.real(g2_light), rho_ss, total_time_ss, total_time_correlation
+#
+##########################################
 
+def g2_of_zero_subspace_approach( r, R1, R2, Beta1D, Beta2D, separated = None ):
 
+    G2 = 0
+    normalization = 0
+    normalizationR1 = 0
+    normalizationR2 = 0
+
+    ####Change to correct implementation, considering just direct angle!
+    k = 1
+
+    moduleR1 = np.sqrt(R1.T @ (R1)).item()
+    nhatR1 = R1/moduleR1
+
+    moduleR2 = np.sqrt(R2.T @ (R2)).item()
+    nhatR2 = R2/moduleR2
+    ####
+    N = len(r)
+    for i in range(N):
+        for ibar in range(N):
+            
+
+            phaseR1 = np.exp(-1j*k*( (nhatR1.T@(r[i]-r[ibar])).item())) 
+            phaseR2 = np.exp(-1j*k*( (nhatR2.T@(r[i]-r[ibar])).item())) 
+            
+            #single excitation term
+            normalizationR1 += phaseR1 * Beta1D[i]*np.conjugate(Beta1D[ibar])
+            normalizationR2 += phaseR2 * Beta1D[i]*np.conjugate(Beta1D[ibar])
+        
+            
+            for j in range(N):
+                
+                #double excitation term
+                normalizationR1 += phaseR1*4*(Beta2D[i][j]*np.conjugate(Beta2D[ibar][j]))
+                normalizationR2 += phaseR2*4*(Beta2D[i][j]*np.conjugate(Beta2D[ibar][j]))
+                
+                for jbar in range(N):
+                    phase = np.exp(-1j*k*( (nhatR1.T@(r[j]-r[jbar])).item() + nhatR2.T@(r[i]-r[ibar])).item() )
+                    G2 += phase*Beta2D[i][j]*np.conjugate(Beta2D[ibar][jbar]) #*4
+                    
+                    sys.stdout.write("\r Summing on i =  {0} ".format(i))
+                    sys.stdout.flush()
+                    #print(f"Summing on i = {i}, j = {ibar}, k = {j}, l = {jbar}")
+
+    normalization = normalizationR1*normalizationR2
+    
+
+    if separated == True:
+         return G2, normalization
+
+    g2 = G2/normalization 
+    
+
+    return g2
 ###########################
 
 def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):

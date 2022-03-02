@@ -79,6 +79,8 @@ Beta1D, Beta2D, t_span, r = SolveForBeta1DandBeta2D(N, kd , b0, exc_radius , Del
 Beta1D_list = Beta1D
 Beta2D_list = Beta2D
 
+endODE = timer()
+
 if get_g2zero_full == True:
     run_number = get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta )
 
@@ -103,7 +105,7 @@ if get_g2zero_full == False:
     run_number = get_new_run_number_dat(filename)
 
 name_of_file =  "{4}/N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+name_of_file_time =  "{4}time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 #name_of_file_hamiltonean ="{4}/hamiltonean/hamiltonean_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
@@ -113,12 +115,11 @@ name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(an
 name_of_file_r ="{4}positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 
-
+#save_params_to_file(str(end-start) , filename)
 save_params_to_file(variables_string, filename)
 
 
-
-np.savetxt(name_of_file_time, [end - start] ) 
+np.savetxt(name_of_file_time, [end - start, endODE-start, end-endODE ] ) #Total, ODE, g2zero 
 
 np.save(name_of_file, [Beta1D, Beta2D, t_span])
 #save_rhoss_to_file(r, name_of_file_r)

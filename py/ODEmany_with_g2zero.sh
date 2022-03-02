@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-for run in {1..100}; do
-  python main_subspace.py 25 0 25 1 0.1 b0_0.1_S_Int_On_testeODE_t01 1 0.05 0 direct 0
+for run in {1..2}; do
+	python main_subspace.py 25 0 6 1 0.1 b0_0.1_S_Int_On_time_t01 1 0.05 0 direct 0
 done
 
 

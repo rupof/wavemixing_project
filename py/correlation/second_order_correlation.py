@@ -216,8 +216,8 @@ def g2_of_zero_subspace_approach( r, R1, R2, Beta1D, Beta2D, separated = None ):
                     phase = np.exp(-1j*k*( (nhatR1.T@(r[j]-r[jbar])).item() + nhatR2.T@(r[i]-r[ibar])).item() )
                     G2 += phase*Beta2D[i][j]*np.conjugate(Beta2D[ibar][jbar]) #*4
                     
-                    sys.stdout.write("\r Summing on i =  {0} ".format(i))
-                    sys.stdout.flush()
+                    #sys.stdout.write("\r Summing on i =  {0} ".format(i))
+                    #sys.stdout.flush()
                     #print(f"Summing on i = {i}, j = {ibar}, k = {j}, l = {jbar}")
 
     normalization = normalizationR1*normalizationR2

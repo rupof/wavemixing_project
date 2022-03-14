@@ -14,7 +14,7 @@ for N_i in "${N_list[@]}"
 	do
 
 		#Resultado1
-		python -m post_processing.local_plotting.plot_g2_name_on_off_nice_presentation $N_i 2 20 b0_0.1_V_Int_On_fixed__ direct
+		python -m post_processing.local_plotting.plot_g2_name_on_off_nice_presentation $N_i 2 20 b0_0.1_V_Int_On_fixed_ direct
 		#python -m post_processing.local_plotting.plot_g2_name_on_off_nice_presentation $N_i 2 20 b0_3_V_Int_On_fixed__ direct
 		
 		#python -m post_processing.local_plotting.plot_g2_name_on_off_nice_presentation $N_i 2 20 b0_5_V_Int_On_fixed__ direct

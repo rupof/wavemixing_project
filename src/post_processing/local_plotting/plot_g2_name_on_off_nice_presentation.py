@@ -143,6 +143,7 @@ plt.legend()
 
 general_name = results_path+DefaultInfo+description
     
+plt.savefig(general_name + "on_off_nice_presentation" +"avg_relatorio.svg", dpi = 300, bbox_inches="tight", format="svg")
 plt.savefig(general_name + "on_off_nice_presentation" +"avg_relatorio.png", dpi = 300, bbox_inches="tight")
     
 #plt.ylim(0,10)

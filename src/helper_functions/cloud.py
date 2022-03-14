@@ -109,19 +109,24 @@ def random_cloud(radius, N, exc_radius = None, b0 = None):
 
     """
     if  b0 != None:    #get from  sizes from b0
-        print("b0",b0 )
+        
         radius = get_radius_from_optical_thickness(N,b0) 
         exc_radius = get_exclusion_radius_from_optical_thickness(N, radius)
 
+        
+        
     
     r = np.array([nullvector*(float(i)) for i in range(N)]) 
     for i in range(N):
         r_i = random_atom_inside_sphere(radius)  
-        counter = 1 
+        counter = 1
+        print("radius from center", np.sqrt(norm_square(r_i))) 
         while check_outside_exclusion_radius(r_i, r, exc_radius) == False :
             r_i = random_atom_inside_sphere(radius)
+            
             counter += 1
-            print(np.sqrt(norm_square(r_i)))
+            
+            print("radius from center", np.sqrt(norm_square(r_i)))
             if counter >20:
                 print("Fatal! endless loop")
                 break;

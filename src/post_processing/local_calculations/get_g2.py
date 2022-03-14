@@ -122,7 +122,7 @@ def get_g2_from_all_available_rho_ss(ang1,ang2, N, useb0, b0, kd, description, i
 
 
 
-def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta  ): 
+def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta ): 
     ang1 = 25
     scalar = True
     R1 = get_nhat_from_angle(ang1)
@@ -164,6 +164,46 @@ def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, de
     np.savetxt(name_of_file, [ang2, g2_zero])
     save_rhoss_to_file(r, name_of_file_r)
     return run_number
+
+def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span ): 
+    ang1 = 25
+    scalar = True
+    R1 = get_nhat_from_angle(ang1)
+    
+    R2 = get_nhat_from_angle(ang2)
+    g2_list = np.zeros_like(t_span)
+
+
+    Gamma = 1
+    nhat = 0
+    
+    for t in range(len(t_span)):
+        g2_list[t] = np.real(g2_of_zero_subspace_approach(r, R1, R2, Beta1D_list[t], Beta2D_list[t]))
+
+    variables = r"$ \Gamma={0}, \Omega={1} \Gamma, \Delta = {2} , kd = {3}, N = {4}, b0 = {5} $".format(Gamma,Omega, Delta, kd, N, b0)
+
+    variables_string = "Gamma={0} \nOmega={1}*Gamma \nDelta = {2} \nkd = {3} \nN = {4}  \nb0 = {5}\nscalar = {6}, interaction = {7} ".format(Gamma,Omega, Delta, kd, N, b0, scalar , interaction)
+
+    ##################################################
+    #Saving files and dealing with names
+
+    path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2QRT_", extra_path = "") #Change to add ../
+    filename ="{4}/ODE_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta)
+    run_number = get_new_run_number_txt(filename)
+    name_of_file =  "{4}/ODE_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+    name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+    name_of_file_r ="{4}/positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+
+
+
+
+    save_params_to_file(variables_string, filename)
+    np.savetxt(name_of_file, [t_span, g2_list])
+    save_rhoss_to_file(r, name_of_file_r)
+    return run_number
+
+
 
 #np.savetxt(name_of_file_time, [total_time_ss, total_time_correlation] )
 

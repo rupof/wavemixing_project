@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.integrate import solve_ivp
 from copy import deepcopy
-from hamiltonean_builder.hamiltonean_builder import * 
+from hamiltonean_builder import * 
 from helper_functions.cloud import *
 
 

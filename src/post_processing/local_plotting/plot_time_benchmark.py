@@ -24,7 +24,7 @@ get_time = True
 #############################
 
 
-N_list = [12, 20,25,30,40,42,44,50,60,70,80]
+N_list = [12, 20,25,30,40,42,44,50,60,70,80, 90, 100 ]
 
 #C1 = [Omega1, Delta1]
 #C2 = [Omega2, Delta2]
@@ -79,23 +79,27 @@ def plot_time_in_axis_for_givenCandDescription( C, description,ax_i ):
         print(len(N_list))
 
         ax_i.scatter(N_list, total_time, marker="^", label = r"Total time" ) 
-        ax_i.scatter(N_list, total_time_ODE,marker= "v", label = r"Solving ODE") 
+        ax_i.scatter(N_list, total_time_ODE,marker= "v", label = r"Solving differential equations") 
 
-        ax_i.set_title(f"Omega, Delta = {C}")
-        ax_i.set_ylabel("t(min)")
-        ax_i.set_xlabel("N")        
-        ax_i.scatter(N_list, total_time_g2, label = r"$g^{(2)}(0)$ by $\theta$ from ODE")
+        #ax_i.set_title(f"Omega, Delta = {C}")
+        ax_i.set_ylabel("$t$ (min)", fontsize=20)
+        ax_i.set_xlabel("$N$", fontsize = 20)        
+        ax_i.scatter(N_list, total_time_g2, label = r"$g^{(2)}(0)$ by $\theta$ from differential equations")
         ax_i.set_yscale("log")
         ax_i.grid(True)
+        plt.gca().tick_params(axis = 'both', which = 'major', labelsize = 15)
+        #plt.gca().tick_params(axis = 'y', which = 'major', labelsize = 11)
 
-
-        ax_i.legend()
+        ax_i.legend(fontsize = 15)
     
     except Exception as e: 
         print(traceback.format_exc())
         pass
 
 
+plt.rcParams.update({
+  "text.usetex": True,
+})
 
 
 fig, axs = plt.subplots(1, 1, figsize = (10,6) ,sharex = True, sharey = True)
@@ -103,8 +107,8 @@ fig, axs = plt.subplots(1, 1, figsize = (10,6) ,sharex = True, sharey = True)
 description = "b0_0.1_S_Int_On_direct"
 
 plot_time_in_axis_for_givenCandDescription( C3, description,axs )
-plt.savefig(f"../results/time_g2zero_theta" ,dpi = 300)
-
+plt.savefig(f"../results/time_g2zero_theta.svg" ,dpi = 300, format="svg")
+plt.savefig(f"../results/time_g2zero_theta.png" ,dpi = 300, format="png")
 
 
 

@@ -27,9 +27,11 @@ The `-> src` folder can be understood of a part related exclusively to the physi
 
 The other part consists of:
 
-- `-> file_manager`
-- `-> post_processing`
+- `-> file_manager` ...
+- `-> post_processing` ...
 
+
+Now, a brief explanation of the physics part of the approaches will follow:
 
 #### Exact implementation
 
@@ -41,9 +43,11 @@ This way, we solve the open quantum system using QuTiP. Overall, for a given set
 
 #### Subspace implementation
 
-1.
-2.
-3.
+1. ...
+2. ...
+3. ...
+
+And a overview of how the managing system works
 
 #### File managing 
 
@@ -55,7 +59,9 @@ This way, we solve the open quantum system using QuTiP. Overall, for a given set
 
 ### Jupyter notebooks:
 
+[Calculating  g⁽²⁾(τ) and atomics correlators using QRT from the subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
+[Calculating  g⁽²⁾(τ=0) for many directions, <σi>(t -> oo) and <σiσj>(t -> oo)  using subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
 
 

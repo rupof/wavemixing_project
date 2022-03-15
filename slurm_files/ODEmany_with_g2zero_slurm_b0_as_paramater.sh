@@ -7,7 +7,8 @@
 PYTHON_EXEC=/home/user/miniconda/bin/python
 
 
-b0=$( bc -l <<< "scale=2; ${SLURM_ARRAY_TASK_ID}/10")
+b0=${SLURM_ARRAY_TASK_ID}
+
 echo $b0
 
 N=40

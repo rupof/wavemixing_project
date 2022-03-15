@@ -1,22 +1,11 @@
 #!/usr/bin/bash
 #SBATCH -J wavemixing            # Identificação do job
 #SBATCH -o %j.out                 # Nome do arquivo de saída padrão (%j = ID do JOB)
-#SBATCH --partition=normal
+#SBATCH --partition=fast
 #SBATCH --mem=8G
 
 PYTHON_EXEC=/home/user/miniconda/bin/python
 
-
-b0=$( bc -l <<< "scale=2; ${SLURM_ARRAY_TASK_ID}/10")
-echo $b0
-
-N=40
-
-
-#useb0=1
-
-
-echo " atoms: $N"
 
 # Criando SCRATCH
 export SCRATCHDIR=/tmp/$SLURM_JOBID
@@ -26,11 +15,19 @@ mkdir -p ${SCRATCHDIR}
 # Copiando py pro scratch
 cp -r ../py/ $SCRATCHDIR
 
+
+#Testando se copiou
+
+cat $SCRATCHDIR/py/hello.txt
+
+#Printou hello! corretamente
+
+#cp -r ../singularity/ $SCRATCHDIR
+
                                    
 # rodamos com singularity usando o mesmo caminho de antes
-
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/py/main_subspace.py 25 0 $N 1 $b0 b0_${b0}_S_Int_On_changingOD_t01 1 2 20 direct 0
-
+echo "rodo"
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/py/main_subspace.py 25 0 4 1 0.1 b0_0.1_S_Int_On_testeBASH_t01 1 0.05 0 direct 0
 
  
 

@@ -7,3 +7,7 @@ The generation of biphotons remains an important field of research, as a number 
 In this context, we seek to understand the contributions of dipole-dipole interactions in the generation of biphotons. To this end, we propose an ab initio model, where dipole-dipole interactions arise naturally to describe FWM in cold atomic clouds. Our simulations are consistent with recent experimental results and show evidence of collective behavior.    
 
 This repository contains all bash scripts used to send simulations in our local cluster and the whole python program that runs the simulations
+
+## Program structure
+(in construction)
+

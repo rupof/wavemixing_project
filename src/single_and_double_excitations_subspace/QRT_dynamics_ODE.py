@@ -36,7 +36,7 @@ def F_double_QRT(t,y, t_span, N_atoms, Beta1D, Omega1D,  Delta1D, Sm_1D, Sm_2D, 
     F = GetBeta0_flat(N_atoms, double = True)
     try:
         #print(t)
-        t_index = np.where(t==t_span)[0][0]
+        #t_index = np.where(t==t_span)[0][0]
         #print("t", t, "t index", t_index) 
         for i in range(len(F)):
             k, l = index_to_row_major_order(i, N_atoms)
@@ -89,7 +89,7 @@ def SolveForBeta1DandBeta2D_tau_QRT(N_atoms, kd = None, b0 = None, exc_radius = 
 
     Delta1D, Omega1D, Gamma2D, Delta2D, r = GetAllODEParametersGiven_b0_or_kd(N_atoms, kd, b0, exc_radius, Omega, Delta, r, scalar)
     
-    Sm_1D_time, Sm_2D_time, t_span_Sm, r = SolveForBeta1DandBeta2D(N_atoms, kd , b0 , exc_radius, Delta , Omega, wave_mixing, scalar, interaction, r, np.linspace(0,100, 30) )
+    Sm_1D_time, Sm_2D_time, t_span_Sm, r = SolveForBeta1DandBeta2D(N_atoms, kd , b0 , exc_radius, Delta , Omega, wave_mixing, scalar, interaction, r, np.linspace(0,200, 50) )
     
     Sm_1D = Sm_1D_time[-1]
     Sm_2D = Sm_2D_time[-1]

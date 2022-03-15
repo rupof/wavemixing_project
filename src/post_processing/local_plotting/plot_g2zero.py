@@ -9,6 +9,10 @@ import traceback
 fig, axs = plt.subplots(figsize = (10,6) ,sharex = True, sharey = True)
 #fig, axs = plt.subplots(figsize = (10,6),subplot_kw={'projection': 'polar'})
 
+plt.rcParams.update({
+  "text.usetex": True,
+})
+
 
 N = str(sys.argv[1])
 Omega = str(float(sys.argv[2]))
@@ -41,7 +45,10 @@ except Exception as e:
 
 at25_25 = averages[0]
 axs.set_title(DefaultInfo+description+defaultangle )
-axs.plot(at25_25[0], at25_25[1], "r-s",   label = f"Average")   
+axs.set_xlabel(r"$\theta_2$")
+axs.set_ylabel(r"$g^{2}(\tau=0)$")
+
+axs.plot(at25_25[0], at25_25[1],"r",   label = f"Average")   
 
 convert_factor =1 # 3.1415/180
 for i in range(len(runs_txt)):
@@ -54,8 +61,8 @@ for i in range(len(runs_txt)):
                 
         #if np.max(runs_txt[i][1])>5:
         #    continue
-        axs.plot(runs_txt[i][0]*convert_factor, runs_txt[i][1])
-            
+        #axs.plot(runs_txt[i][0]*convert_factor, runs_txt[i][1])
+        print("okey")   
         pass
     
 axs.axvline(25*convert_factor, linestyle = "--")
@@ -71,6 +78,7 @@ axs.legend(prop={'size': 10})
 general_name = results_path+DefaultInfo+description
 
 plt.savefig(general_name + f"polar_ODEint.png")
+plt.savefig(general_name + f"polar_ODEint.svg", format="svg")
 plt.show()
    
 fig, axs = plt.subplots(figsize = (10,6),subplot_kw={'projection': 'polar'})
@@ -84,14 +92,18 @@ for i in range(len(runs_txt)):
     #    continue
     #axs.scatter(runs_txt[i][0]*convert_factor, runs_txt[i][1])
     pass
-axs.set_title(DefaultInfo+description+defaultangle )
-axs.plot(at25_25[0]*convert_factor, at25_25[1],   label = f"Average")
-axs.axvline(25*convert_factor, linestyle = "--")
-axs.axvline(205*convert_factor, linestyle = "--")
 
-plt.savefig(general_name + f"polar_circle_ODEint.png")
+#axs.set_title(DefaultInfo+description+defaultangle )
+#axs.set_ylabel(r"$g^{2}(\tau = 0)$")
+axs.plot(at25_25[0]*convert_factor, at25_25[1], "r",  label = r"$g^{(2)}(\tau = 0)$ ")
+axs.axvline(25*convert_factor, linestyle = "--", alpha = 0.5)
+axs.axvline(205*convert_factor, linestyle = "--", alpha = 0.5)
+axs.legend(bbox_to_anchor=(0.5, 0.75), loc='center', scatterpoints=1)
+axs.set_rlabel_position(180)  # Move radial labels away from plotted line
 
+plt.savefig(general_name + f"polar_circle_ODEint.png", dpi = 400)
 
+plt.savefig(general_name + f"polar_cicle_ODEint.svg", format="svg")
 #plt.ylim(0,10)
 #plt.savefig(general_name + "s/N7_far_limavg.png")
 

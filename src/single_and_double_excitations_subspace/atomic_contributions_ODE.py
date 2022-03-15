@@ -49,7 +49,7 @@ def SumG_1D(N, G, beta, l):
 
 def SumG_2D_first_term(N, G, beta, k, l):
     """
-    \sum^N_{m!=l} = G_lm \beta_km
+    \sum^N_{m!=l} G_lm \beta_km
 
     summing on m
     """
@@ -61,7 +61,7 @@ def SumG_2D_first_term(N, G, beta, k, l):
 
 def SumG_2D_second_term(N, G, beta, k,l):
     """
-    \sum^N_{m!=k} = G_km \beta_ml
+    \sum^N_{m!=k} G_km \beta_ml
 
     summing on m
     """

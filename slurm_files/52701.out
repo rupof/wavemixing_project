@@ -1,6 +1,0 @@
-1.30
- atoms: 40
-cp: cannot stat '../py/': No such file or directory
-/home/user/miniconda/bin/python: can't open file '/tmp/52701/py/main_subspace.py': [Errno 2] No such file or directory
-cp: cannot stat '/tmp/52701/results/': No such file or directory
-Simulation complete!!

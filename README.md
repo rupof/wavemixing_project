@@ -6,22 +6,60 @@ The generation of biphotons remains an important field of research, as a number 
 
 In this context, we seek to understand the contributions of dipole-dipole interactions in the generation of biphotons. To this end, we propose an ab initio model, where dipole-dipole interactions arise naturally to describe FWM in cold atomic clouds. Our simulations are consistent with recent experimental results and show evidence of collective behavior.    
 
-This repository contains all bash scripts used to send simulations in our local cluster and the whole python program that runs the simulations
+This repository contains all bash scripts used to send simulations in our local cluster and the whole python program that runs the simulations. During our research we consider two computing strategies to calculate the state of the system. The exact (using QuTiP) and the subspace (using scipy) approach. A short outline of the computer program is given below. 
 
 ## Program structure
 (in construction)
 
 This repository is divided in three folders. 
 
-- `-> bin` Contains the bash scripts to simulate systems and plot results 
-- `-> slurm_files` slurm scripts to use in HPC cluster
-- `-> src` complete python program.
+- `-> bin` Contains the bash scripts to simulate systems and plot results. 
+- `-> slurm_files` slurm scripts to use in HPC cluster.
+- `-> src` full python program.
 
 
-During our research we consider two computing approaches to calculate the state of the system. The exact (using QuTiP) and the subspace (using scipy) approach.
+The `-> src` folder can be understood of a part related exclusively to the physics and mathematics of the problem and a part related to computational file management and post-processing implementations. The physics part consists of:
+
+- `-> helper_functions` contain atomic `cloud` generation scripts, QuTiP quantum `operators`, and `interaction` preparators for coupled dipoles model (scalar and vector). 
+- `-> correlation` cauchy schwarz and g⁽²⁾(τ) implementations for both subspace and exact approaches. 
+- `-> hamiltonean_builder` builds Green's tensor and Hamiltonean for a set of initial conditions (N, kd and exc_radius or b0, Ω, Δ, ... ) or initial set of positions.
+- `-> single_and_double_excitations_subspace` implements the ODE of the subspace approach.
+
+The other part consists of:
+
+- `-> file_manager`
+- `-> post_processing`
+
+
+#### Exact implementation
+
+This way, we solve the open quantum system using QuTiP. Overall, for a given set of conditions, the computational procedure is the following:
+
+1.  Calculate the complete Green's tensor (Matrix of matrices) using `hamiltonean_builder.GreensTensor_and_SRstate`, then compute the system Hamiltonean and Lindbladian collapsible operators `c_ops` using `hamiltonean_builder.system_spec_N`
+2.  This is enough to calculate the steady-state of the system using `main.py`
+3. With a given steady-state we can calculate g⁽²⁾(τ) using `second_order_correlation.g2_l`
+
+#### Subspace implementation
+
+1.
+2.
+3.
+
+#### File managing 
+
+
+
 
 
 ## Examples
+
+### Jupyter notebooks:
+
+
+
+
+
+### Using the terminal:
 
 #### Exact steady-state:
 
@@ -55,4 +93,4 @@ bash get_g2zero_solving_everything.sh
 ```
 
 
-
+### Using HPC: 

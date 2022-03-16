@@ -6,7 +6,19 @@ The generation of biphotons remains an important field of research, as a number 
 
 In this context, we seek to understand the contributions of dipole-dipole interactions in the generation of biphotons. To this end, we propose an ab initio model, where dipole-dipole interactions arise naturally to describe FWM in cold atomic clouds. Our simulations are consistent with recent experimental results and show evidence of collective behavior.    
 
-This repository contains all bash scripts used to send simulations in our local cluster and the whole python program that runs the simulations. During our research we consider two computing strategies to calculate the state of the system. The exact (using QuTiP) and the subspace (using scipy) approach. A short outline of the computer program is given below. 
+This repository contains all bash scripts used to send simulations in our local cluster and the whole python program that runs the simulations. During our research we consider two computing strategies to calculate the state of the system. The exact (using QuTiP) and the subspace (using scipy) approach.  This documentation is structured as follows:
+
+1. [Program structure](#program-structure)
+   - [`src` folder](#the-src-folder)
+2. [Physics](#physics)
+   - [Exact implementation](#exact-implementation)
+   - [Subspace implementation](#subspace-implementation)
+3. [File managing and post-processing](#file-managing-and-post-processing) 
+4. [Examples](#examples)
+   - [Jupyter notebooks](#jupyter-notebooks)
+   - [Terminal](#using-the-terminal)
+
+A short outline of the computer program is given below. 
 
 ## Program structure
 (in construction)
@@ -17,7 +29,7 @@ This repository is divided in three folders.
 - `-> slurm_files` slurm scripts to use in HPC cluster.
 - `-> src` full python program.
 
-_____________________________________________________________________________________________________________________________________________________________
+### The `src` folder
 
 The `src` folder can be understood as a part related exclusively to the physics and mathematics of the system and a part related to computational file management and post-processing implementations. The physics part consists of:
 
@@ -32,7 +44,7 @@ The other part consists of:
 - `-> post_processing.local_calculations` functions to call / start calculating cauchy schwarz and g⁽²⁾(τ) for a given steady-state (exact) or betas list (approximated)  
 - `-> post_processing.local_plotting` different plotting scripts
 
-_____________________________________________________________________________________________________________________________________________________________
+### Physics
 
 Now, a brief explanation of how the physics part works will follow:
 
@@ -52,7 +64,7 @@ In the exact approach, we solve the open quantum system using QuTiP. Overall, fo
 
 Furthermore, a overview of how the managing system works is presented below:
 
-#### File managing 
+#### File managing and post-processing
 ...
 
 

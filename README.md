@@ -17,6 +17,7 @@ This repository contains all bash scripts used to send simulations in our local 
 4. [Examples](#examples)
    - [Jupyter notebooks](#jupyter-notebooks)
    - [Terminal](#using-the-terminal)
+   - [HPC](#using-hpc)
 
 A short outline of the computer program is given below. 
 

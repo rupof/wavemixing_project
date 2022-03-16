@@ -17,8 +17,9 @@ This repository is divided in three folders.
 - `-> slurm_files` slurm scripts to use in HPC cluster.
 - `-> src` full python program.
 
+_____________________________________________________________________________________________________________________________________________________________
 
-The `-> src` folder can be understood of a part related exclusively to the physics and mathematics of the problem and a part related to computational file management and post-processing implementations. The physics part consists of:
+The `src` folder can be understood as a part related exclusively to the physics and mathematics of the system and a part related to computational file management and post-processing implementations. The physics part consists of:
 
 - `-> helper_functions` contain atomic `cloud` generation scripts, QuTiP quantum `operators`, and `interaction` preparators for coupled dipoles model (scalar and vector). 
 - `-> correlation` cauchy schwarz and g⁽²⁾(τ) implementations for both subspace and exact approaches. 
@@ -27,15 +28,17 @@ The `-> src` folder can be understood of a part related exclusively to the physi
 
 The other part consists of:
 
-- `-> file_manager` ...
-- `-> post_processing` ...
+- `-> file_manager` functions to create and save data. Also, scripts to obtain results paths and arrays of results paths for given simulations conditions.
+- `-> post_processing.local_calculations` functions to call / start calculating cauchy schwarz and g⁽²⁾(τ) for a given steady-state (exact) or betas list (approximated)  
+- `-> post_processing.local_plotting` different plotting scripts
 
+_____________________________________________________________________________________________________________________________________________________________
 
-Now, a brief explanation of the physics part of the approaches will follow:
+Now, a brief explanation of how the physics part works will follow:
 
 #### Exact implementation
 
-This way, we solve the open quantum system using QuTiP. Overall, for a given set of conditions, the computational procedure is the following:
+In the exact approach, we solve the open quantum system using QuTiP. Overall, for a given set of conditions, the computational procedure is the following:
 
 1.  Calculate the complete Green's tensor (Matrix of matrices) using `hamiltonean_builder.GreensTensor_and_SRstate`, then compute the system Hamiltonean and Lindbladian collapsible operators `c_ops` using `hamiltonean_builder.system_spec_N`
 2.  This is enough to calculate the steady-state of the system using `main.py`
@@ -43,14 +46,14 @@ This way, we solve the open quantum system using QuTiP. Overall, for a given set
 
 #### Subspace implementation
 
-1. ...
-2. ...
-3. ...
+1. `single_and_double_excitations_subspace.parameter_generator_for_ODE` setups the constants (Δi, Δij, Γij, Ωi ) for the system of coupled ODE using `hamiltonean_builder.GreensTensor_and_SRstate`.
+2. We write the differential equations using `single_and_double_excitations_subspace.atomic_contributions_ODE.F_coupled` and completely solve them with `.SolveForBeta1DandBeta2D`
+3. With a given array of βi, βij we calculate g⁽²⁾(τ=0) using `second_order_correlation.g2_of_zero_subspace_approach`
 
-And a overview of how the managing system works
+Furthermore, a overview of how the managing system works is presented below:
 
 #### File managing 
-
+...
 
 
 
@@ -59,9 +62,9 @@ And a overview of how the managing system works
 
 ### Jupyter notebooks:
 
-[Calculating  g⁽²⁾(τ) and atomics correlators using QRT from the subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
+[g⁽²⁾(τ) and atomics correlators using QRT from the subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
-[Calculating  g⁽²⁾(τ=0) for many directions, <σi>(t -> oo) and <σiσj>(t -> oo)  using subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
+[g⁽²⁾(τ=0) for many directions, <σi>(t -> oo) and <σiσj>(t -> oo)  using subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
 
 

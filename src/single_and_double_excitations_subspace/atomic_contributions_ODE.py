@@ -93,6 +93,10 @@ def F_beta_double_exc(N, k, l, Beta1D, Beta2D, Delta1D, Omega1D, Gamma2D, Delta2
 
     return total_sum
 
+def GetBeta_tau0_flat(Beta1D, Beta2D ):
+    Beta_double = flatten(Beta2D)
+    Beta_flat = np.hstack((Beta1D, Beta_double))
+    return Beta_flat
 
 def GetBeta0_flat(N_atoms, double = False, coupled = False):
     if coupled == True:

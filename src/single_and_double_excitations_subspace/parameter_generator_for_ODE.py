@@ -50,11 +50,7 @@ def GetAllODEParametersGiven_b0_or_kd(N = None, kd = None, b0 = None, exc_radius
             r = random_cloud(None,N,exc_radius, b0)
             print("r", r)
 
-    Omega1D = GetOmega1D(Omega, r)
-    Delta1D = GetDelta1D(Delta, r)
-    Delta2D, Gamma2D = GetDelta2DAndGamma2D(r, scalar =  True)
-
-
+    
     Delta1D, Omega1D, Gamma2D, Delta2D = GetAllODEParametersGiven_r(Omega, Delta, r, scalar = True)
     
     return  Delta1D, Omega1D, Gamma2D, Delta2D, r

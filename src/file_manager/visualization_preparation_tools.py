@@ -7,6 +7,7 @@ import re
 from scipy.stats import gmean
 from scipy.stats import hmean
 
+
 def get_array_of_runs_files(datafolder_path):
     paths_array = []
     for file in os.listdir(datafolder_path):
@@ -328,9 +329,19 @@ def get_array_of_many_runs_usual_conditions(N, Omega, Delta, DefaultInfo, descri
 
 
 
+####################################################################################################################
 
 
 
+
+def column(matrix, i, triD = False, j = 0):
+    if triD != False:
+        z_column = np.zeros(len(matrix))
+        for z in range(len(matrix)):
+            z_column[z] = matrix[z][i][j]
+        return z_column  
+    
+    return [row[i] for row in matrix]
 
 
 

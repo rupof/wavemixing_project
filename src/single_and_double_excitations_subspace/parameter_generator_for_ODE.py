@@ -34,9 +34,9 @@ def GetDelta2DAndGamma2D(r, scalar =  True):
 
 
 def GetAllODEParametersGiven_r(Omega, Delta, r, scalar = True):
-    Omega1D = GetOmega1D(Omega, r)
-    Delta1D = GetDelta1D(Delta, r)
-    Delta2D, Gamma2D = GetDelta2DAndGamma2D(r, scalar =  True)
+    Omega1D = GetOmega1D(Omega, r) 
+    Delta1D = GetDelta1D(Delta, r) 
+    Delta2D, Gamma2D = GetDelta2DAndGamma2D(r, scalar =  True) 
 
     return  Delta1D, Omega1D, Gamma2D, Delta2D
 

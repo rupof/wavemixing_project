@@ -8,7 +8,29 @@ from helper_functions.cloud import *
 
     
 
+def SumG_2D_first_term_QRT(N, G, beta, k, l):
+    """
+    \sum^N_{m!=l} G_ml \beta_kl
 
+    summing on m
+    """
+    total_sum = 0
+    for m in range(N):
+        if m != l:
+            total_sum += G[m][l]*beta[k][l] 
+    return total_sum
+
+def SumG_2D_second_term_QRT(N, G, beta, k,l):
+    """
+    \sum^N_{m!=k} G_mk \beta_lm
+
+    summing on m
+    """
+    total_sum = 0
+    for m in range(N):
+        if m != k:
+            total_sum += G[m][k]*beta[l][m] 
+    return total_sum
 
 
 
@@ -22,11 +44,10 @@ def F_beta_double_exc_QRT(N, k, l, Beta1D, Beta2D, Delta1D, Omega1D, Sm_1D, Sm_2
     G_val = G(Gamma2D, Delta2D)
 
     total_sum = 0
-    total_sum += (1j*(Delta1D[k] + Delta1D[l]) )*Beta2D[k][l] #*0.5 Delete 0.5*0*(Gamma2D[k][k]+Gamma2D[l][l])
-    # (1j*(Delta1D[k] + Delta1D[l])*Beta2D[k][l]) # * 0.5
-    total_sum += -1j * SumG_2D_first_term(N, Delta2D, Beta2D, k, l)  #SumG_2D_first_term works for QRT but we have to use  Delta2D instead of G
-    total_sum += -1j/2*(Omega1D[l]*Sm_1D[k] + Omega1D[k]*Sm_1D[l]) # *0.5
-    total_sum += -1j * SumG_2D_second_term(N, Delta2D, Sm_2D, k, l)  #SumG_2D_second_term works for QRT but we have to use  Delta2D instead of G and Sm_2D instead Beta2D because we only have one time dependence in the operators
+    total_sum += (1j*(Delta1D[k] + Delta1D[l])  - 0.5*(Gamma2D[k][k]+Gamma2D[l][l]))*Beta2D[k][l]   *0.5
+    total_sum += - SumG_2D_first_term_QRT(N, G_val, Beta2D, k, l)  
+    total_sum += -1j/2*(Omega1D[l]*Sm_1D[k] + Omega1D[k]*Sm_1D[l])  *0.5
+    total_sum += - SumG_2D_second_term_QRT(N, G_val, Sm_2D, k, l)
     return total_sum
 
 def F_double_QRT(t,y, t_span, N_atoms, Beta1D, Omega1D,  Delta1D, Sm_1D, Sm_2D, Gamma2D, Delta2D):

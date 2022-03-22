@@ -1,5 +1,7 @@
 import numpy as np
 from  helper_functions.constants import * 
+import matplotlib.pyplot as plt
+from file_manager.visualization_preparation_tools import column
 
 ################################################
 #This module is used to calculate everything related to atomic cloud generation
@@ -92,7 +94,7 @@ def random_cloud(radius, N, exc_radius = None, b0 = None):
     """
     Generates an array with 3D vectors, each vector corresponds to a position of an atom
     for a total of N atom. These positions respect each atom's exclusion radius an are 
-    inside a sphere of radius "radius". 
+    inside a sphere of radius "radius". if exc_radius is "none" we use default exc_radius = 0.3/rho**(1/3)
 
 
     Algorithm:
@@ -120,13 +122,13 @@ def random_cloud(radius, N, exc_radius = None, b0 = None):
     for i in range(N):
         r_i = random_atom_inside_sphere(radius)  
         counter = 1
-        print("radius from center", np.sqrt(norm_square(r_i))) 
+        #print("radius from center", np.sqrt(norm_square(r_i))) 
         while check_outside_exclusion_radius(r_i, r, exc_radius) == False :
             r_i = random_atom_inside_sphere(radius)
             
             counter += 1
             
-            print("radius from center", np.sqrt(norm_square(r_i)))
+            #print("radius from center", np.sqrt(norm_square(r_i)))
             if counter >20:
                 print("Fatal! endless loop")
                 break;
@@ -163,7 +165,45 @@ def get_radius_from_optical_thickness(N, b0):
    
    
    
-   
+def draw_cloud(r, b0, default_box_size = 11.8, alpha = 0.5):
+    fig = plt.figure(figsize=(10, 7), dpi=300)
+    ax = fig.add_subplot(projection='3d')
+    ax.set_aspect("auto")
+
+    ax.set_xlim(-default_box_size, default_box_size)
+    ax.set_ylim(-default_box_size, default_box_size)
+    ax.set_zlim(-default_box_size, default_box_size)
+    
+    #ax.view_init(elev=25., azim=25) #change the view
+
+    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
+    radius = get_radius_from_optical_thickness(len(r),b0)
+    #print("draw", radius)
+    
+    
+    exclusion_radius = get_exclusion_radius_from_optical_thickness(len(r), radius)
+
+    x = radius*np.cos(u)*np.sin(v)
+    y = radius*np.sin(u)*np.sin(v)
+    z = radius*np.cos(v)
+    ax.plot_wireframe(x, y, z, color="r", alpha = alpha)
+
+
+    Xcomponents = column(r, 0, triD = False, j = 0)
+    Ycomponents = column(r, 1, triD = False, j = 0)
+    Zcomponents = column(r, 2, triD = False, j = 0)
+
+    ax.scatter(Xcomponents, Ycomponents, Zcomponents, s = 10)
+
+
+    ax.text2D(0.1, 0.8, f'$r$ = {np.round(radius, 2)}\n' + r'$r_{exc} $= '+ f'{np.round(exclusion_radius,2)}', bbox=dict(facecolor='red', alpha=0.5), transform=ax.transAxes)
+
+
+    world_limits = ax.get_w_lims()
+    ax.set_box_aspect((world_limits[1]-world_limits[0],world_limits[3]-world_limits[2],world_limits[5]-world_limits[4]))
+    
+    return ax
+
    
    
    

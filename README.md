@@ -75,9 +75,10 @@ Furthermore, a overview of how the managing system works is presented below:
 
 ### Jupyter notebooks:
 
-[g⁽²⁾(τ) and atomics correlators using QRT from the subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
-[g⁽²⁾(τ=0) for many directions, <σi>(t -> oo) and <σiσj>(t -> oo)  using subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
+[g⁽²⁾(τ=0) for many directions, <σi>(t -> oo) and <σiσj>(t -> oo)  using subspace approach](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/examples/Subspace_simulation_for_tau_zero.ipynb)
+
+[g⁽²⁾(τ) and atomics correlators using QRT from the subspace approach and comparing to exact simulations](https://github.com/rupof/wavemixing_project/blob/implementing_good_practices/src/benchmarking/Comparing_g2_ExactQRT.ipynb)
 
 
 

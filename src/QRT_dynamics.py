@@ -68,7 +68,7 @@ scalar = True
 
 
 
-description += f'_{rho_ss_parameter}' # useless
+#description += f'_{rho_ss_parameter}' # useless
 
 if tmax != 0:
     description += f'_{tmax}'
@@ -82,7 +82,8 @@ Beta2D_list = Beta2D
 endODE = timer()
 
 if get_g2_full == True:
-    run_number = get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span )
+    for ang2 in [25, 90, 155, -25, -90, 205]:
+        run_number = get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span ) #rho_ss_parameter
 
 
 

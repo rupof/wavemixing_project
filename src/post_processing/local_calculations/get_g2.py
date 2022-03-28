@@ -128,6 +128,9 @@ def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, de
     R1 = get_nhat_from_angle(ang1)
     
     ang2 = np.linspace(0, 360, 120)
+    #ang2 = np.array([25.0, ])
+    
+    
     R2_list = [] 
     g2_zero = []
  
@@ -167,6 +170,7 @@ def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, de
 
 def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span ): 
     ang1 = 25
+    
     scalar = True
     R1 = get_nhat_from_angle(ang1)
     
@@ -187,14 +191,18 @@ def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, use
     ##################################################
     #Saving files and dealing with names
 
-    path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2QRT_", extra_path = "") #Change to add ../
-    filename ="{4}/ODE_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta)
+    description +=  f'_{int(ang1)}_{int(ang2)}' + "_direct"  #implement rho_ss method
+
+    #if tmax != 0:
+    #    description += f'_{tmax}'
+
+    path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2_", extra_path = "") #Change to add ../
+    filename ="{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
     run_number = get_new_run_number_txt(filename)
-    name_of_file =  "{4}/ODE_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-    name_of_file_time =  "{4}/time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+    name_of_file =  "{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
+    name_of_file_time =  "{4}/time/time_angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
     name_of_file_r ="{4}/positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-
 
 
 
@@ -215,6 +223,9 @@ def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, use
 
 
    # print(end - start) # Time
+
+
+
 
 def get_g2_zero_from_all_available_rho_ss(N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax  ):
     

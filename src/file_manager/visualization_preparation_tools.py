@@ -143,7 +143,7 @@ def get_positions_from_a_file(path):
         r.append(r_i)
     return r
 
-def get_r_i_path_from_rhoss_i_path(rho_ss_path):
+def get_r_i_path_from_rhoss_i_path(rho_ss_path, npy = True):
     rho_ss_array_separated_path = rho_ss_path.split("/") 
     # i.e ['..', 'results', 'N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct', 'N6_Omega0.02_Delta0.0_run13.dat']
     rho_ss_array_separated_path.insert(3, "positions")
@@ -153,13 +153,14 @@ def get_r_i_path_from_rhoss_i_path(rho_ss_path):
     #['..', 'results', 'N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct', 'positions', 'positions_N6_Omega0.02_Delta0.0_run13.dat']  
     r_i_path_final = "/".join(r_i_path)
     #'../results/N6_Omega0.02_Delta0.0_b0_0.1_V_Int_On_fixed_direct/positions/positions_N6_Omega0.02_Delta0.0_run13.dat'
-    r_i_path_final =  r_i_path_final.replace("npy", "dat")
+    if npy == True:
+        r_i_path_final =  r_i_path_final.replace("npy", "dat")
     return r_i_path_final
 
 
 
 
-def get_positions_and_rhoss_from_array_of_paths(rhoss_paths, get_beta = False):
+def get_positions_and_rhoss_from_array_of_paths(rhoss_paths, get_beta = False, npy = True):
     list_of_r = []
     list_of_rhoss = [] 
     corrupted_runs = []
@@ -167,7 +168,7 @@ def get_positions_and_rhoss_from_array_of_paths(rhoss_paths, get_beta = False):
 
     for i in range(len(rhoss_paths)):
         #print(rhoss_paths[i])
-        r_i_path = get_r_i_path_from_rhoss_i_path(rhoss_paths[i]) 
+        r_i_path = get_r_i_path_from_rhoss_i_path(rhoss_paths[i], npy) 
         try:
             list_of_r.append(get_positions_from_a_file(r_i_path))
             if get_beta == True:

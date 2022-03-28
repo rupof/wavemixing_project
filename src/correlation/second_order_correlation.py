@@ -73,6 +73,7 @@ def get_steadystate(H, nhat, r,  taulist, c_ops, N, faseglobal = 1, rho_ss = Non
 
 
 
+
 def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
     """
     Second order correlation function as defined in R. Loudon P112 Eq (3.7.22):
@@ -179,6 +180,9 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
 
 def g2_of_zero_subspace_approach( r, R1, R2, Beta1D, Beta2D, separated = None ):
 
+    # implement if Beta1D and Beta2D is None, as with the exact case!!
+
+
     G2 = 0
     normalization = 0
     normalizationR1 = 0
@@ -230,6 +234,17 @@ def g2_of_zero_subspace_approach( r, R1, R2, Beta1D, Beta2D, separated = None ):
     
 
     return g2
+
+def g2_dynamics_subspace_approach( r, R1, R2, taulist, Beta1D, Beta2D):
+    """
+
+    """
+
+    g2_list = np.zeros_like(taulist)
+    for t in range(len(taulist)):
+        g2_list[t] = np.real(g2_of_zero_subspace_approach(r, R1, R2, Beta1D[t], Beta2D[t]))
+    return g2_list, taulist
+
 ###########################
 
 def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
@@ -282,13 +297,16 @@ def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss =
 
 
     """
-
-
     ang2 = 180+ang1
     R1 = get_nhat_from_angle(ang1)
     R2 = get_nhat_from_angle(ang2)
+    
 
+
+    
     g2_1a_2b, rho_ss, total_time_ss, total_time_correlation = g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
+
+    g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
 
     extra_1a_2b = [rho_ss, total_time_ss, total_time_correlation]
 
@@ -309,7 +327,98 @@ def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss =
 
     return np.real(R), rho_ss
 
-#################################################
+
+
+
+def cauchy_schwarz_subspace(r, ang1,  Beta1D = None, Beta2D = None, taulist = np.linspace(0,1, 100), N_atoms = None , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = True, interaction = True, Sm_1D = None, Sm_2D = None  ):
+    """
+    For a given angle calculates Cauchy-Schwarz
+    inequality as defined in Michelle O. Araújo, et al. P3: eq2:
+
+    R = ( g1a2b(tau)* g1b2a(tau)) /( g1a1b(0) * g2a2b(0))
+
+    where 1,2; 2,1 means opposite directions while 1,1 or 2,2 same direction.
+
+    Algorithm:
+
+    1-Define direction from input angle (ang1)
+    2-Calculate g1a2b, g1b2a, g1a1b, g2a2b as functions of tau using subspace approach 
+    3-Grab  g1a1b, g2a2b of tau = 0
+    4-Determine R and return R and beta_i, beta_ij used 
+
+
+    Parameters
+    ----------
+
+
+    H : class:`qutip.Qobj`
+        System Hamiltonian,
+    n_hat : useless (REMOVE)
+    r: useless (REMOVE)
+    taulist: class: np.array
+        list of times to run g2
+    c_ops: list of :class:`qutip.Qobj`
+        list of collapse operators
+    N: int
+        number of atoms
+    faseglobal:  float
+        simulation check to see if results are phase independent
+    rho_ss: class:`qutip.Qobj`
+        steady-state matrix. if not given and is calculated with rho_ss_parameter
+    rho_ss_parameter: string
+        method to calculate ss:
+        - "direct" default method
+        - "manual" evolving rho_ss
+        - other method available in QuTip
+    tmax: float
+        time to evolve system in case "manual" is used
+
+    Returns
+    -------
+    R: cauchy_schwarz fraction
+    rho_ss: used steady-state
+
+
+    """
+
+    if Beta1D and Beta2D is None:
+        Beta1D, Beta2D, taulist, r = SolveForBeta1DandBeta2D_tau_QRT(N_atoms, kd, b0, exc_radius, Delta, Omega, wave_mixing, scalar, interaction, r, taulist, Sm_1D, Sm_2D)
+
+
+    ang2 = 180+ang1
+    R1 = get_nhat_from_angle(ang1)
+    R2 = get_nhat_from_angle(ang2)
+
+    g2_1a_2b = g2_dynamics_subspace_approach( r, R1, R2, taulist, Beta1D, Beta2D)
+    g2_1b_2a = g2_dynamics_subspace_approach( r, R2, R1, taulist, Beta1D, Beta2D)
+    g2_1a_1b = g2_dynamics_subspace_approach( r, R1, R1, taulist, Beta1D, Beta2D)
+    g2_2a_2b = g2_dynamics_subspace_approach( r, R2, R2, taulist, Beta1D, Beta2D)
+
+    g2_1a_1b_zero = g2_1a_1b[0]
+    g2_2a_2b_zero = g2_2a_2b[0]
+
+    R = (g2_1a_2b*g2_1b_2a)/(g2_1a_1b_zero*g2_2a_2b_zero)
+
+    return np.real(R), [Beta1D, Beta2D]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### Benchmarking analytical functions
 
 def second_order_correlation_opposite_directions_interaction_off_araujo(taulist, Delta):

@@ -8,7 +8,7 @@ from helper_functions.cloud import *
 
     
 
-def SumG_2D_first_term_QRT(N, G, beta, k, l):
+def SumG_2D_QRT(N, G, beta, k, l):
     """
     \sum^N_{m!=k} G_mk \beta_lm
 
@@ -16,21 +16,10 @@ def SumG_2D_first_term_QRT(N, G, beta, k, l):
     """
     total_sum = 0
     for m in range(N):
-        if m != k:
-            total_sum += G[m][k]*beta[l][m] 
-    return total_sum
-
-def SumG_2D_second_term_QRT(N, G, beta, k,l):
-    """
-    \sum^N_{m!=l} G_ml \beta_km
-
-    summing on m
-    """
-    total_sum = 0
-    for m in range(N):
         if m != l:
-            total_sum += G[m][l]*beta[k][m] 
+            total_sum += G[l][m]*beta[k][m] 
     return total_sum
+
 
 
 
@@ -44,10 +33,9 @@ def F_beta_double_exc_QRT(N, k, l, Beta1D, Beta2D, Delta1D, Omega1D, Sm_1D, Sm_2
     G_val = G(Gamma2D, Delta2D)
 
     total_sum = 0
-    total_sum += (1j*(Delta1D[k] + Delta1D[l])  - 0.5*(Gamma2D[k][k]+Gamma2D[l][l]))*Beta2D[k][l] #  *0.5
-    total_sum += - SumG_2D_first_term_QRT(N, G_val, Sm_2D, k, l)  
-    total_sum += -1j/2*(Omega1D[l]*Sm_1D[k] + np.conjugate(Omega1D[k])*Sm_1D[l])  #*0.5
-    total_sum += - SumG_2D_second_term_QRT(N, G_val, Beta2D, k, l)
+    total_sum += (1j*(Delta1D[l])  - 0.5*(Gamma2D[l][l]))*Beta2D[k][l] #  *0.5
+    total_sum += -1j/2*(Omega1D[l]*Sm_1D[k])  #*0.5
+    total_sum += - SumG_2D_QRT(N, G_val, Beta2D, k, l)
     return total_sum
 
 def F_double_QRT(t,y, t_span, N_atoms, Beta1D, Omega1D,  Delta1D, Sm_1D, Sm_2D, Gamma2D, Delta2D):

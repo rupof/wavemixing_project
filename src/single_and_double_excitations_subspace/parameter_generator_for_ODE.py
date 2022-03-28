@@ -53,5 +53,5 @@ def GetAllODEParametersGiven_b0_or_kd(N = None, kd = None, b0 = None, exc_radius
     
     Delta1D, Omega1D, Gamma2D, Delta2D = GetAllODEParametersGiven_r(Omega, Delta, r, scalar = True)
     
-    return  Delta1D*0.5, Omega1D*0.5, Gamma2D*0.5, Delta2D  , r
+    return  Delta1D, Omega1D, Gamma2D, Delta2D  , r
 

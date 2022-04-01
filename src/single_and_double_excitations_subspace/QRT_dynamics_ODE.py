@@ -80,8 +80,7 @@ def F_coupled_QRT(t,y, N_atoms, Omega1D,Delta1D,Gamma2D, Sm_1D, Sm_2D, Delta2D):
         F[l] = F_beta_single_exc(N_atoms, l, Beta1D, Delta1D, Omega1D, Gamma2D, Delta2D)
 
     for i in range(N_atoms,len(F)):
-        #k, l = index_to_row_major_order(i-N_atoms, N_atoms)   #troquei indice e funcionou
-        k, l = np.unravel_index(i-N_atoms, (N_atoms, N_atoms)  )
+        k, l = np.unravel_index(i-N_atoms, (N_atoms, N_atoms)  ) #i -> k,l
         
         F[i] = F_beta_double_exc_QRT(N_atoms, k, l, Beta1D, Beta2D, Delta1D, Omega1D, Sm_1D, Sm_2D, Gamma2D, Delta2D)
         #if k == l:

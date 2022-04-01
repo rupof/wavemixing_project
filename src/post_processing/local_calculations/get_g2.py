@@ -169,6 +169,7 @@ def get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, de
     return run_number
 
 def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span ): 
+    start = timer()
     ang1 = 25
     
     scalar = True
@@ -205,10 +206,13 @@ def get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, use
     name_of_file_r ="{4}/positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 
-
+    end = timer()
+   
     save_params_to_file(variables_string, filename)
     np.savetxt(name_of_file, [t_span, g2_list])
     save_rhoss_to_file(r, name_of_file_r)
+    np.savetxt(name_of_file_time, [end - start ] ) #Total, ODE, g2zero 
+
     return run_number
 
 

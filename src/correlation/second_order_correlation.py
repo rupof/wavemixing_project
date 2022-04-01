@@ -247,6 +247,24 @@ def g2_dynamics_subspace_approach( r, R1, R2, taulist, Beta1D, Beta2D):
 
 ###########################
 
+def cauchy_schwarz_from_g12_and_g22(g2_12, g2_11):
+    """
+    For a given g2 mixed and auto correlation   calculates Cauchy-Schwarz
+    inequality as defined in Michelle O. Araújo, et all. P3: eq2:
+
+    R = ( g1a2b(tau)* g1b2a(tau)) /( g1a1b(0) * g2a2b(0))
+
+    where 1,2; 2,1 means opposite directions while 1,1 or 2,2 same direction.
+    
+    This program calculates R, using: 
+    
+    R = ( g_12(tau)* g_12(tau)) /( g_11(0) * g_11(0))
+    
+    Because g_11(0) = g_22(0) as proven in benchmarking notebook 
+    """
+
+    return g2_12*g2_12/(g2_11*g2_11)
+
 def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
     """
     For a given angle calculates Cauchy-Schwarz

@@ -7,12 +7,16 @@
 PYTHON_EXEC=/home/user/miniconda/bin/python
 
 
-b0=$( bc -l <<< "scale=2; ${SLURM_ARRAY_TASK_ID}/10")
+
+N=$1
+b0=$2   #$( bc -l <<< "scale=2; ${SLURM_ARRAY_TASK_ID}/10")
+tmax=$3
+
+Omega=2
+Delta=20
+
+
 echo $b0
-
-N=40
-
-
 #useb0=1
 
 
@@ -24,12 +28,12 @@ export SCRATCHDIR=/tmp/$SLURM_JOBID
 mkdir -p ${SCRATCHDIR}
 
 # Copiando py pro scratch
-cp -r ../py/ $SCRATCHDIR
+cp -r ../src/ $SCRATCHDIR
 
                                    
 # rodamos com singularity usando o mesmo caminho de antes
 
-singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/py/main_subspace.py 25 0 $N 1 $b0 b0_${b0}_S_Int_On_changingOD_t01 1 2 20 direct 0
+singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/src/QRT_dynamics.py 25 0 $N 1 $b0 b0_${b0}_S_Int_On_QRT_t${tmax} 1 $Omega $Delta direct $tmax
 
 
  

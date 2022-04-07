@@ -263,7 +263,7 @@ def cauchy_schwarz_from_g12_and_g22(g2_12, g2_11):
     Because g_11(0) = g_22(0) as proven in benchmarking notebook 
     """
 
-    return g2_12*g2_12/(g2_11*g2_11)
+    return g2_12*g2_12/(g2_11[0]*g2_11[0])
 
 def cauchy_schwarz(H, nhat, r, ang1, taulist, c_ops, N, faseglobal = 1, rho_ss = None, rho_ss_parameter = "direct", tmax = None):
     """

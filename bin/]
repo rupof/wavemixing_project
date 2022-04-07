@@ -1,0 +1,10 @@
+#!/bin/bash
+cd ../src
+N=40
+b0=5
+t=1
+
+#python -m post_processing.local_plotting.plot_g2_name_auto_and_cross_correlation_and_cs $N 2 20 b0_${b0}_S_Int_On_QRT_t${t}_ direct ${b0}
+
+python -m post_processing.local_plotting.plot_g2_name_auto_and_cross_correlation_and_cs $N 2 20 b0_${b0}_S_Int_On_QRT_ direct ${b0}
+

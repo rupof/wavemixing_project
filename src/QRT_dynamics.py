@@ -58,7 +58,7 @@ rho_ss_parameter = str(sys.argv[10]) # useless
 print(f"rho_ss_parameter = {rho_ss_parameter}")
 tmax = float(sys.argv[11]) # useless
 print(f"tmax = {tmax}")
-t_span, dt = np.linspace(0,tmax, 100, retstep = True ) 
+t_span, dt = np.linspace(0,tmax, int(tmax)*70, retstep = True ) 
 
 
 
@@ -81,10 +81,11 @@ Beta2D_list = Beta2D
 
 endODE = timer()
 
+print(t_span)
 if get_g2_full == True:
     for ang2 in [205]:
         run_number = get_all_g2_for_a_beta_QRT_dynamics(ang2, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span ) #rho_ss_parameter
-    run_number = get_all_g2_for_a_beta_QRT_dynamics(25, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span[0] ) #rho_ss_parameter
+    run_number = get_all_g2_for_a_beta_QRT_dynamics(25, r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta, t_span[:2] ) #rho_ss_parameter
     
 
 

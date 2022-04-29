@@ -5,7 +5,8 @@ from timeit import default_timer as timer
 from helper_functions.interaction_preparation import *
 from helper_functions.operators import *
 from helper_functions.other import * 
-from hamiltonean_builder.hamiltonean_builder import *
+from hamiltonian.hamiltonian_builder import *
+from hamiltonian.different_waves import *
 from correlation.second_order_correlation import *
 from post_processing.local_calculations.get_g2 import *
 

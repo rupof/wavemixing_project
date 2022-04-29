@@ -7,7 +7,8 @@ from file_manager.visualization_preparation_tools import get_rho_ss_list
 from helper_functions.interaction_preparation import *
 from helper_functions.operators import *
 from helper_functions.other import * 
-from hamiltonean_builder.hamiltonean_builder import *
+from hamiltonian.hamiltonian_builder import *
+from hamiltonian.different_waves import *
 from correlation.second_order_correlation import *
 from file_manager import get_path_to_save_files, get_new_run_number_txt, save_params_to_file, save_rhoss_to_file
 

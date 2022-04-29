@@ -4,6 +4,9 @@
 import numpy as np
 from qutip import *
 
+
+from hamiltonian.different_waves import *
+
 from helper_functions.interaction_preparation import *
 from helper_functions.operators import *
 from helper_functions.other import *
@@ -49,7 +52,7 @@ def GreensTensor_and_SRstate(Gamma, N, r, scalar = False):
     return GTensor, M, DeltaMatrix, GammaMatrix, GammaSR, DeltaSR, SR_state
 
 
-def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True, r = None ):
+def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = False, interaction = True, r = None, beam = "plane_wave"  ):
     """
     This function creates the hamiltonean and collapsible operators of our system
     "ground-state neutral atoms that interact solely through induced dipole-
@@ -91,7 +94,8 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
 
 
     """
-
+    
+ 
     k = 1
     kvec = k*yhat # incident laser propagating direction
     
@@ -128,15 +132,30 @@ def system_spec_N(Gamma, N , kd = None, b0 = None, exc_radius = None, Delta = No
     H = 0
     Hint = 0
     Lij = 0
-    
+        
     if wave_mixing == True:
         for i, r_i in enumerate(r):
             H += -Delta * sigmap_i(N,i) * sigmam_i(N,i)
-    
-            #Wave 1
-            H += 1/2*( Omega* ( (np.exp( 1j*(kvec.T@r[i]).item())*sigmap_i(N,i) + np.exp(-1j*(kvec.T@r[i]).item())*sigmam_i(N,i) ))) 
-            #Wave 2
-            H += 1/2*( Omega* ( (np.exp(-1j*(kvec.T@r[i]).item())*sigmap_i(N,i) + np.exp( 1j*(kvec.T@r[i]).item())*sigmam_i(N,i) ))) 
+            
+            if beam == "gaussian":
+                R = get_radius_from_optical_thickness(N,b0)
+                w0 = R/2
+                
+                
+                OmegaN = (Omega*Gaussian_beam(r_i, w0)).item()
+                
+                #Wave 1
+                H += 1/2*( OmegaN*sigmap_i(N,i) + np.conjugate(OmegaN)*sigmam_i(N, i))
+            	
+            	#Wave 2
+                H += 1/2*( np.conjugate(OmegaN)*sigmap_i(N,i) + OmegaN*sigmam_i(N, i))
+            
+                
+            else:
+                #Wave 1
+                H += 1/2*( Omega* ( (np.exp( 1j*(kvec.T@r[i]).item())*sigmap_i(N,i) + np.exp(-1j*(kvec.T@r[i]).item())*sigmam_i(N,i) ))) 
+                #Wave 2
+                H += 1/2*( Omega* ( (np.exp(-1j*(kvec.T@r[i]).item())*sigmap_i(N,i) + np.exp( 1j*(kvec.T@r[i]).item())*sigmam_i(N,i) ))) 
 
             
             for j, r_j in enumerate(r):

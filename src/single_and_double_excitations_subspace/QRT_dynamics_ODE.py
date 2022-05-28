@@ -38,6 +38,7 @@ def F_beta_double_exc_QRT(N, k, l, Beta1D, Beta2D, Delta1D, Omega1D, Sm_1D, Sm_2
     total_sum += - SumG_2D_QRT(N, G_val, Beta2D, k, l)
     return total_sum
 
+
 def F_double_QRT(t,y, t_span, N_atoms, Beta1D, Omega1D,  Delta1D, Sm_1D, Sm_2D, Gamma2D, Delta2D):
     """
     single and double excitation ODE

@@ -18,13 +18,13 @@ import sys
 
 """Given some initial parameters this scripts obtains g2, from local results (rho_ss or Beta1D, Beta2D) """
 
-def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss, r ):
+def get_g2_for_a_rho_ss(ang1,ang2, phi, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss, r ):
     """
     Calculates g2 given ang1, ang2 and saves it. (Description to be improved...)
 
     """
-    R1 = get_nhat_from_angle(ang1)
-    R2 = get_nhat_from_angle(ang2)
+    R1 = get_nhat_from_angle(ang1, phi)
+    R2 = get_nhat_from_angle(ang2, 180+phi)
     
 
 
@@ -52,7 +52,7 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     psi0 = tensor([ket("1") for i in range(N) ])
     wave_mixing = True
     scalar = False
-    description += f'_{int(ang1)}_{int(ang2)}_{rho_ss_parameter}'
+    description += f'_{int(ang1)}_{int(ang2)}_{int(phi)}_{rho_ss_parameter}'
 
     if tmax != 0:
         description += f'_{tmax}'
@@ -65,7 +65,7 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
     rho_ss_results = Qobj(rho_ss, dims=H.dims)
 
-    g2_lig, rho_ss_out, total_time_ss, total_time_correlation  = g2_l(H, nhat, r,R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss_results, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
+    G2, I,  rho_ss_out, total_time_ss, total_time_correlation  = g2_l(H, nhat, r,R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = rho_ss_results, rho_ss_parameter = rho_ss_parameter, tmax = tmax)
 
 
 
@@ -80,6 +80,7 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
     #Saving files and dealing with names
         
     path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2_", extra_path = "") #Change to add ../
+    
     filename ="{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
     run_number = get_new_run_number_txt(filename)
     name_of_file =  "{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
@@ -89,9 +90,9 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
 
     
-
     save_params_to_file(variables_string, filename)
-    np.savetxt(name_of_file, [taulist, g2_lig])
+    np.savetxt(name_of_file, [taulist, G2, [I*1 for i in range(len(taulist))] ])
+
     save_rhoss_to_file(r, name_of_file_r)
     
     
@@ -106,19 +107,21 @@ def get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, O
 
    # print(end - start) # Time
 
-def get_g2_from_all_available_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax  ):
-
+def get_g2_from_all_available_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, start_index = None ):
     rho_ss_list, r_list,  = get_rho_ss_list(N, Omega, Delta, description, rho_ss_parameter= rho_ss_parameter, results_path="../results/")
-
-
+    if start_index is not None:
+        rho_ss_list =  rho_ss_list[start_index:]
+        r_list =  r_list[start_index:]
+    print("size of array ", len(r_list )) 
+    phi_list = np.linspace(0, 90, 30)
     for index, rho_ss  in enumerate(rho_ss_list):
         try:
-            r = r_list[index]
-            get_g2_for_a_rho_ss(ang1,ang2, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss,r  )
-            print ("rho_ss index =", index)
+            for phi in phi_list:
+                r = r_list[index]
+                get_g2_for_a_rho_ss(ang1,ang2,phi, N, useb0, b0, kd, description, interaction, Omega, Delta, rho_ss_parameter, tmax, rho_ss,r  )
+                print ("rho_ss index =", index)
         except Exception:
             print(traceback.format_exc())
-
             print("get_g2; error in run:", index)
 
 

@@ -8,14 +8,17 @@ from  helper_functions.constants import *
 def get_vector_components(R):
     x,y,z = R[0] , R[1], R[2]
     return x,y,z
-def get_nhat_from_angle(degrees):
+def get_nhat_from_angle(degrees, phi = 90 ):
     """
     get normal 2d vector pointing in "degrees" direction
     """
-    theta = 2*3.14/360*degrees
-    a = np.cos(theta)
-    b = np.sin(theta)
-    nhat = (a*xhat+b*yhat)/(a**2+b**2)**0.5
+    theta = 2*3.1415/360.0*degrees
+    phi = 2*3.1415/360.0*phi
+    a = np.cos(theta)*np.sin(phi)
+    b = np.sin(theta)*np.sin(phi)
+    c = np.cos(phi)
+
+    nhat = (a*xhat+b*yhat +c*zhat)/(a**2+b**2 + c**2)**0.5
     return nhat
 
 def generate_atom_r(x):

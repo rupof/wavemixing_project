@@ -63,7 +63,7 @@ print(f"tmax = {tmax}")
 
 psi0 = tensor([ket("1") for i in range(N) ])
 wave_mixing = True
-scalar = True
+scalar = False
 
 
 

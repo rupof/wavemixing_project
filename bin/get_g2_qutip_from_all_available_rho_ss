@@ -1,0 +1,21 @@
+#!/bin/bash
+
+ang1=25
+ang2=205
+N=7
+useb0=1
+b0=0.1
+description=b0_${b0}_V_Int_On_implementing_phi_
+interaction=1
+Omega=6.0
+Delta=20.0
+rho_ss_parameter=direct
+tmax=0
+start_index=8
+
+
+cd ../src
+python -m post_processing.local_calculations.daily_processing.one_run $ang1 $ang2 $N $useb0 $b0 $description $interaction $Omega $Delta $rho_ss_parameter $tmax $start_index
+
+
+

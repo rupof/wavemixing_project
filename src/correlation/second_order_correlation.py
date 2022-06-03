@@ -165,7 +165,9 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
     Ep_R2_norm = EmgR2 * EpgR2
 
     normalization = (expect( Ep_R1_norm, rho_ss)) * (expect( Ep_R2_norm, rho_ss))
-
+    
+    print("G2", G2)
+    print("norm", normalization)
     g2_light = G2/normalization
 
 
@@ -174,7 +176,7 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
     total_time_correlation = end_time_correlation - start_time_correlation
 
 
-    return np.real(g2_light), rho_ss, total_time_ss, total_time_correlation
+    return np.real(G2), np.real(normalization), rho_ss, total_time_ss, total_time_correlation
 #
 ##########################################
 

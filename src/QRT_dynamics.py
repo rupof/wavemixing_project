@@ -62,7 +62,10 @@ tmax = float(sys.argv[11]) # useless
 print(f"tmax = {tmax}")
 t_span, dt = np.linspace(0,tmax, int(tmax)*70, retstep = True ) 
 
-
+extra_path_for_cluster = str(sys.argv[12]) 
+if extra_path_for_cluster is None or extra_path_for_cluster == "":
+    extra_path_for_cluster = ".."   
+print("Extra path = ", extra_path_for_cluster)
 
 get_g2_full = True
 wave_mixing = True
@@ -104,7 +107,7 @@ end = timer()
 #Saving files!
 
         
-path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
+path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_path = extra_path_for_cluster )
 filename ="{4}/N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 
 if get_g2_full == False:

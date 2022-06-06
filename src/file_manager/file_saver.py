@@ -4,7 +4,7 @@ import os
 from qutip import file_data_store
 import numpy as np
 
-def get_path_to_save_files(N,Omega,Delta, description, extra_path = "", extra_folder_name = ""):
+def get_path_to_save_files(N,Omega,Delta, description, extra_path = "..", extra_folder_name = ""):
     """creates a folder, if it does not exit,  in  "../results/{0}/"..
         with name format as N#_Omega#_Delta#_description.
         Optional extra_path allows to other adress at the beginning
@@ -12,15 +12,15 @@ def get_path_to_save_files(N,Omega,Delta, description, extra_path = "", extra_fo
 
     """
     folder_name = extra_folder_name  + "N{0}_Omega{2}_Delta{3}_{1}".format(str(N), description, Omega, Delta)
-    path_to_folder = extra_path + "../results/{0}/".format(folder_name)
+    path_to_folder = extra_path + "/results/{0}/".format(folder_name)
     pathlib.Path(path_to_folder).mkdir(parents=True, exist_ok=True) 
     
-    path_to_time_folder = "../results/{0}/time/".format(folder_name)
+    path_to_time_folder = extra_path"/results/{0}/time/".format(folder_name)
     pathlib.Path(path_to_time_folder).mkdir(parents=True, exist_ok=True) 
     
 
 
-    path_to_r_folder = "../results/{0}/positions/".format(folder_name)
+    path_to_r_folder = extra_path+"/results/{0}/positions/".format(folder_name)
     pathlib.Path(path_to_r_folder).mkdir(parents=True, exist_ok=True)
 
 

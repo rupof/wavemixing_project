@@ -58,6 +58,10 @@ print(f"rho_ss_parameter = {rho_ss_parameter}")
 tmax = float(sys.argv[11])
 print(f"tmax = {tmax}")
 
+extra_path_for_cluster = str(sys.argv[12]) 
+if extra_path_for_cluster is None or extra_path_for_cluster == "":
+    extra_path_for_cluster = ".."
+print("Extra path = ", extra_path_for_cluster)
 
 
 
@@ -92,7 +96,7 @@ end = timer()
 #Saving files!
 
         
-path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
+path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_path = extra_path_for_cluster)
 filename ="{4}/N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 run_number = get_new_run_number_dat(filename)
 

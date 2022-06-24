@@ -59,53 +59,53 @@ function doubleExcitation_speedTuned(du, u, p, t)
 end
 
 
-function doubleExcitation_full_speedTuned(du, u, p, t)
-    N, G, Ωₗ, Γₗ, Δₗ, rightIndex, _temp = p
-    βₗ = u[1:N]
-	βₖₗ = reshape(u[N+1:N*N], N, N) # check if N*N works instead of end
-	γₖₗ = reshape(u[N*N+1:end], N, N)
-	
-	#βₗcalculations
-    for l = 1:N
-        du[l] = (im * Δₗ[l] - Γₗ[l] / 2) * βₗ[l] - 0.5 * im * Ωₗ[l]
-    end
-    mul!(du[1:N], G, βₗ)
-
-	#βₖₗcalculations
-    @tensor begin
-        _temp[k, l] = G[l, m] * βₖₗ[k, m] + G[k, m] * βₖₗ[m, l]
-    end
-
-    for k = 1:N
-        for l = 1:N
-			if (k == l)
-                du[N+rightIndex[k, l]] = 0
-            else
-				du[N+rightIndex[k, l]] =
-					(im * (Δₗ[k] + Δₗ[l]) - 0.5 * (Γₗ[k] + Γₗ[l])) * βₖₗ[k, l] -
-					0.5im * (Ωₗ[l] * βₗ[k] + Ωₗ[k] * βₗ[l]) + _temp[k, l]
-			end
-		end
-    end
-	#γₖₗ
-	@tensor begin
-			_temp[k, l] = G[k, m] * γₖₗ[m, l] + adjoint(G[l, m]) * γₖₗ[k, m]
-    end
-	for k = 1:N
-        for l = 1:N
-			if (k == l)
-                du[N*N+rightIndex[k, l]] = 0
-            else
-				du[N*N+rightIndex[k, l]] =
-					(im * (Δₗ[k] - Δₗ[l]) - 0.5 * (Γₗ[k] + Γₗ[l])) * γₖₗ[k, l] -
-					0.5im * (  Ωₗ[k] * adjoint(βₗ[l]) - adjoint(Ωₗ[l]) * βₗ[k])  + _temp[k, l]
-			end
-		end
-    end
-
-    return nothing
-end
-
+#function doubleExcitation_full_speedTuned(du, u, p, t)
+#    N, G, Ωₗ, Γₗ, Δₗ, rightIndex, _temp = p
+#    βₗ = u[1:N]
+#	βₖₗ = reshape(u[N+1:N*N], N, N) # check if N*N works instead of end
+#	γₖₗ = reshape(u[N*N+1:end], N, N)
+#	
+#	#βₗcalculations
+#    for l = 1:N
+#        du[l] = (im * Δₗ[l] - Γₗ[l] / 2) * βₗ[l] - 0.5 * im * Ωₗ[l]
+#    end
+#    mul!(du[1:N], G, βₗ)
+#
+#	#βₖₗcalculations
+#    @tensor begin
+#        _temp[k, l] = G[l, m] * βₖₗ[k, m] + G[k, m] * βₖₗ[m, l]
+#    end
+#
+#    for k = 1:N
+#        for l = 1:N
+#			if (k == l)
+#                du[N+rightIndex[k, l]] = 0
+#            else
+#				du[N+rightIndex[k, l]] =
+#					(im * (Δₗ[k] + Δₗ[l]) - 0.5 * (Γₗ[k] + Γₗ[l])) * βₖₗ[k, l] -
+#					0.5im * (Ωₗ[l] * βₗ[k] + Ωₗ[k] * βₗ[l]) + _temp[k, l]
+#			end
+#		end
+#    end
+#	#γₖₗ
+#	@tensor begin
+#			_temp[k, l] = G[k, m] * γₖₗ[m, l] + adjoint(G[l, m]) * γₖₗ[k, m]
+#    end
+#	for k = 1:N
+#        for l = 1:N
+#			if (k == l)
+#                du[N*N+rightIndex[k, l]] = 0
+#            else
+#				du[N*N+rightIndex[k, l]] =
+#					(im * (Δₗ[k] - Δₗ[l]) - 0.5 * (Γₗ[k] + Γₗ[l])) * γₖₗ[k, l] -
+#					0.5im * (  Ωₗ[k] * adjoint(βₗ[l]) - adjoint(Ωₗ[l]) * βₗ[k])  + _temp[k, l]
+#			end
+#		end
+#    end
+#
+#    return nothing
+#end
+#
 function benchmark_test(p)
 		N, G, Ωₗ, Γₗ, Δₗ = p
 		println(p)

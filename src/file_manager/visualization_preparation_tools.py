@@ -43,19 +43,23 @@ def get_array_of_runs_dat_files(datafolder_path, get_hamiltonean = False, get_c_
 
 
 
-def get_array_of_numpy_runs(paths_array):
+def get_array_of_numpy_runs(paths_array, npy = False):
     runs_txt = []
     corrupted_runs = []
 
     for i, run in enumerate(paths_array):
         try:
-            numpy_run = np.loadtxt(run)
+            if npy == True:
+               numpy_run = np.load(run)
+            else:
+               numpy_run = np.loadtxt(run)
             runs_txt.append(numpy_run)
         except Exception as e:
             print(run)
             print(e)
 
     return runs_txt
+    
 
 def get_array_of_dat_runs(paths_array):
     runs_dat = []

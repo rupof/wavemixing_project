@@ -79,7 +79,7 @@ def get_g2_for_a_rho_ss(ang1,ang2, phi, N, useb0, b0, kd, description, interacti
     ##################################################
     #Saving files and dealing with names
         
-    path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2_", extra_path = "") #Change to add ../
+    path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description, extra_folder_name="g2_", extra_path = "..") #Change to add ../
     
     filename ="{4}/angulo{0}e{1}_N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
     run_number = get_new_run_number_txt(filename)
@@ -113,7 +113,7 @@ def get_g2_from_all_available_rho_ss(ang1,ang2, N, useb0, b0, kd, description, i
         rho_ss_list =  rho_ss_list[start_index:]
         r_list =  r_list[start_index:]
     print("size of array ", len(r_list )) 
-    phi_list = np.linspace(0, 90, 30)
+    phi_list = np.linspace(0, 360, 40)
     for index, rho_ss  in enumerate(rho_ss_list):
         try:
             for phi in phi_list:

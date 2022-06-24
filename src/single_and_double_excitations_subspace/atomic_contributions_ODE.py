@@ -214,12 +214,17 @@ def SolveForBeta1D(N, kd = None, b0 = None, exc_radius = None, Delta = None, Ome
     return Beta1D, r 
 
 
-def SolveForBeta1DandBeta2D(N_atoms, kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = True, interaction = True, r = None, t_span = None  ):
+def SolveForBeta1DandBeta2D(N_atoms, kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = True, interaction = True, r = None, t_span = None, initial_Beta1D = None  ):
     
 
     #t_span, dt = np.linspace(0,1,20, retstep = True) 
     
     BetaCoupled_flat = GetBeta0_flat(N_atoms, coupled = True)
+    
+    if initial_Beta1D is not None:
+        initial_Beta2D= np.zeros([N_atoms,N_atoms])
+        BetaCoupled_flat = GetBeta_tau0_flat(initial_Beta1D , initial_Beta2D  )
+        BetaCoupled_flat = np.array(BetaCoupled_flat,dtype="complex_")
 
     Delta1D, Omega1D, Gamma2D, Delta2D, r = GetAllODEParametersGiven_b0_or_kd(N_atoms, kd, b0, exc_radius, Omega, Delta, r, scalar)
 

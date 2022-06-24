@@ -42,7 +42,7 @@ scalar = True
 tf = 50.0
 t_span = np.arange(0,tf,0.05 ) 
 
-N_list = np.array([i for i in range(2, N, 3)])
+N_list = np.logspace(2, 8, num=16, base=2, dtype = "int") 
 time_list = np.zeros_like(N_list)
 #r = random_cloud(r = None, N = N_atoms, exc_radius = None, b0 = b0)
 
@@ -91,7 +91,7 @@ for i in range(len(N_list)):
     time_list[i] = subspace_opt_time
 
 
-np.savetxt('subspace_opt_time_2.csv', (N_list, time_list), delimiter=',')
+np.savetxt('subspace_opt_time_again_1.csv', (N_list, time_list), delimiter=',')
 
 plt.plot(N_list, time_list, label = "Python optimized")
 ### Python Exact Approach
@@ -141,7 +141,7 @@ for i in range(len(N_list)):
     time_list[i] = jl_ODE_time
 
 
-    np.savetxt('jl_ODE_time_2.csv', (N_list, time_list), delimiter=',')
+    np.savetxt('jl_ODE_time_again_1.csv', (N_list, time_list), delimiter=',')
 
 plt.plot(N_list, time_list, label = "Pyjulia")
 

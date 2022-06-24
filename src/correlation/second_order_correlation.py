@@ -166,8 +166,8 @@ def g2_l(H, nhat, r, R1, R2, taulist, c_ops, N, faseglobal = 1, rho_ss = None, r
 
     normalization = (expect( Ep_R1_norm, rho_ss)) * (expect( Ep_R2_norm, rho_ss))
     
-    print("G2", G2)
-    print("norm", normalization)
+    #print("G2", G2)
+    #print("norm", normalization)
     g2_light = G2/normalization
 
 

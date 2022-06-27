@@ -117,7 +117,7 @@ def SolveForBeta1D_optimized(N, kd = None, b0 = None, exc_radius = None, Delta =
         y0 = initial_Beta1D 
     else:
         y0 = GetBeta0_flat(N, double = False, coupled = False)
-
+        
     Solution = solve_ivp(F_single_optimized, (t_span[0], t_span[-1] ), y0, t_eval = t_span[:], args = (N, Omega1D, Delta1D, Gamma2D, Delta2D))
     
     Beta1D_solved = Solution.y.T
@@ -140,6 +140,7 @@ def SolveForBeta1DandBeta2D_optimized(N_atoms, kd = None, b0 = None, exc_radius 
     Delta1D, Omega1D, Gamma2D, Delta2D, r = GetAllODEParametersGiven_b0_or_kd(N_atoms, kd, b0, exc_radius, Omega, Delta, r, scalar)
     if initial_Beta1D is None and initial_Beta2D is None:
         BetaCoupled_flat = GetBeta0_flat(N_atoms, coupled = True)
+
     elif initial_Beta1D is not None and initial_Beta2D is None: 
         initial_Beta2D= np.zeros([N_atoms,N_atoms])
         BetaCoupled_flat = GetBeta_tau0_flat(initial_Beta1D , initial_Beta2D  )

@@ -50,7 +50,7 @@ def get_array_of_numpy_runs(paths_array, npy = False):
     for i, run in enumerate(paths_array):
         try:
             if npy == True:
-               numpy_run = np.load(run)
+               numpy_run = np.load(run, allow_pickle = True)
             else:
                numpy_run = np.loadtxt(run)
             runs_txt.append(numpy_run)

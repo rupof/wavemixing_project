@@ -79,19 +79,15 @@ description += f'_{rho_ss_parameter}' # useless
 
 if tmax != 0:
     description += f'_{tmax}'
+tf_steady_state = 100
+t_span, dt = np.linspace(0,tf_steady_state,30, retstep = True) 
 
-
-Beta1D, Beta2D, t_span, r = SolveForBeta1DandBeta2D_optimized(N, kd , b0, exc_radius , Delta , Omega, wave_mixing, scalar,
+Beta1D_t, Beta2D_t, t_span, r = SolveForBeta1DandBeta2D_optimized(N, kd , b0, exc_radius , Delta , Omega, wave_mixing, scalar,
                                                             interaction, r, t_span)
 
-
-Beta1D_list = Beta1D
-Beta2D_list = Beta2D
+Beta1D_steady_state, Beta2D_steady_state = Beta1D_t[-1], Beta2D_t[-1]
 
 endODE = timer()
-
-if get_g2zero_full == True:
-    run_number = get_all_g2_zero_for_a_beta(r, Beta1D_list, Beta2D_list, N, useb0, b0, kd, description, interaction, Omega, Delta )
 
 
 
@@ -110,31 +106,18 @@ end = timer()
 path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
 filename ="{4}/N{3}_Omega{5}_Delta{6}_run".format(ang1,ang2,0,N,path_to_save_file, Omega, Delta) 
 
-if get_g2zero_full == False:
-    run_number = get_new_run_number_dat(filename)
+run_number = get_new_run_number_dat(filename)
 
 name_of_file =  "{4}/N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 name_of_file_time =  "{4}time/time_N{3}_Omega{5}_Delta{6}_run{2}.txt".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-
-#name_of_file_hamiltonean ="{4}/hamiltonean/hamiltonean_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-
-#name_of_file_c_ops ="{4}/c_ops/c_ops_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
-
-
 name_of_file_r ="{4}positions/positions_N{3}_Omega{5}_Delta{6}_run{2}".format(ang1,ang2,run_number,N, path_to_save_file, Omega, Delta)
 
 
-#save_params_to_file(str(end-start) , filename)
 save_params_to_file(variables_string, filename)
 
-
-np.savetxt(name_of_file_time, [end - start, endODE-start, end-endODE ] ) #Total, ODE, g2zero 
-
-np.save(name_of_file, [Beta1D, Beta2D, t_span])
-#save_rhoss_to_file(r, name_of_file_r)
-print(name_of_file_r)
-
-save_rhoss_to_file(r, name_of_file_r)
+np.savetxt(name_of_file_time, [end - start, endODE-start, end-endODE ] ) #saving time Total, ODE, g2zero 
+np.save(name_of_file, [Beta1D_t, Beta2D_t, t_span, r]) #saving betas
+#save_rhoss_to_file(r, name_of_file_r)#saving positions
 
 
 #fig, ax = plt.subplots()  
@@ -142,7 +125,7 @@ save_rhoss_to_file(r, name_of_file_r)
 #fig.savefig("testinho.png")
 #plt.show()
 
-
+print(description)
 print("PROGRAM FINISHED.\n Total time: ", end - start) # Time
 
 

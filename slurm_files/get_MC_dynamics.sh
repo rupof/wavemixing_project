@@ -2,10 +2,10 @@
 ang1=25
 ang2=205
 
-N=16 #$1
+N=20 #$1
 use_b0=1
-b0=1 #$3
-Description=b0_${b0}_V_Int_On_testing_steady_state_foda_avg
+b0=2 #$3
+Description=b0_${b0}_V_Int_On_testing_full_sh_implementation_avg
 interaction=1 #$6
 Omega=0.5 #$7
 Delta=20.0 #$8
@@ -25,7 +25,7 @@ default_info=N${N}_Omega${Omega}_Delta${Delta}_
 label_folder=${results_path}${default_info}${Description}_${rho_ss_parameter}/
 
 single_excitation=0
-num_of_angle=360
+num_of_angle=60
 
 angle_separation=$((360/num_of_angle ))
 echo $angle_separation

@@ -75,7 +75,7 @@ print(f"steady_state_path={steady_state_path}")
 
 theta = float(sys.argv[13])  # inclination angle
 print(f"theta ={theta}")
-single_excitation = bool(sys.argv[14])
+single_excitation = bool(int(sys.argv[14]))
 print(f"single_excitation ={single_excitation}")
 
 wave_mixing = True
@@ -106,7 +106,6 @@ Beta1D_steady_state, Beta2D_steady_state = Beta1D_t[-1], Beta2D_t[-1]
 
 Beta1D_projected_state = get_Beta1D_projected_state(r, Beta1D_steady_state, Beta2D_steady_state,
                                                     R1, optimized=True)
-
 if single_excitation == False:
     Beta1D_tau, Beta2D_tau, taulist, r = SolveForBeta1DandBeta2D_optimized(N, kd=None, b0=None,
                                                                            exc_radius=None, Delta=Delta,
@@ -118,10 +117,17 @@ if single_excitation == False:
     G2_MonteCarlo, I_MonteCarlo = get_g2(r, Beta1D_steady_state, Beta2D_steady_state,
                                    Beta1D_tau, Beta2D_tau, R1, R2, optimized=True)
 
-    G2_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation = get_g2(r, Beta1D_steady_state, None,
-                           Beta1D_tau, Beta2D_tau, R1, R2, optimized=True)
+    G2_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation = get_g2(r, Beta1D_steady_state, Beta2D_steady_state,
+                           Beta1D_tau, None, R1, R2, optimized=True)
 
-    files_to_save = [G2_MonteCarlo, G2_MonteCarlo_single_excitation, I_MonteCarlo, I_MonteCarlo_single_excitation, taulist]
+
+    G2_MonteCarlo_same_direction, I_MonteCarlo_same_direction= get_g2(r, Beta1D_steady_state, Beta2D_steady_state,
+                                                Beta1D_tau[:1], Beta2D_tau[:1], R1, R1, optimized=True)
+
+    G2_MonteCarlo_single_excitation_same_direction, I_MonteCarlo_single_excitation_same_direction= get_g2(r, Beta1D_steady_state, Beta2D_steady_state, Beta1D_tau[:1], None, R1, R1, optimized=True)
+
+
+    files_to_save = [G2_MonteCarlo, G2_MonteCarlo_single_excitation, G2_MonteCarlo_same_direction, G2_MonteCarlo_single_excitation_same_direction,  I_MonteCarlo, I_MonteCarlo_single_excitation, I_MonteCarlo_same_direction, I_MonteCarlo_single_excitation_same_direction, taulist]
 else:
     Beta1D_tau, taulist, r = SolveForBeta1D_optimized(N, kd=None, b0=None,
                                                       exc_radius=None, Delta=Delta,
@@ -131,10 +137,14 @@ else:
                                                       initial_Beta1D=Beta1D_projected_state)
     Beta2D_tau = None
 
-    G2_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation = get_g2(r, Beta1D_steady_state, None,
-                           Beta1D_tau, Beta2D_tau, R1, R2, optimized=True)
+    G2_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation = get_g2(r, Beta1D_steady_state, Beta2D_steady_state,
+                           Beta1D_tau, None, R1, R2, optimized=True)
+    
+    G2_MonteCarlo_single_excitation_same_direction, I_MonteCarlo_single_excitation_same_direction= get_g2(r, Beta1D_steady_state, Beta2D_steady_state,
+                           Beta1D_tau[:1], None, R1, R1, optimized=True)
 
-    files_to_save = [G2_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation, taulist]
+
+    files_to_save = [G2_MonteCarlo_single_excitation, G2_MonteCarlo_single_excitation_same_direction, I_MonteCarlo_single_excitation, I_MonteCarlo_single_excitation_same_direction, taulist]
 
 endODE = timer()
 

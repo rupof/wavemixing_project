@@ -64,19 +64,28 @@ rho_ss_parameter = str(sys.argv[10])  # useless
 print(f"rho_ss_parameter = {rho_ss_parameter}")
 tmax = float(sys.argv[11])  # useless
 print(f"tmax = {tmax}")
-steady_state_path = str(sys.argv[12])
-
-if steady_state_path == "None":
-    results_path = "../results/"
-    DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
-    steady_state_path = results_path+DefaultInfo + \
-        description + "_" + rho_ss_parameter + "/"
-print(f"steady_state_path={steady_state_path}")
 
 theta = float(sys.argv[13])  # inclination angle
 print(f"theta ={theta}")
 single_excitation = bool(int(sys.argv[14]))
 print(f"single_excitation ={single_excitation}")
+
+extra_path_for_cluster = str(sys.argv[15])
+if extra_path_for_cluster is None or extra_path_for_cluster == "":
+    extra_path_for_cluster = ".."
+print("Extra path = ", extra_path_for_cluster)
+
+steady_state_path = str(sys.argv[12])
+print("ss", steady_state_path)
+if steady_state_path == "None":
+    results_path =extra_path_for_cluster +"/results/"
+    DefaultInfo = f"N{N}_Omega{Omega}_Delta{Delta}_"
+    steady_state_path = results_path+DefaultInfo + description + "_" + rho_ss_parameter + "/"
+
+print(f"steady_state_path={steady_state_path}")
+
+
+run_id = str(sys.argv[16])
 
 wave_mixing = True
 scalar = True
@@ -161,11 +170,11 @@ end = timer()
 # Saving files!
 
 
-path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description)
+path_to_save_file = get_path_to_save_files(N, Omega, Delta,  description,  extra_path = extra_path_for_cluster)
 filename = "{4}/N{3}_Omega{5}_Delta{6}_run".format(
     ang1, ang2, 0, N, path_to_save_file, Omega, Delta)
 
-run_number = get_new_run_number_dat(filename)-1 #temporary fix so that steady state number coincides with correlation run number
+run_number = run_id #get_new_run_number_dat(filename)-1 #temporary fix so that steady state number coincides with correlation run number
 
 name_of_file = "{4}/N{3}_Omega{5}_Delta{6}_theta{7}_run{2}".format(
     ang1, ang2, run_number, N, path_to_save_file, Omega, Delta, theta)

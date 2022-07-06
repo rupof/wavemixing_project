@@ -24,7 +24,6 @@ echo " atoms: $N"
 
 # Criando SCRATCH
 export SCRATCHDIR=/tmp/$SLURM_JOBID
-
 mkdir -p ${SCRATCHDIR}
 
 # Copiando py pro scratch

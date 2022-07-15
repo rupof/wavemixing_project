@@ -3,6 +3,7 @@
 *.swo
 *.swp
 *.pyc
-.ipynb_checkpoints
+*.ipynb_checkpoints
+*.svg
 *.out
 *params.py

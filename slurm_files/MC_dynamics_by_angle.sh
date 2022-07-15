@@ -2,7 +2,7 @@
 #SBATCH -J wavemixing_MC            # Identificação do job
 #SBATCH -o %j.out                 # Nome do arquivo de saída padrão (%j = ID do JOB)
 #SBATCH --partition=fast
-#SBATCH --mem=4G
+#SBATCH --mem=8G
 PYTHON_EXEC=/home/user/miniconda/bin/python
 
 ang1=${1}
@@ -25,7 +25,7 @@ steady_state_path=${16}
 number_of_angles_total=${17}
 
 echo "label_folder $label_folder"
-echo "theta $theta"
+#echo "theta $theta"
 echo "single excitation $single_excitation"
 echo "run id $run_id"
 echo "steady-state path $steady_state_path"
@@ -51,7 +51,7 @@ cp -r ../src/ $SCRATCHDIR
 ##############################################################
 
 #Set the number of runs that each SLURM task should do
-PER_TASK=4
+PER_TASK=3
 
 # Calculate the starting and ending values for this task based
 # on the SLURM task and the number of runs per task.
@@ -67,16 +67,20 @@ END_ANGLE=$(( $END_NUM*$angles_separation))
 # Print the task and run range
 echo This is task $SLURM_ARRAY_TASK_ID, which will do runs $START_NUM to $END_NUM. That is angles $START_ANGLE to $END_ANGLE, that are separated by $PER_TASK x $angles_separation
 
+if [[ "$SLURM_ARRAY_TASK_ID" == 0 ]]; then
+	echo "theta 0"
+        singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/src/MC_g2_dynamics.py $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $steady_state_path 0 $single_excitation $SCRATCHDIR $run_id
+else
 # Run the loop of runs for this task.iiakjdkadj
-for (( run=$START_NUM; run<=END_NUM; run++ )); do
-  echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run and runid $run_id
-  theta=$(($run * $angles_separation ))
-  echo $theta
+    for (( run=$START_NUM; run<=END_NUM; run++ )); do
+        echo This is SLURM task $SLURM_ARRAY_TASK_ID, run number $run and runid $run_id
+        theta=$(($run * $angles_separation ))
+        echo  "theta $theta"
 
-  singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/src/MC_g2_dynamics.py $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $steady_state_path $theta $single_excitation $SCRATCHDIR $run_id
+        singularity exec ../singularity/Singularity_wavemixing.simg $PYTHON_EXEC $SCRATCHDIR/src/MC_g2_dynamics.py $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $steady_state_path $theta $single_excitation $SCRATCHDIR $run_id
   #Do your stuff here
-done
-
+	done
+fi
 
 
 

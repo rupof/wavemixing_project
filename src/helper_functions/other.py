@@ -3,7 +3,11 @@ from qutip import *
 from  helper_functions.constants import * 
 
 
-
+def relative_error(A,B):
+    try:
+        return np.average(np.abs((A-B)/(A+B)), axis = 0)
+    except:
+        return (np.abs((A-B)/(A+B)))
 
 def get_vector_components(R):
     x,y,z = R[0] , R[1], R[2]

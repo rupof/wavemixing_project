@@ -73,17 +73,18 @@ def get_g2(r, Beta1D_steady_state, Beta2D_steady_state, Beta1D_tau, Beta2D_tau, 
     return G2, Inorm
 
 
-def get_g2_full_MonteCarlo(Omega, Delta, r, t_span_steady_state, R1, R2):
-    Beta1D_t, Beta2D_t, t_span, r = SolveForBeta1DandBeta2D(N, kd=None, b0=None, exc_radius=None, Delta=Delta,
+def get_g2_full_MonteCarlo(Omega, Delta, r, t_span_steady_state, R1, R2, steady_state_interaction):
+    N=N_atoms = len(r)
+    Beta1D_t, Beta2D_t, t_span, r = SolveForBeta1DandBeta2D_optimized(N, kd=None, b0=None, exc_radius=None, Delta=Delta,
                                                             Omega=Omega, wave_mixing=True, scalar=True,
-                                                            interaction=True, r=r, t_span=t_span_steady_state)
+                                                            interaction=True, r=r, t_span=t_span_steady_state, steady_state_interaction=steady_state_interaction)
     tf = 5  # shorter time
     taulist, dt = np.linspace(0, tf, 200, retstep=True)
     Beta1D_steady_state, Beta2D_steady_state = Beta1D_t[-1], Beta2D_t[-1]
 
     Beta1D_projected_state = get_Beta1D_projected_state(r, Beta1D_steady_state, Beta2D_steady_state,
                                                         R1, optimized=True)
-    Beta1D_tau, Beta2D_tau, taulist, r = SolveForBeta1DandBeta2D(N, kd=None, b0=None,
+    Beta1D_tau, Beta2D_tau, taulist, r = SolveForBeta1DandBeta2D_optimized(N, kd=None, b0=None,
                                                                  exc_radius=None, Delta=Delta,
                                                                  Omega=Omega, wave_mixing=True,
                                                                  scalar=True, interaction=True,

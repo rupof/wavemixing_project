@@ -51,7 +51,7 @@ def F_single_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D):
     return F
 
 
-def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D):
+def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D, steady_state_interaction):
     """
     single and double excitation coupled ODE
     #y = np.array([Beta_0,Beta_1, ..., Beta_j, Beta_00, Beta_01, Beta_02, ... ,Beta_jm])
@@ -68,10 +68,13 @@ def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D):
     # F will be the full 1D collapsed vector: 
     # F = np.array([[Beta_0,Beta_1, ..., Beta_j, Beta_00, Beta_01, Beta_02, ... ,Beta_jm])
     # len(F) = N_atoms + N_atoms*N_atoms 
-    
+     
     G_val = G(Gamma2D, Delta2D) 
     np.fill_diagonal(G_val,0)
     
+    if steady_state_interaction == False: #i.e no interaction
+        G_val *= 0
+
     F = GetBeta0_flat(N_atoms, coupled  = True)
     
     #single excitation 
@@ -132,7 +135,7 @@ def SolveForBeta1D_optimized(N, kd = None, b0 = None, exc_radius = None, Delta =
     return Beta1D_time_list, t_span, r 
 
 
-def SolveForBeta1DandBeta2D_optimized(N_atoms, kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = True, interaction = True, r = None, t_span = None,  initial_Beta1D = None, initial_Beta2D = None ):
+def SolveForBeta1DandBeta2D_optimized(N_atoms, kd = None, b0 = None, exc_radius = None, Delta = None, Omega = None, wave_mixing = True, scalar = True, interaction = True, r = None, t_span = None,  initial_Beta1D = None, initial_Beta2D = None, steady_state_interaction = True):
     
 
     #t_span, dt = np.linspace(0,1,20, retstep = True) 
@@ -150,7 +153,7 @@ def SolveForBeta1DandBeta2D_optimized(N_atoms, kd = None, b0 = None, exc_radius 
         BetaCoupled_flat = np.array(BetaCoupled_flat,dtype="complex_")
 
 
-    Solution = solve_ivp(F_coupled_optimized, (t_span[0], t_span[-1] ), BetaCoupled_flat, t_eval = t_span[:], args =( N_atoms, Omega1D,  Delta1D, Gamma2D, Delta2D))    
+    Solution = solve_ivp(F_coupled_optimized, (t_span[0], t_span[-1] ), BetaCoupled_flat, t_eval = t_span[:], args =( N_atoms, Omega1D,  Delta1D, Gamma2D, Delta2D, steady_state_interaction ))    
     BetaCoupled_solved = Solution.y.T
     t_span = Solution.t
     

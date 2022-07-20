@@ -23,6 +23,9 @@ def get_array_of_runs_dat_files(datafolder_path, get_hamiltonean = False, get_c_
                 paths_array.append(datafolder_path+file)
             if fnmatch.fnmatch(file, '*.npy'):
                 paths_array.append(datafolder_path+file)
+            if fnmatch.fnmatch(file, '*.npz'):
+                paths_array.append(datafolder_path+file)
+
 
         return paths_array
     elif get_c_ops == True:
@@ -43,13 +46,15 @@ def get_array_of_runs_dat_files(datafolder_path, get_hamiltonean = False, get_c_
 
 
 
-def get_array_of_numpy_runs(paths_array, npy = False):
+def get_array_of_numpy_runs(paths_array, extension_format = "other" ):
     runs_txt = []
     corrupted_runs = []
 
     for i, run in enumerate(paths_array):
         try:
-            if npy == True:
+            if extension_format == "npy":
+               numpy_run = np.load(run, allow_pickle = True)
+            elif extension_format == "npz":
                numpy_run = np.load(run, allow_pickle = True)
             else:
                numpy_run = np.loadtxt(run)

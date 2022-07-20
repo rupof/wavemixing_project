@@ -17,7 +17,7 @@ echo $2
 b0=$( bc -l <<< "scale=2; ${2}/2") 
 echo "$b0"
 
-Description=b0_${b0}_V_Int_On_MC_npy_avg
+Description=b0_${b0}_S_Int_On_MC_npy_ind_avg
 interaction=1 #$6
 Omega=$1 #$7
 Delta=20.0 #$8
@@ -35,8 +35,8 @@ label_folder_absolute=/home/u758430/romain_ic/wavemixing_project/results/${defau
 
 single_excitation=0
 num_of_angle=90
-angle_separation=$((360/num_of_angle ))
-PER_TASK=4
+angle_separation=$((360/$num_of_angle ))
+PER_TASK=3
 
 total_distance_between_angles_in_a_task=$(( $PER_TASK * $angle_separation ))
 
@@ -80,7 +80,7 @@ sleep 30
 
 #sbatch --array=1-10 MC_dynamics_by_angle.sh $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $label_folder 0 $single_excitation $run_id $label_folder_absolute $num_of_angle
 
-sbatch --array=1-${total_number_of_task}%30 MC_dynamics_by_angle.sh $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $label_folder 0 $single_excitation $run_id $label_folder_absolute $num_of_angle
+sbatch --array=0-${total_number_of_task}%50 MC_dynamics_by_angle.sh $ang1 $ang2 $N $use_b0 $b0 $Description $interaction $Omega $Delta $rho_ss_parameter $tmax $label_folder 0 $single_excitation $run_id $label_folder_absolute $num_of_angle
 
 
 

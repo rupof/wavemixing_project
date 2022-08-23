@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-#SBATCH -J wavemixing            # Identificação do job
+#SBATCH -J ss_FWM            # Identificação do job
 #SBATCH -o %j.out                 # Nome do arquivo de saída padrão (%j = ID do JOB)
-#SBATCH --partition=fast
+#SBATCH --partition=normal
 #SBATCH --mem=4G
 
 PYTHON_EXEC=/home/user/miniconda/bin/python
@@ -14,13 +14,13 @@ ang2=205
 N=$3 #$1
 use_b0=1
 echo $2
-b0=$( bc -l <<< "scale=2; ${2}/2") 
+b0=${2}   #$( bc -l <<< "scale=2; ${2}/2") 
 echo "$b0"
 
-Description=b0_${b0}_S_Int_On_MC_npy_ind_avg
+Description=b0_${b0}_S_Int_On_MC_npz_N_superradiance_exc_avg
 interaction=1 #$6
 Omega=$1 #$7
-Delta=20.0 #$8
+Delta=0.0 #$8
 rho_ss_parameter=direct
 tmax=0
 
@@ -34,7 +34,7 @@ label_folder_absolute=/home/u758430/romain_ic/wavemixing_project/results/${defau
 
 
 single_excitation=0
-num_of_angle=90
+num_of_angle=40
 angle_separation=$((360/$num_of_angle ))
 PER_TASK=3
 

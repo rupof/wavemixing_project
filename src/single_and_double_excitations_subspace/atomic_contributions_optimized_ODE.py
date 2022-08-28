@@ -10,31 +10,35 @@ from helper_functions.cloud import *
 
 def SumG_2D_optimized(G_val, beta):
     """
-    \sum^N_{m!=l} G_lm \beta_km
+    \sum^N_{m!=l} G_lm \beta_km + \sum^N_{m!=k} G_km \beta_ml 
 
     summing on m
+
+    We assume G_ll = 0
     """
-    total_sum = np.einsum("lm, km", G_val, beta, optimize = True) +  np.einsum("km, ml", G_val, beta, optimize = True)
+    total_sum = np.einsum("lm, km", G_val, beta) +  np.einsum("km, ml", G_val, beta)
     return total_sum
 
 
+  
+
 def F_single_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D):
     """
-    single and double excitation ODE
+    Single and double excitation:
     #y = np.array([Beta_0,Beta_1, ..., Beta_j]) = Beta1D
 
+    and the time derivatives: 
+     
+     F is the vector corresponding to the time derivative of the beta coefficients:
+     F =[\dot{beta_1}, \dot{beta_2}, ..., \dot{beta_N}]
     """
-    # getting coefficients from y: 
+    
+    # getting coefficients from y:
     # Beta1D = [Beta_0, Beta_1, ..., Beta_N ]
-    # Beta2D = [[Beta11, Beta12, ...,Beta1N],[Beta21, Beta22, ..., Beta2N],...,[BetaN1,..., BetaNN]]
     
     Beta1D = y  
 
   
-    # Getting 1D F null vector
-    # F will be the full 1D collapsed vector: 
-    # F = np.array([[Beta_0,Beta_1, ..., Beta_j, Beta_00, Beta_01, Beta_02, ... ,Beta_jm])
-    # len(F) = N_atoms + N_atoms*N_atoms 
     G_val = G(Gamma2D, Delta2D) 
     np.fill_diagonal(G_val,0)
     
@@ -54,8 +58,13 @@ def F_single_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D):
 def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D, steady_state_interaction):
     """
     single and double excitation coupled ODE
-    #y = np.array([Beta_0,Beta_1, ..., Beta_j, Beta_00, Beta_01, Beta_02, ... ,Beta_jm])
+    #y = np.array([Beta_0,Beta_1, ..., Beta_j, Beta_00, Beta_01, Beta_02, ... ,Beta_jm]) = Beta1D, Beta2D
 
+
+    and the time derivatives: 
+     
+     F is the vector corresponding to the time derivative of the beta coefficients:
+     F =[\dot{Beta_0}, \dot{Beta_1}, ..., \dot{Beta_N}, \dot{Beta_00}, \dot{Beta_01}, \dot{Beta_02}, ... ,\dot{Beta_jm} ]
     """
     
     # getting coefficients from y: 
@@ -77,7 +86,8 @@ def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D, steady
 
     F = GetBeta0_flat(N_atoms, coupled  = True)
     
-    #single excitation 
+    #SINGLE EXCITATION COEFFICIENTS
+
     #slow implementation:
     #for l in range(0, N_atoms):
     #    F[l] = F_beta_single_exc_optimized(N_atoms, l, Beta1D, Delta1D, Omega1D, Gamma2D, Delta2D)
@@ -86,7 +96,8 @@ def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D, steady
     F[:N_atoms] = np.einsum("j,j->j", 1j*Delta1D-Gamma2D.diagonal()/2, Beta1D)- 1j*Omega1D/2    
     F[:N_atoms] -=  G_val @ Beta1D   #.reshape(-1,1) 
     
-    #double_excitation
+    #DOUBLE EXCITATION COEFFICIENTS
+
     #slow implementation
     #for i in range(N_atoms,len(F)):
     #    k, l = index_to_row_major_order(i-N_atoms, N_atoms)   #troquei indice e funcionou
@@ -99,8 +110,9 @@ def F_coupled_optimized(t,y, N_atoms, Omega1D,Delta1D,  Gamma2D, Delta2D, steady
  
 
     #fast implementation:
+
     F[N_atoms:] -= np.reshape( SumG_2D_optimized(G_val, Beta2D), len(F)-N_atoms) 
-    F[N_atoms:] = np.reshape( np.einsum("l, kl->kl", 1j*Delta1D-Gamma2D.diagonal()/2, Beta2D)   + np.einsum("k, kl->kl", 1j*Delta1D-Gamma2D.diagonal()/2, Beta2D), len(F)-N_atoms)
+    F[N_atoms:] += np.reshape( np.einsum("l, kl->kl", 1j*Delta1D-Gamma2D.diagonal()/2, Beta2D)   + np.einsum("k, kl->kl", 1j*Delta1D-Gamma2D.diagonal()/2, Beta2D), len(F)-N_atoms)
     F[N_atoms:] -= np.reshape(1j/2*np.einsum("l,k->kl",Omega1D, Beta1D  ) +  1j/2*np.einsum("k,l->kl",Omega1D, Beta1D ), len(F)-N_atoms)
     
 
